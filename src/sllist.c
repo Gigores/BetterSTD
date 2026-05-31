@@ -12,6 +12,8 @@ void BTR_SLList_append(btr_sllist_t *this, void *data)
     (*currNode)->next = NULL;
     this->size++;
 }
+void BTR_SLList_prepend(btr_sllist_t *, void *data);
+void BTR_SLList_insert(btr_sllist_t *, void *data, long index);
 void *BTR_SLList_pop(btr_sllist_t *this, long index)
 {
     if (!this->head)
@@ -38,7 +40,7 @@ void *BTR_SLList_pop(btr_sllist_t *this, long index)
         return data;
     }
 }
-void *BTR_SLList_get(btr_sllist_t *this, long index)
+void *BTR_SLList_get(const btr_sllist_t *this, long index)
 {
     btr_sllist_node_t *currNode = this->head;
     if (index < 0) index = this->size + index;
@@ -47,13 +49,14 @@ void *BTR_SLList_get(btr_sllist_t *this, long index)
     if (!currNode) return NULL;
     return currNode->payload;
 }
+void *BTR_SLList_first(const btr_sllist_t *);
+void *BTR_SLList_last(const btr_sllist_t *);
 void BTR_SLList_free(btr_sllist_t *this)
 {
-    btr_sllist_node_t *next = this->head;
-    while (next != NULL)
-    {
-        btr_sllist_node_t *nnext = next->next;
-        free(next);
-        next = nnext;
+    while (this->head) {
+        btr_sllist_node_t *next = this->head->next;
+        free(this->head);
+        this->head = next;
     }
+    this->size = 0;
 }
