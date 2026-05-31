@@ -21,6 +21,7 @@ void test1(void)
     for (long i = -1; i > -(long)testList.size - 1; i--) {
         printf("%ld: %d\n", i, *(int *)BTR_SLList_get(&testList, i));
     }
+    BTR_SLList_free(&testList);
 }
 // test `append` and `pop`
 void test2(void)
@@ -48,6 +49,14 @@ void test2(void)
         printf("%zu: %d\n", i, *(int *)node->payload);
         assert(*(int *)node->payload == OUTPUT[i]);
     }
+    int c = *(int *)BTR_SLList_pop(&testList, -1);
+    int d = *(int *)BTR_SLList_pop(&testList, -1);
+    printf("c = %d\n", c);
+    printf("d = %d\n", d);
+    assert(c == INPUT[3]);
+    assert(d == INPUT[0]);
+    assert(testList.size == 0);
+    BTR_SLList_free(&testList);
 }
 
 int main(void) {

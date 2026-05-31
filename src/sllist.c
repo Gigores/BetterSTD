@@ -1,4 +1,5 @@
 #include "btrstd/sllist.h"
+#include "stdio.h"
 
 void BTR_SLList_append(btr_sllist_t *this, void *data)
 {
@@ -15,6 +16,7 @@ void *BTR_SLList_pop(btr_sllist_t *this, long index)
 {
     if (!this->head)
         return NULL;
+    if (index < 0) index = this->size + index;
     if (index == 0) {
         btr_sllist_node_t *connectTo = this->head->next;
         void *data = this->head->payload;
@@ -23,7 +25,6 @@ void *BTR_SLList_pop(btr_sllist_t *this, long index)
         this->size--;
         return data;
     } else {
-        if (index < 0) index = this->size + index;
         btr_sllist_node_t **currNode = &this->head;
         for (long currIndex = 0; currIndex != index - 1 && *currNode != NULL; currIndex++)
             currNode = &(*currNode)->next;
@@ -41,8 +42,18 @@ void *BTR_SLList_get(btr_sllist_t *this, long index)
 {
     btr_sllist_node_t *currNode = this->head;
     if (index < 0) index = this->size + index;
-    for (size_t currIndex = 0; currIndex != index && currNode != NULL; currIndex++)
+    for (long currIndex = 0; currIndex != index && currNode != NULL; currIndex++)
         currNode = currNode->next;
     if (!currNode) return NULL;
     return currNode->payload;
+}
+void BTR_SLList_free(btr_sllist_t *this)
+{
+    btr_sllist_node_t *next = this->head;
+    while (next != NULL)
+    {
+        btr_sllist_node_t *nnext = next->next;
+        free(next);
+        next = nnext;
+    }
 }
