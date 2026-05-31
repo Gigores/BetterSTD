@@ -10,4 +10,4 @@ build:
 
 test: build
 	@mkdir -p build/tests
-	@for test in {{ tests }}; do gcc {{ xargs }} build/btrstd.a $test -o build/$test; echo "TESTING $test"; build/$test; done
+	@for test in {{ tests }}; do gcc {{ xargs }} -fsanitize=address build/btrstd.a $test -o build/$test; echo "TESTING $test"; build/$test; done
