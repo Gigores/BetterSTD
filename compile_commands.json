@@ -1,0 +1,19 @@
+[
+  {
+    "file": "src/list.c",
+    "arguments": [
+      "/usr/sbin/gcc",
+      "-std=c11",
+      "-Iinclude",
+      "-Wall",
+      "-Wextra",
+      "-Wno-unused-function",
+      "src/list.c",
+      "-c",
+      "-o",
+      "build/btrstd.a"
+    ],
+    "directory": "/home/priklen/Programming/Pricklen/c/btrstd",
+    "output": "build/btrstd.a"
+  }
+]
