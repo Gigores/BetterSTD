@@ -1,4 +1,4 @@
-#include "btrstd/list.h"
+#include "btrstd/sllist.h"
 #include "assert.h"
 #include "stdio.h"
 
@@ -17,6 +17,9 @@ void test1(void)
     BTR_SLLIST_ENUMERATE(testList, node, i) {
         printf("%zu: %d\n", i, *(int *)node->payload);
         assert(*(int *)node->payload == VALUES[i]);
+    }
+    for (long i = -1; i > -(long)testList.size - 1; i--) {
+        printf("%ld: %d\n", i, *(int *)BTR_SLList_get(&testList, i));
     }
 }
 // test `append` and `pop`

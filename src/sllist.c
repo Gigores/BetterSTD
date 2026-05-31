@@ -1,4 +1,4 @@
-#include "btrstd/list.h"
+#include "btrstd/sllist.h"
 
 void BTR_SLList_append(btr_sllist_t *this, void *data)
 {
@@ -11,7 +11,7 @@ void BTR_SLList_append(btr_sllist_t *this, void *data)
     (*currNode)->next = NULL;
     this->size++;
 }
-void *BTR_SLList_pop(btr_sllist_t *this, size_t index)
+void *BTR_SLList_pop(btr_sllist_t *this, long index)
 {
     if (!this->head)
         return NULL;
@@ -23,8 +23,9 @@ void *BTR_SLList_pop(btr_sllist_t *this, size_t index)
         this->size--;
         return data;
     } else {
+        if (index < 0) index = this->size + index;
         btr_sllist_node_t **currNode = &this->head;
-        for (size_t currIndex = 0; currIndex != index - 1 && *currNode != NULL; currIndex++)
+        for (long currIndex = 0; currIndex != index - 1 && *currNode != NULL; currIndex++)
             currNode = &(*currNode)->next;
         if (!*currNode) return NULL;
         if (!(*currNode)->next) return NULL;
@@ -36,9 +37,10 @@ void *BTR_SLList_pop(btr_sllist_t *this, size_t index)
         return data;
     }
 }
-void *BTR_SLList_get(btr_sllist_t *this, size_t index)
+void *BTR_SLList_get(btr_sllist_t *this, long index)
 {
     btr_sllist_node_t *currNode = this->head;
+    if (index < 0) index = this->size + index;
     for (size_t currIndex = 0; currIndex != index && currNode != NULL; currIndex++)
         currNode = currNode->next;
     if (!currNode) return NULL;
