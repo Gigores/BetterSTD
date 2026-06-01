@@ -72,7 +72,13 @@ long BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void 
  * Returns the amount of items in the borrowing linked list.
  */
 size_t BTR_BLList_len(const btr_bllist_t *);
+/**
+ * Tells if the borrowing linked list is empty.
+ */
 bool BTR_BLList_isEmpty(const btr_bllist_t *);
+/**
+ * Reverses the order of items in the borrowing linked list.
+ */
 void BTR_BLList_reverse(btr_bllist_t *);
 /**
  * Deallocates the borrowing linked list.
@@ -82,7 +88,14 @@ void BTR_BLList_free(btr_bllist_t *);
  * The exact same as `BTR_BLList_free`
  */
 void BTR_BLList_clear(btr_bllist_t *);
-
+/**
+ * Example usage:
+ * ```c
+ * btr_bllist_t list = {...};  // a list of strings
+ * BTR_BLLIST_FOREACH(list, item)
+ *     printf("%s\n", (char *)item);
+ * ```
+ */
 #define BTR_BLLIST_FOREACH(LIST, i)           \
     void *i;                                  \
     for (                                     \
@@ -90,17 +103,31 @@ void BTR_BLList_clear(btr_bllist_t *);
         _n != NULL && ((i = _n->payload), 1); \
         _n = _n->next                         \
     )
+/**
+ * Example usage:
+ * ```c
+ * btr_bllist_t list = {...};  // a list of strings
+ * BTR_BLLIST_ENUMERATE(list, item, index)
+ *     printf("%zu: %s\n", index, (char *)item);
+ * ```
+ */
 #define BTR_BLLIST_ENUMERATE(LIST, i, n)      \
     size_t n = 0;                             \
     void *i;                                  \
     for (                                     \
         btr_bllist_node_t *_i = (LIST)->head; \
         _i != NULL && ((i = _i->payload), 1); \
-        _i = _i->next, n++                     \
+        _i = _i->next, n++                    \
     )
-
-#define BTR_BLLIST(...) \
-    BTR_BLList_new( \
-        (void *[]){ __VA_ARGS__ }, \
+/**
+ * Example usage:
+ * ```c
+ * int a = 14, b = 43, c = 34;
+ * bre_bllist_t list = BTR_BLLIST(&a, &b, &c);
+ * ```
+ */
+#define BTR_BLLIST(...)                                    \
+    BTR_BLList_new(                                        \
+        (void *[]){ __VA_ARGS__ },                         \
         sizeof((void *[]){ __VA_ARGS__ }) / sizeof(void *) \
     )
