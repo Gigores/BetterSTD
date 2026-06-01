@@ -93,8 +93,20 @@ void *BTR_BLList_get(const btr_bllist_t *this, long index)
     if (!currNode) return NULL;
     return currNode->payload;
 }
-void *BTR_BLList_first(const btr_bllist_t *);
-void *BTR_BLList_last(const btr_bllist_t *);
+void *BTR_BLList_first(const btr_bllist_t *this)
+{
+    if (this->size == 0) return NULL;
+    return this->head->payload;
+}
+void *BTR_BLList_last(const btr_bllist_t *this)
+{
+    if (this->size == 0) return NULL;
+    btr_bllist_node_t *currNode = this->head;
+    while (currNode->next) {
+        currNode = currNode->next;
+    }
+    return currNode->payload;
+}
 long BTR_BLList_indexOf(btr_bllist_t *list, void *value, int (*cmp)(const void *, const void *));
 size_t BTR_BLList_len(const btr_bllist_t *this)
 {
