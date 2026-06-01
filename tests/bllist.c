@@ -97,11 +97,32 @@ void test3(void)
     BTR_BLList_free(&testList);
     BTR_BLList_free(&testListCloned);
 }
+// test `prepend`
+void test4(void)
+{
+    printf("> test4\n");
+    const int VALUES[] = {
+        0, 10, 20, 30, 40, 50, 60, 70, 80, 90
+    };
+    const size_t VALUES_SIZE = sizeof(VALUES) / sizeof(VALUES[0]);
+    btr_bllist_t testList = {0};
+    for (size_t i = 0; i < VALUES_SIZE; i++)
+        BTR_BLList_prepend(&testList, (void *)&VALUES[i]);
+    BTR_BLLIST_ENUMERATE(&testList, i, n)
+    {
+        int a = *(int *)i;
+        int b = VALUES[VALUES_SIZE - (n + 1)];
+        printf("%zu: %d / %d\n", n, a, b);
+        assert(a == b);
+    }
+    BTR_BLList_free(&testList);
+}
 
 int main(void) {
     test1();
     test2();
     test3();
+    test4();
     printf("SUCCESS\n");
     return 0;
 }

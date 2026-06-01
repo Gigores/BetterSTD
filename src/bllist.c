@@ -28,7 +28,15 @@ void BTR_BLList_append(btr_bllist_t *this, void *data)
     (*currNode)->next = NULL;
     this->size++;
 }
-void BTR_BLList_prepend(btr_bllist_t *, void *data);
+void BTR_BLList_prepend(btr_bllist_t *this, void *data)
+{
+    btr_bllist_node_t *oldFirst = this->head;
+    btr_bllist_node_t *newFirst = malloc(sizeof(btr_bllist_node_t));
+    if (!newFirst) return;
+    newFirst->payload = data;
+    newFirst->next = oldFirst;
+    this->head = newFirst;
+}
 void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
 void *BTR_BLList_pop(btr_bllist_t *this, long index)
 {

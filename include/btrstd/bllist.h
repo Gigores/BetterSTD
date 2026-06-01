@@ -30,9 +30,12 @@ btr_bllist_t BTR_BLList_new(void *items[], size_t itemCount);
  */
 btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list);
 /**
- * Appends the data to the end of a borrowing linked list.
+ * Appends the data to the end of the borrowing linked list.
  */
 void BTR_BLList_append(btr_bllist_t *, void *data);
+/**
+ * Prepends the data to the beginning of the borrowing linked list.
+ */
 void BTR_BLList_prepend(btr_bllist_t *, void *data);
 void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
 
@@ -54,12 +57,15 @@ void *BTR_BLList_last(const btr_bllist_t *);
 
 long BTR_BLList_indexOf(btr_bllist_t *list, void *value, int (*cmp)(const void *, const void *));
 
+/**
+ * Returns the amount of items in the borrowing linked list.
+ */
 size_t BTR_BLList_len(const btr_bllist_t *);
 bool BTR_BLList_isEmpty(const btr_bllist_t *);
 void BTR_BLList_reverse(btr_bllist_t *);
 
 /**
- * Deallocates the borrowing linked list
+ * Deallocates the borrowing linked list.
  */
 void BTR_BLList_free(btr_bllist_t *);
 void BTR_BLList_clear(btr_bllist_t *);
