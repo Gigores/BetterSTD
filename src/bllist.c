@@ -1,5 +1,6 @@
 #include "btrstd/bllist.h"
 #include "stdio.h"
+#include "stdbool.h"
 
 btr_bllist_t BTR_BLList_new(void *items[], size_t itemCount)
 {

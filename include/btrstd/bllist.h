@@ -2,7 +2,7 @@
 
 #include "stdlib.h"
 
-#include "bool.h"
+#include "stdbool.h"
 
 /**
  * The idea of the Borrowing Linked List is that it does not own the data,
