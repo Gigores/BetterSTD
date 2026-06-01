@@ -17,12 +17,25 @@ typedef struct {
 btr_bllist_t BTR_BLList_new(void *items[], size_t count);
 btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list);
 
+/**
+ * Appends the data to the end of a borrowing linked list.
+ */
 void BTR_BLList_append(btr_bllist_t *, void *data);
 void BTR_BLList_prepend(btr_bllist_t *, void *data);
 void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
 
+/**
+ * Pops the data of the specified index from a borrowing linked list and returns it.
+ * Returns `NULL` if the index is invalid.
+ * Can accept negative indexes.
+ */
 void *BTR_BLList_pop(btr_bllist_t *, long index);
 
+/**
+ * Returns the data of the specified index.
+ * Returns `NULL` if the index is invalid.
+ * Can accept negative indexes.
+ */
 void *BTR_BLList_get(const btr_bllist_t *, long index);
 void *BTR_BLList_first(const btr_bllist_t *);
 void *BTR_BLList_last(const btr_bllist_t *);
@@ -33,6 +46,9 @@ size_t BTR_BLList_len(const btr_bllist_t *);
 bool BTR_BLList_isEmpty(const btr_bllist_t *);
 void BTR_BLList_reverse(btr_bllist_t *);
 
+/**
+ * Deallocates the borrowing linked list
+ */
 void BTR_BLList_free(btr_bllist_t *);
 void BTR_BLList_clear(btr_bllist_t *);
 
