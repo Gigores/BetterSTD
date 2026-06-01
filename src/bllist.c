@@ -8,7 +8,15 @@ btr_bllist_t BTR_BLList_new(void *items[], size_t itemCount)
         BTR_BLList_append(&list, items[i]);
     return list;
 }
-btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list);
+btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list)
+{
+    btr_bllist_t newList = {0};
+    BTR_BLLIST_FOREACH(list, i) {
+        printf("%zu\n", i);
+        BTR_BLList_append(&newList, i);
+    }
+    return newList;
+}
 void BTR_BLList_append(btr_bllist_t *this, void *data)
 {
     btr_bllist_node_t **currNode = &this->head;
@@ -60,7 +68,10 @@ void *BTR_BLList_get(const btr_bllist_t *this, long index)
 void *BTR_BLList_first(const btr_bllist_t *);
 void *BTR_BLList_last(const btr_bllist_t *);
 long BTR_BLList_indexOf(btr_bllist_t *list, void *value, int (*cmp)(const void *, const void *));
-size_t BTR_BLList_len(const btr_bllist_t *);
+size_t BTR_BLList_len(const btr_bllist_t *this)
+{
+    return this->size;
+}
 bool BTR_BLList_isEmpty(const btr_bllist_t *);
 void BTR_BLList_reverse(btr_bllist_t *);
 void BTR_BLList_free(btr_bllist_t *this)

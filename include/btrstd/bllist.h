@@ -25,8 +25,10 @@ typedef struct {
  * ```
  */
 btr_bllist_t BTR_BLList_new(void *items[], size_t itemCount);
+/**
+ * Creates a new borrowing linked list from another borrowing linked list with the same data.
+ */
 btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list);
-
 /**
  * Appends the data to the end of a borrowing linked list.
  */
@@ -62,11 +64,21 @@ void BTR_BLList_reverse(btr_bllist_t *);
 void BTR_BLList_free(btr_bllist_t *);
 void BTR_BLList_clear(btr_bllist_t *);
 
-#define BTR_BLLIST_FOREACH(LIST, VAR) \
-    for (btr_bllist_node_t *VAR = (LIST)->head; VAR != NULL; VAR = VAR->next)
-#define BTR_BLLIST_ENUMERATE(LIST, NODE, i) \
-    size_t i = 0;                           \
-    for(btr_bllist_node_t *NODE = (LIST).head; NODE != NULL; NODE = NODE->next, i++)
+#define BTR_BLLIST_FOREACH(LIST, i)           \
+    void *i;                                  \
+    for (                                     \
+        btr_bllist_node_t *_n = (LIST)->head; \
+        _n != NULL && ((i = _n->payload), 1); \
+        _n = _n->next                         \
+    )
+#define BTR_BLLIST_ENUMERATE(LIST, i, n)      \
+    size_t n = 0;                             \
+    void *i;                                  \
+    for (                                     \
+        btr_bllist_node_t *_i = (LIST)->head; \
+        _i != NULL && ((i = _i->payload), 1); \
+        _i = _i->next, n++                     \
+    )
 
 #define BTR_BLLIST(...) \
     BTR_BLList_new( \
