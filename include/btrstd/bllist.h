@@ -37,6 +37,9 @@ void BTR_BLList_append(btr_bllist_t *, void *data);
  * Prepends the data to the beginning of the borrowing linked list.
  */
 void BTR_BLList_prepend(btr_bllist_t *, void *data);
+/**
+ * Inserts an item so that it's index is the specified one.
+ */
 void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
 
 /**

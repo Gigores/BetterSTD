@@ -2,14 +2,33 @@
 #include "assert.h"
 #include "stdio.h"
 
+static int getInt(void *p)
+{
+    return *(int *)p;
+}
+static void checkList(btr_bllist_t *list, int expected[], size_t n)
+{
+    assert(list->size == n);
+    btr_bllist_node_t *node = list->head;
+    for (size_t i = 0; i < n; i++) {
+        assert(node != NULL);
+        assert(getInt(node->payload) == expected[i]);
+        node = node->next;
+    }
+    assert(node == NULL);
+}
+
 // test `new`, and `get`
-void test1(void)
+static void test1(void)
 {
     printf("> test1\n");
+
     const int VALUES[] = {
         0, 10, 20, 30, 40, 50, 60, 70, 80, 90
     };
-    btr_bllist_t testList = BTR_BLLIST(
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+
+    btr_bllist_t list = BTR_BLLIST(
         (void *)&VALUES[0],
         (void *)&VALUES[1],
         (void *)&VALUES[2],
@@ -19,61 +38,60 @@ void test1(void)
         (void *)&VALUES[6],
         (void *)&VALUES[7],
         (void *)&VALUES[8],
-        (void *)&VALUES[9],
+        (void *)&VALUES[9]
     );
-
-    BTR_BLLIST_ENUMERATE(&testList, node, i) {
-        printf("%zu: %d\n", i, *(int *)node);
-        assert(*(int *)node == VALUES[i]);
+    // forward iteration
+    size_t i = 0;
+    BTR_BLLIST_FOREACH(&list, node)
+    {
+        assert(getInt(node) == VALUES[i]);
+        i++;
     }
-    for (long i = -1; i > -(long)testList.size - 1; i--) {
-        printf("%ld: %d\n", i, *(int *)BTR_BLList_get(&testList, i));
+    assert(i == N);
+    // negative indexing check
+    for (long k = -1; k >= -(long)N; k--)
+    {
+        int v = getInt(BTR_BLList_get(&list, k));
+        assert(v == VALUES[N + k]);
     }
-    BTR_BLList_free(&testList);
+    BTR_BLList_free(&list);
 }
 // test `append` and `pop`
-void test2(void)
+static void test2(void)
 {
     printf("> test2\n");
+
     const int INPUT[] = {
         654, 64357, 2475, 7465
     };
-    const int OUTPUT[] = {
+    const int EXPECT_AFTER_POP[] = {
         654, 7465
     };
-    btr_bllist_t testList = {0};
 
-    for (size_t i = 0; i < sizeof(INPUT) / sizeof(INPUT[0]); i++)
-        BTR_BLList_append(&testList, (void *)&INPUT[i]);
-
-    int a = *(int *)BTR_BLList_pop(&testList, 1);
-    int b = *(int *)BTR_BLList_pop(&testList, 1);
-
-    printf("a = %d\n", a);
-    printf("b = %d\n", b);
+    btr_bllist_t list = {0};
+    size_t n = sizeof(INPUT)/sizeof(INPUT[0]);
+    for (size_t i = 0; i < n; i++)
+        BTR_BLList_append(&list, (void *)&INPUT[i]);
+    int a = getInt(BTR_BLList_pop(&list, 1));
+    int b = getInt(BTR_BLList_pop(&list, 1));
     assert(a == INPUT[1]);
     assert(b == INPUT[2]);
-    BTR_BLLIST_ENUMERATE(&testList, node, i) {
-        printf("%zu: %d\n", i, *(int *)node);
-        assert(*(int *)node == OUTPUT[i]);
-    }
-    int c = *(int *)BTR_BLList_pop(&testList, -1);
-    int d = *(int *)BTR_BLList_pop(&testList, -1);
-    printf("c = %d\n", c);
-    printf("d = %d\n", d);
+    checkList(&list, (int *)EXPECT_AFTER_POP, 2);
+    int c = getInt(BTR_BLList_pop(&list, -1));
+    int d = getInt(BTR_BLList_pop(&list, -1));
     assert(c == INPUT[3]);
     assert(d == INPUT[0]);
-    assert(testList.size == 0);
-    BTR_BLList_free(&testList);
+    assert(list.size == 0);
+    BTR_BLList_free(&list);
 }
 // test 'clone'
-void test3(void)
+static void test3(void)
 {
     printf("> test3\n");
-    const int VALUES[] = {
-        0, 10, 20, 30, 40, 50, 60, 70, 80, 90
-    };
-    btr_bllist_t testList = BTR_BLLIST(
+
+    const int VALUES[] = {0,10,20,30,40,50,60,70,80,90};
+    const size_t N = sizeof(VALUES)/sizeof(VALUES[0]);
+    btr_bllist_t list = BTR_BLLIST(
         (void *)&VALUES[0],
         (void *)&VALUES[1],
         (void *)&VALUES[2],
@@ -83,39 +101,87 @@ void test3(void)
         (void *)&VALUES[6],
         (void *)&VALUES[7],
         (void *)&VALUES[8],
-        (void *)&VALUES[9],
+        (void *)&VALUES[9]
     );
-    btr_bllist_t testListCloned = BTR_BLList_clone(&testList);
-    size_t listSize = BTR_BLList_len(&testList);
-    for (size_t i = 0; i < listSize; i++)
+    btr_bllist_t clone = BTR_BLList_clone(&list);
+    assert(clone.size == list.size);
+    for (size_t i = 0; i < N; i++)
     {
-        int a = *(int *)BTR_BLList_get(&testList, i);
-        int b = *(int *)BTR_BLList_get(&testListCloned, i);
-        printf("%zu: %d / %d\n", i, a, b);
+        int a = getInt(BTR_BLList_get(&list, i));
+        int b = getInt(BTR_BLList_get(&clone, i));
         assert(a == b);
     }
-    BTR_BLList_free(&testList);
-    BTR_BLList_free(&testListCloned);
+    BTR_BLList_free(&list);
+    BTR_BLList_free(&clone);
 }
 // test `prepend`
-void test4(void)
+static void test4(void)
 {
     printf("> test4\n");
+
     const int VALUES[] = {
         0, 10, 20, 30, 40, 50, 60, 70, 80, 90
     };
-    const size_t VALUES_SIZE = sizeof(VALUES) / sizeof(VALUES[0]);
-    btr_bllist_t testList = {0};
-    for (size_t i = 0; i < VALUES_SIZE; i++)
-        BTR_BLList_prepend(&testList, (void *)&VALUES[i]);
-    BTR_BLLIST_ENUMERATE(&testList, i, n)
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+    btr_bllist_t list = {0};
+    for (size_t i = 0; i < N; i++)
+        BTR_BLList_prepend(&list, (void *)&VALUES[i]);
+    size_t i = 0;
+    BTR_BLLIST_FOREACH(&list, node)
     {
-        int a = *(int *)i;
-        int b = VALUES[VALUES_SIZE - (n + 1)];
-        printf("%zu: %d / %d\n", n, a, b);
-        assert(a == b);
+        int v = getInt(node);
+        int expected = VALUES[N - 1 - i];
+        assert(v == expected);
+        i++;
     }
-    BTR_BLList_free(&testList);
+    assert(i == N);
+    BTR_BLList_free(&list);
+}
+// test `insert`
+static void test5(void)
+{
+    printf("> test5\n");
+
+    btr_bllist_t list = {0};
+
+    int a = 1, b = 2, c = 3, d = 4;
+
+    // insert into empty list
+    BTR_BLList_insert(&list, &a, 0);
+    {
+        int exp[] = {1};
+        checkList(&list, exp, 1);
+    }
+
+    // append (index == size)
+    BTR_BLList_insert(&list, &b, 1);
+    {
+        int exp[] = {1, 2};
+        checkList(&list, exp, 2);
+    }
+
+    // insert in middle
+    BTR_BLList_insert(&list, &c, 1);
+    {
+        int exp[] = {1, 3, 2};
+        checkList(&list, exp, 3);
+    }
+
+    // insert at head
+    BTR_BLList_insert(&list, &d, 0);
+    {
+        int exp[] = {4, 1, 3, 2};
+        checkList(&list, exp, 4);
+    }
+
+    // negative index (-1 == before last, depending on your design)
+    BTR_BLList_insert(&list, &a, -1);
+    {
+        int exp[] = {4, 1, 3, 1, 2};
+        checkList(&list, exp, 5);
+    }
+
+    BTR_BLList_free(&list);
 }
 
 int main(void) {
@@ -123,6 +189,7 @@ int main(void) {
     test2();
     test3();
     test4();
+    test5();
     printf("SUCCESS\n");
     return 0;
 }

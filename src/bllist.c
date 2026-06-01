@@ -12,7 +12,6 @@ btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list)
 {
     btr_bllist_t newList = {0};
     BTR_BLLIST_FOREACH(list, i) {
-        printf("%zu\n", i);
         BTR_BLList_append(&newList, i);
     }
     return newList;
@@ -36,8 +35,29 @@ void BTR_BLList_prepend(btr_bllist_t *this, void *data)
     newFirst->payload = data;
     newFirst->next = oldFirst;
     this->head = newFirst;
+    this->size++;
 }
-void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
+void BTR_BLList_insert(btr_bllist_t *this, void *data, long index)
+{
+    if (index < 0) index = (long)this->size + index;
+    if (index < 0 || (size_t)index > this->size) return;
+    if (index == 0) {
+        BTR_BLList_prepend(this, data);
+        return;
+    }
+    btr_bllist_node_t *currNode = this->head;
+    for (size_t i = 0; i < (size_t) index - 1; i++) {
+        if (!currNode) return;
+        currNode = currNode->next;
+    }
+    if (!currNode) return;
+    btr_bllist_node_t *newNode = malloc(sizeof(btr_bllist_node_t));
+    if (!newNode) return;
+    newNode->next = currNode->next;
+    newNode->payload = data;
+    currNode->next = newNode;
+    this->size++;
+}
 void *BTR_BLList_pop(btr_bllist_t *this, long index)
 {
     if (!this->head)
