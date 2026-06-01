@@ -1,13 +1,18 @@
 CC := "gcc"
 
-files := "$(find src -name \"*.c\")"
-tests := "$(find tests -name \"*.c\")"
-xargs := "$(xargs < compile_flags.txt)"
+files   := "$(find src -name \"*.c\")"
+tests   := "$(find tests -name \"*.c\")"
+headers := "$(find include/btrstd -name \"*.h\")"
+xargs   := "$(xargs < compile_flags.txt)"
 
-build:
+build-a:
 	mkdir -p build
 	gcc {{ xargs }} {{ files }} -c -o build/btrstd.a
 
-test: build
-	@mkdir -p build/tests
-	@for test in {{ tests }}; do gcc {{ xargs }} -fsanitize=address build/btrstd.a $test -o build/$test; echo "TESTING $test"; build/$test; done
+build-single-file:
+	mkdir -p build/dist
+	for header in {{ headers }}; do name="${header##*/}"; ./build_single_file.py $header "src/${name%.h}.c" "build/dist/${name}"; done
+
+test: build-a
+	mkdir -p build/tests
+	for test in {{ tests }}; do gcc {{ xargs }} -fsanitize=address build/btrstd.a $test -o build/$test; echo "TESTING $test"; build/$test; done
