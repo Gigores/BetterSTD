@@ -1,6 +1,10 @@
 #include "btrstd/sllist.h"
 #include "stdio.h"
 
+btr_sllist_t BTR_SLList_new(void *items[], size_t count)
+{
+}
+btr_sllist_t BTR_SLList_clone(const btr_sllist_t *list);
 void BTR_SLList_append(btr_sllist_t *this, void *data)
 {
     btr_sllist_node_t **currNode = &this->head;
@@ -51,6 +55,10 @@ void *BTR_SLList_get(const btr_sllist_t *this, long index)
 }
 void *BTR_SLList_first(const btr_sllist_t *);
 void *BTR_SLList_last(const btr_sllist_t *);
+long BTR_SLList_indexOf(btr_sllist_t *list, void *value, int (*cmp)(const void *, const void *));
+size_t BTR_SLList_len(const btr_sllist_t *);
+bool BTR_SLList_isEmpty(const btr_sllist_t *);
+void BTR_SLList_reverse(btr_sllist_t *);
 void BTR_SLList_free(btr_sllist_t *this)
 {
     while (this->head) {
@@ -60,3 +68,4 @@ void BTR_SLList_free(btr_sllist_t *this)
     }
     this->size = 0;
 }
+void BTR_SLList_clear(btr_sllist_t *);
