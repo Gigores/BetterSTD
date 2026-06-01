@@ -2,17 +2,25 @@
 #include "assert.h"
 #include "stdio.h"
 
-// test `append` and `find`
+// test `new`, and `get`
 void test1(void)
 {
     printf("> test1\n");
     const int VALUES[] = {
         0, 10, 20, 30, 40, 50, 60, 70, 80, 90
     };
-    btr_bllist_t testList = {0};
-
-    for (size_t i = 0; i < sizeof(VALUES) / sizeof(VALUES[0]); i++)
-        BTR_BLList_append(&testList, (void *)&VALUES[i]);
+    btr_bllist_t testList = BTR_BLLIST(
+        (void *)&VALUES[0],
+        (void *)&VALUES[1],
+        (void *)&VALUES[2],
+        (void *)&VALUES[3],
+        (void *)&VALUES[4],
+        (void *)&VALUES[5],
+        (void *)&VALUES[6],
+        (void *)&VALUES[7],
+        (void *)&VALUES[8],
+        (void *)&VALUES[9],
+    );
 
     BTR_BLLIST_ENUMERATE(testList, node, i) {
         printf("%zu: %d\n", i, *(int *)node->payload);

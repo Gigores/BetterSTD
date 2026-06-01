@@ -1,8 +1,12 @@
 #include "btrstd/bllist.h"
 #include "stdio.h"
 
-btr_bllist_t BTR_BLList_new(void *items[], size_t count)
+btr_bllist_t BTR_BLList_new(void *items[], size_t itemCount)
 {
+    btr_bllist_t list = {0};
+    for (size_t i = 0; i < itemCount; i++)
+        BTR_BLList_append(&list, items[i]);
+    return list;
 }
 btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list);
 void BTR_BLList_append(btr_bllist_t *this, void *data)
