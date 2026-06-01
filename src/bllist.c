@@ -116,15 +116,35 @@ size_t BTR_BLList_len(const btr_bllist_t *this)
 {
     return this->size;
 }
-bool BTR_BLList_isEmpty(const btr_bllist_t *);
-void BTR_BLList_reverse(btr_bllist_t *);
+bool BTR_BLList_isEmpty(const btr_bllist_t *this)
+{
+    return this->size == 0;
+}
+void BTR_BLList_reverse(btr_bllist_t *this)
+{
+    btr_bllist_node_t *prev = NULL;
+    btr_bllist_node_t *curr = this->head;
+    btr_bllist_node_t *next = NULL;
+    while (curr)
+    {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    this->head = prev;
+}
 void BTR_BLList_free(btr_bllist_t *this)
 {
-    while (this->head) {
+    while (this->head)
+    {
         btr_bllist_node_t *next = this->head->next;
         free(this->head);
         this->head = next;
     }
     this->size = 0;
 }
-void BTR_BLList_clear(btr_bllist_t *);
+void BTR_BLList_clear(btr_bllist_t *this)
+{
+    BTR_BLList_free(this);
+}

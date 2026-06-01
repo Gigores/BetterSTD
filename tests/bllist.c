@@ -267,6 +267,37 @@ static void test7(void)
 
     BTR_BLList_free(&list);
 }
+// test `reverse`
+static void test8(void)
+{
+    printf("> test8\n");
+
+    const int VALUES[] = {
+        10, 20, 30, 40, 50
+    };
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+    btr_bllist_t list = {0};
+
+    for (size_t i = 0; i < N; i++)
+        BTR_BLList_append(&list, (void *)&VALUES[i]);
+    assert(list.size == N);
+    BTR_BLList_reverse(&list);
+    for (size_t i = 0; i < N; i++)
+    {
+        int v = *(int *)BTR_BLList_get(&list, i);
+        int expected = VALUES[N - 1 - i];
+        assert(v == expected);
+    }
+    assert(list.size == N);
+    BTR_BLList_reverse(&list);
+    for (size_t i = 0; i < N; i++)
+    {
+        int v = *(int *)BTR_BLList_get(&list, i);
+        assert(v == VALUES[i]);
+    }
+    assert(list.size == N);
+    BTR_BLList_free(&list);
+}
 
 int main(void) {
     test1();
@@ -276,6 +307,7 @@ int main(void) {
     test5();
     test6();
     test7();
+    test8();
     printf("SUCCESS\n");
     return 0;
 }
