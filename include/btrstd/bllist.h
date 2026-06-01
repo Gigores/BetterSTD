@@ -67,8 +67,8 @@ void *BTR_BLList_first(const btr_bllist_t *);
 void *BTR_BLList_last(const btr_bllist_t *);
 /**
  * Returns the index of the first occurance of the item.
- * Returns `NULL` if the item wasn't found.
- * Returns `NULL` if the pointer to the borrowing linked list is invalid.
+ * Returns -1 if the item wasn't found.
+ * Returns -1 if the pointer to the borrowing linked list is invalid.
  */
 long BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
 /**
