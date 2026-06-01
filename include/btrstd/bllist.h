@@ -64,7 +64,11 @@ void *BTR_BLList_first(const btr_bllist_t *);
  */
 void *BTR_BLList_last(const btr_bllist_t *);
 
-long BTR_BLList_indexOf(btr_bllist_t *list, void *value, int (*cmp)(const void *, const void *));
+/**
+ * Returns the index of the first occurance of the item.
+ * Returns -1 if the item wasn't found.
+ */
+long BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
 
 /**
  * Returns the amount of items in the borrowing linked list.

@@ -17,6 +17,10 @@ static void checkList(btr_bllist_t *list, int expected[], size_t n)
     }
     assert(node == NULL);
 }
+static bool cmp_int(const void *a, const void *b)
+{
+    return *(const int *)a == *(const int *)b;
+}
 
 // test `new`, and `get`
 static void test1(void)
@@ -224,6 +228,45 @@ static void test6(void)
 
     BTR_BLList_free(&list);
 }
+// test `indexOf`
+static void test7(void)
+{
+    printf("> test7\n");
+
+    const int VALUES[] = {
+        10, 20, 30, 40, 50
+    };
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+
+    btr_bllist_t list = {0};
+
+    // build list
+    for (size_t i = 0; i < N; i++)
+        BTR_BLList_append(&list, (void *)&VALUES[i]);
+
+    // check all valid indices
+    for (size_t i = 0; i < N; i++)
+    {
+        long idx = BTR_BLList_indexOf(&list, (void *)&VALUES[i], cmp_int);
+        assert(idx == (long)i);
+    }
+
+    // non-existing value
+    int missing = 999;
+    long not_found = BTR_BLList_indexOf(&list, &missing, cmp_int);
+
+    assert(not_found == -1);
+
+    // duplicate case
+    int dup = 30;
+    BTR_BLList_append(&list, &dup);
+
+    long first_occurrence = BTR_BLList_indexOf(&list, &dup, cmp_int);
+
+    assert(first_occurrence == 2); // first 30
+
+    BTR_BLList_free(&list);
+}
 
 int main(void) {
     test1();
@@ -232,6 +275,7 @@ int main(void) {
     test4();
     test5();
     test6();
+    test7();
     printf("SUCCESS\n");
     return 0;
 }

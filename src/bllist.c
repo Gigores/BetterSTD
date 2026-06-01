@@ -102,12 +102,16 @@ void *BTR_BLList_last(const btr_bllist_t *this)
 {
     if (this->size == 0) return NULL;
     btr_bllist_node_t *currNode = this->head;
-    while (currNode->next) {
+    while (currNode->next)
         currNode = currNode->next;
-    }
     return currNode->payload;
 }
-long BTR_BLList_indexOf(btr_bllist_t *list, void *value, int (*cmp)(const void *, const void *));
+long BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *))
+{
+    BTR_BLLIST_ENUMERATE(list, i, n)
+        if(cmp(i, value)) return n;
+    return -1;
+}
 size_t BTR_BLList_len(const btr_bllist_t *this)
 {
     return this->size;
