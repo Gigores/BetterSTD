@@ -1,7 +1,18 @@
 #include "stdio.h"
-#include "string.h"
+#include "btrstd/bstring.h"
+
+
+void test1(void)
+{
+
+    const char *TEST_STRING = "Չին ֆիզիկոսը օճառաջուր ցողելով բժշկում է հայ գնդապետի փքված ձախ թևը։";
+    btr_string_t str = BTR_String_new(TEST_STRING);
+    BTR_String_cropLeft(&str, 2);
+    printf("%d\n", str.start);
+    printf("Print test > "BTR_STRING_FORMAT"\n", BTR_STRING_ARGS(str));
+    BTR_String_free(&str);
+}
 
 int main(void) {
-    const char *s = "Привет";
-    printf("%s\n", s);
+    test1();
 }
