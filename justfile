@@ -1,13 +1,12 @@
 CC := "gcc"
 
-files   := "$(find src -name \"*.c\")"
 tests   := "$(find tests -name \"*.c\")"
 headers := "$(find include/btrstd -name \"*.h\")"
 xargs   := "$(xargs < compile_flags.txt)"
 
 build-a:
 	mkdir -p build
-	gcc {{ xargs }} {{ files }} -c -o build/btrstd.a
+	gcc {{ xargs }} src/_btrstd.c -c -o build/btrstd.a
 
 build-single-file:
 	mkdir -p build/dist
