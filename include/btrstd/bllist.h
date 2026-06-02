@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stdlib.h"
+#include "stddef.h"
 #include "stdbool.h"
 
 /**
@@ -130,6 +130,7 @@ void BTR_BLList_clear(btr_bllist_t *);
         _i != NULL && ((i = _i->payload), 1); \
         _i = _i->next, n++                    \
     )
+
 /**
  * Example usage:
  * ```c
