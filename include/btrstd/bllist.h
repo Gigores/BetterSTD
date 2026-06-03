@@ -26,10 +26,10 @@ typedef struct {
  * int a = 20;
  * int b = 26;
  * int c = 43;
- * btr_bllist_t list = BTR_BLList_new({&a, &b, &c}, 3);
+ * btr_bllist_t list = BTR_BLList_make({&a, &b, &c}, 3);
  * ```
  */
-btr_bllist_t BTR_BLList_new(void *items[], size_t itemCount);
+btr_bllist_t BTR_BLList_make(void *items[], size_t itemCount);
 /**
  * Creates a new borrowing linked list from another borrowing linked list with the same data.
  */
@@ -139,7 +139,7 @@ void BTR_BLList_clear(btr_bllist_t *);
  * ```
  */
 #define BTR_BLLIST(...)                                    \
-    BTR_BLList_new(                                        \
+    BTR_BLList_make(                                        \
         (void *[]){ __VA_ARGS__ },                         \
         sizeof((void *[]){ __VA_ARGS__ }) / sizeof(void *) \
     )

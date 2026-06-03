@@ -2,8 +2,6 @@
 #include "string.h"
 #include "stdlib.h"
 
-#include "stdio.h"
-
 static size_t utf8CharLen(unsigned char c)
 {
     if ((c & 0x80) == 0)    return 1;
@@ -12,7 +10,17 @@ static size_t utf8CharLen(unsigned char c)
     if ((c & 0xF8) == 0xF0) return 4;
     return 0;
 }
-btr_string_t BTR_String_new(const char *chars)
+btr_string_t BTR_String_view(const char *chars)
+{
+    return (btr_string_t) {
+        .data     = (char *) chars,
+        .start    = 0,
+        .length   = strlen(chars),
+        .capacity = strlen(chars),
+        .owns     = false,
+    };
+}
+btr_string_t BTR_String_clone(const char *chars)
 {
     char *newChars = malloc(strlen(chars));
     if (!newChars) return (btr_string_t) {0};
@@ -22,6 +30,7 @@ btr_string_t BTR_String_new(const char *chars)
         .start    = 0,
         .length   = strlen(chars),
         .capacity = strlen(chars),
+        .owns     = true,
     };
     return string;
 }
@@ -35,6 +44,7 @@ void BTR_String_cropLeft(btr_string_t *string, unsigned int charCount)
         string->length -= curCharSize;
     }
 }
+// TODO
 int BTR_String_compare(btr_string_t *a, btr_string_t *b)
 {
     return strcmp(

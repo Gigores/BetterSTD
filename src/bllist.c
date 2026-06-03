@@ -4,7 +4,7 @@
 #include "stdio.h"
 #include "stdbool.h"
 
-btr_bllist_t BTR_BLList_new(void *items[], size_t itemCount)
+btr_bllist_t BTR_BLList_make(void *items[], size_t itemCount)
 {
     btr_bllist_t list = {0};
     for (size_t i = 0; i < itemCount; i++)
