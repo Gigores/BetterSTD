@@ -28,6 +28,7 @@ btr_string_t BTR_String_clone(const char *chars);
  */
 void BTR_String_cropLeft(btr_string_t *, unsigned int charCount);
 int BTR_String_compare(btr_string_t *, btr_string_t *);
+int BTR_String_compareWithView(btr_string_t *, btr_string_view_t *);
 /**
  * Frees the memory of a string.
  */

@@ -33,11 +33,22 @@ void BTR_String_cropLeft(btr_string_t *string, unsigned int charCount)
         string->length -= curCharSize;
     }
 }
-// TODO
 int BTR_String_compare(btr_string_t *a, btr_string_t *b)
 {
     size_t minLen = a->length < b->length ? a->length : b->length;
-    int cmp = memcmp(a->data, b->data, minLen);
+    int cmp = memcmp(a->data + a->start, b->data + b->start, minLen);
+    if (cmp != 0)
+        return cmp;
+    if (a->length < b->length)
+        return -1;
+    if (a->length > b->length)
+        return 1;
+    return 0;
+}
+int BTR_String_compareWithView(btr_string_t *a, btr_string_view_t *b)
+{
+    size_t minLen = a->length < b->length ? a->length : b->length;
+    int cmp = memcmp(a->data + a->start, b->data + b->start, minLen);
     if (cmp != 0)
         return cmp;
     if (a->length < b->length)
@@ -50,7 +61,7 @@ void BTR_String_free(btr_string_t *string)
 {
     free(string->data);
 }
-btr_string_view_t BTR_String_fromCString(const char *chars)
+btr_string_view_t BTR_StringView_fromCString(const char *chars)
 {
     return (btr_string_view_t) {
         .data     = (char *) chars,
@@ -72,7 +83,7 @@ void BTR_StringView_cropLeft(btr_string_view_t *string, unsigned int charCount)
 int BTR_StringView_compare(btr_string_view_t *a, btr_string_view_t *b)
 {
     size_t minLen = a->length < b->length ? a->length : b->length;
-    int cmp = memcmp(a->data, b->data, minLen);
+    int cmp = memcmp(a->data + a->start, b->data + b->start, minLen);
     if (cmp != 0)
         return cmp;
     if (a->length < b->length)
