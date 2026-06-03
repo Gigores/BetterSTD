@@ -27,7 +27,15 @@ string_t String_clone(const char *chars);
  * "გვიპყრობდა" -> crop 3 -> "პყრობდა"
  */
 void String_cropLeft(string_t *, unsigned int charCount);
+/**
+ * Compares the two given strings.
+ * Returns 0 if they are equal.
+ */
 int String_compare(string_t *, string_t *);
+/**
+ * Compares the given string and a string view.
+ * Returns 0 if they are equal.
+ */
 int String_compareView(string_t *, string_view_t *);
 /**
  * Frees the memory of a string.
@@ -44,7 +52,18 @@ string_view_t StringView_fromCString(const char *chars);
  * "გვიპყრობდა" -> crop 3 -> "პყრობდა"
  */
 void StringView_cropLeft(string_view_t *, unsigned int charCount);
+/**
+ * Compares the two given string views.
+ * Returns 0 if they are equal.
+ */
 int StringView_compare(string_view_t *, string_view_t *);
 
+/**
+ * These two macros help with printing these strings out with printf.
+ * Example usage:
+ * ```c
+ * printf("Printing > "STRING_FORMAT"\n", STRING_ARGS(str));
+ * ```
+ */
 #define STRING_FORMAT "%.*s"
 #define STRING_ARGS(STRING) STRING.length, STRING.data + STRING.start
