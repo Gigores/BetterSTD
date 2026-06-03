@@ -10,16 +10,6 @@ static size_t utf8CharLen(unsigned char c)
     if ((c & 0xF8) == 0xF0) return 4;
     return 0;
 }
-btr_string_t BTR_String_view(const char *chars)
-{
-    return (btr_string_t) {
-        .data     = (char *) chars,
-        .start    = 0,
-        .length   = strlen(chars),
-        .capacity = strlen(chars),
-        .owns     = false,
-    };
-}
 btr_string_t BTR_String_clone(const char *chars)
 {
     char *newChars = malloc(strlen(chars));
@@ -30,7 +20,6 @@ btr_string_t BTR_String_clone(const char *chars)
         .start    = 0,
         .length   = strlen(chars),
         .capacity = strlen(chars),
-        .owns     = true,
     };
     return string;
 }
@@ -47,12 +36,48 @@ void BTR_String_cropLeft(btr_string_t *string, unsigned int charCount)
 // TODO
 int BTR_String_compare(btr_string_t *a, btr_string_t *b)
 {
-    return strcmp(
-        a->data + a->start,
-        b->data + b->start
-    );
+    size_t minLen = a->length < b->length ? a->length : b->length;
+    int cmp = memcmp(a->data, b->data, minLen);
+    if (cmp != 0)
+        return cmp;
+    if (a->length < b->length)
+        return -1;
+    if (a->length > b->length)
+        return 1;
+    return 0;
 }
 void BTR_String_free(btr_string_t *string)
 {
     free(string->data);
+}
+btr_string_view_t BTR_String_fromCString(const char *chars)
+{
+    return (btr_string_view_t) {
+        .data     = (char *) chars,
+        .start    = 0,
+        .length   = strlen(chars),
+        .capacity = strlen(chars),
+    };
+}
+void BTR_StringView_cropLeft(btr_string_view_t *string, unsigned int charCount)
+{
+    for (unsigned int i = 0; i < charCount; i++)
+    {
+        size_t curCharSize = utf8CharLen(*(string->data + string->start));
+        if (curCharSize == 0 || curCharSize > string->length) break;
+        string->start  += curCharSize;
+        string->length -= curCharSize;
+    }
+}
+int BTR_StringView_compare(btr_string_view_t *a, btr_string_view_t *b)
+{
+    size_t minLen = a->length < b->length ? a->length : b->length;
+    int cmp = memcmp(a->data, b->data, minLen);
+    if (cmp != 0)
+        return cmp;
+    if (a->length < b->length)
+        return -1;
+    if (a->length > b->length)
+        return 1;
+    return 0;
 }
