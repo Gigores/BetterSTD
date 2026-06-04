@@ -10,6 +10,10 @@ static size_t utf8CharLen(unsigned char c)
     if ((c & 0xF8) == 0xF0) return 4;
     return 0;
 }
+static bool isUtf8Continuation(unsigned char c)
+{
+    return (c & 0xC0) == 0x80;
+}
 string_t String_clone(const char *chars)
 {
     char *newChars = malloc(strlen(chars));
@@ -30,6 +34,17 @@ void String_cropLeft(string_t *string, unsigned int charCount)
         size_t curCharSize = utf8CharLen(*(string->data + string->start));
         if (curCharSize == 0 || curCharSize > string->length) break;
         string->start  += curCharSize;
+        string->length -= curCharSize;
+    }
+}
+void String_cropRight(string_t *string, unsigned int charCount)
+{
+    for (unsigned int i = 0; i < charCount; i++)
+    {
+        size_t offset = 0;
+        while (isUtf8Continuation(*(string->data + string->start + string->length - offset - 1)))
+            offset++;
+        size_t curCharSize = utf8CharLen(*(string->data + string->start + string->length - offset - 1));
         string->length -= curCharSize;
     }
 }
@@ -77,6 +92,17 @@ void StringView_cropLeft(string_view_t *string, unsigned int charCount)
         size_t curCharSize = utf8CharLen(*(string->data + string->start));
         if (curCharSize == 0 || curCharSize > string->length) break;
         string->start  += curCharSize;
+        string->length -= curCharSize;
+    }
+}
+void StringView_cropRight(string_view_t *string, unsigned int charCount)
+{
+    for (unsigned int i = 0; i < charCount; i++)
+    {
+        size_t offset = 0;
+        while (isUtf8Continuation(*(string->data + string->start + string->length - offset - 1)))
+            offset++;
+        size_t curCharSize = utf8CharLen(*(string->data + string->start + string->length - offset - 1));
         string->length -= curCharSize;
     }
 }

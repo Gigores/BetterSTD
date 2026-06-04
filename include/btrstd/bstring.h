@@ -28,6 +28,11 @@ string_t String_clone(const char *chars);
  */
 void String_cropLeft(string_t *, unsigned int charCount);
 /**
+ * Crops the given count of characters from the right of the string.
+ * "გვიპყრობდა" -> crop 3 -> "გვიპყრო"
+ */
+void String_cropRight(string_t *, unsigned int charCount);
+/**
  * Compares the two given strings.
  * Returns 0 if they are equal.
  */
@@ -53,6 +58,11 @@ string_view_t StringView_fromCString(const char *chars);
  */
 void StringView_cropLeft(string_view_t *, unsigned int charCount);
 /**
+ * Crops the given count of characters from the right of the string view.
+ * "გვიპყრობდა" -> crop 3 -> "გვიპყრო"
+ */
+void StringView_cropRight(string_view_t *, unsigned int charCount);
+/**
  * Compares the two given string views.
  * Returns 0 if they are equal.
  */
@@ -64,6 +74,7 @@ int StringView_compare(string_view_t *, string_view_t *);
  * ```c
  * printf("Printing > "STRING_FORMAT"\n", STRING_ARGS(str));
  * ```
+ * Can accept both string_t and string_view_t.
  */
 #define STRING_FORMAT "%.*s"
 #define STRING_ARGS(STRING) STRING.length, STRING.data + STRING.start
