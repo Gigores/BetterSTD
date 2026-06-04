@@ -106,6 +106,26 @@ void StringView_cropRight(string_view_t *string, unsigned int charCount)
         string->length -= curCharSize;
     }
 }
+void StringView_revertLeft(string_view_t *string, unsigned int charCount)
+{
+    for (unsigned int i = 0; i < charCount; i++)
+    {
+        size_t offset = 0;
+        while (isUtf8Continuation(*(string->data + string->start - offset - 1)))
+            offset++;
+        size_t curCharSize = utf8CharLen(*(string->data + string->start - offset - 1));
+        string->start -= curCharSize;
+        string->length += curCharSize;
+    }
+}
+void StringView_revertRight(string_view_t *string, unsigned int charCount)
+{
+    for (unsigned int i = 0; i < charCount; i++)
+    {
+        size_t charSize = utf8CharLen(*(string->data + string->start + string->length));
+        string->length += charSize;
+    }
+}
 int StringView_compare(string_view_t *a, string_view_t *b)
 {
     size_t minLen = a->length < b->length ? a->length : b->length;

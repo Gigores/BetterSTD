@@ -262,6 +262,51 @@ static void test6(void)
 
     String_free(&view);
 }
+// test `revertRight` and `revertLeft`
+static void test7(void)
+{
+    printf("> test7\n");
+
+    const char *TEXT = "AЖ你😀BŁ文🚀";
+
+    string_view_t view = StringView_fromCString(TEXT);
+
+    StringView_cropRight(&view, 1);
+    assert(StringView_compare(
+        &view,
+        &(string_view_t) {
+            .data = "AЖ你😀BŁ文",
+            .length = strlen("AЖ你😀BŁ文")
+        }
+    ) == 0);
+
+    StringView_revertRight(&view, 1);
+    assert(StringView_compare(
+        &view,
+        &(string_view_t) {
+            .data = "AЖ你😀BŁ文🚀",
+            .length = strlen("AЖ你😀BŁ文🚀")
+        }
+    ) == 0);
+
+    StringView_cropLeft(&view, 1);
+    assert(StringView_compare(
+        &view,
+        &(string_view_t) {
+            .data = "Ж你😀BŁ文🚀",
+            .length = strlen("Ж你😀BŁ文🚀")
+        }
+    ) == 0);
+
+    StringView_revertLeft(&view, 1);
+    assert(StringView_compare(
+        &view,
+        &(string_view_t) {
+            .data = "AЖ你😀BŁ文🚀",
+            .length = strlen("AЖ你😀BŁ文🚀")
+        }
+    ) == 0);
+}
 
 int main(void) {
     test1();
@@ -270,5 +315,6 @@ int main(void) {
     test4();
     test5();
     test6();
+    test7();
     printf("SUCCESS\n");
 }

@@ -63,6 +63,16 @@ void StringView_cropLeft(string_view_t *, unsigned int charCount);
  */
 void StringView_cropRight(string_view_t *, unsigned int charCount);
 /**
+ * Reverts the given count of characters from the left of the string view, that were previously cropped.
+ * "გვიპყრობდა" -> crop 3 -> "პყრობდა" -> revert 2 "ვიპყრობდა"
+ */
+void StringView_revertLeft(string_view_t *, unsigned int charCount);
+/**
+ * Reverts the given count of characters from the right of the string view, that were previously cropped.
+ * "გვიპყრობდა" -> crop 3 -> "გვიპყრო" -> revert 2 -> "გვიპყრობდ"
+ */
+void StringView_revertRight(string_view_t *, unsigned int charCount);
+/**
  * Compares the two given string views.
  * Returns 0 if they are equal.
  */
