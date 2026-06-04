@@ -74,8 +74,12 @@ bool StringView_startsWithString(string_view_t *, string_t *prefixToSearch);
 bool StringView_endsWithCString(string_view_t *, const char *postfixToSearch);
 // Tells if the string view starts with a given C string.
 bool StringView_startsWithCString(string_view_t *, const char *prefixToSearch);
-string_view_t StringView_find(string_view_t *, string_view_t *substring);
-bool StringView_contains(string_view_t *, string_view_t *substring);
+string_view_t StringView_findView(string_view_t *, string_view_t *substring);
+string_view_t StringView_findString(string_view_t *, string_t *substring);
+string_view_t StringView_findCString(string_view_t *, const char *substring);
+bool StringView_containsView(string_view_t *, string_view_t *substring);
+bool StringView_containsString(string_view_t *, string_t *substring);
+bool StringView_containsCString(string_view_t *, const char *substring);
 string_view_t StringView_substring(string_view_t *, unsigned int start, unsigned int count);
 void StringView_trimLeft(string_view_t *);
 void StringView_trimRight(string_view_t *);
@@ -105,4 +109,18 @@ int StringView_compare(string_view_t *, string_view_t *);
     string_t *: StringView_startsWithString,                       \
     const char *: StringView_startsWithCString,                    \
     char *: StringView_startsWithCString                           \
+)(STRING, POSTFIX)
+
+#define StringView_find(STRING, POSTFIX) _Generic((POSTFIX), \
+    string_view_t *: StringView_findView,                    \
+    string_t *: StringView_findString,                       \
+    const char *: StringView_findCString,                    \
+    char *: StringView_findCString                           \
+)(STRING, POSTFIX)
+
+#define StringView_contains(STRING, POSTFIX) _Generic((POSTFIX), \
+    string_view_t *: StringView_containsView,                    \
+    string_t *: StringView_containsString,                       \
+    const char *: StringView_containsCString,                    \
+    char *: StringView_containsCString                           \
 )(STRING, POSTFIX)

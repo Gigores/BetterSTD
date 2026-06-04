@@ -72,6 +72,7 @@ void BLList_clear(bllist_t *);
 // bllist_t list = {...};  // a list of strings
 // BLLIST_FOREACH(list, item)
 //     printf("%s\n", (char *)item);
+// ```
 #define BLLIST_FOREACH(LIST, i)           \
     void *i;                                  \
     for (                                     \
