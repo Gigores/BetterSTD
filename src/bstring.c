@@ -2,6 +2,8 @@
 #include "string.h"
 #include "stdlib.h"
 
+#include "stdio.h"
+
 static size_t utf8CharLen(unsigned char c)
 {
     if ((c & 0x80) == 0)    return 1;
@@ -151,6 +153,25 @@ bool StringView_isEmpty(string_view_t *string)
 {
     return !StringView_len(string);
 }
+const char *StringView_charAt(string_view_t *string, int index)
+{
+    size_t len = StringView_len(string);
+    if (index < 0) index = len + index;
+    char *pointer = string->data + string->start;
+    if ((size_t) index > len) return NULL;
+    for (size_t counter = 0; counter < (size_t) index; counter++)
+        if (counter > len)
+            return NULL;
+        else
+            pointer += utf8CharLen(*pointer);
+    return pointer;
+}
+bool StringView_endsWithView(string_view_t *string, string_view_t *postfixToSearch);
+bool StringView_startsWithView(string_view_t *string, string_view_t *prefixToSearch);
+bool StringView_endsWithString(string_view_t *string, string_view_t *postfixToSearch);
+bool StringView_startsWithString(string_view_t *string, string_view_t *prefixToSearch);
+bool StringView_endsWithCString(string_view_t *string, string_view_t *postfixToSearch);
+bool StringView_startsWithCString(string_view_t *string, string_view_t *prefixToSearch);
 int StringView_compare(string_view_t *a, string_view_t *b)
 {
     size_t minLen = a->length < b->length ? a->length : b->length;

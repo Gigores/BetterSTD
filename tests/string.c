@@ -311,19 +311,27 @@ static void test8(void)
 {
     printf("> test8\n");
 
-    const char *TEXT = "Ξεσκεπάζω την ψυχοφθόρα βδελυγμία";
+    const char *TEXT = "Ξεσκεπάζωτηνψυχοφθόραβδελυγμία";
 
     string_view_t view = StringView_fromCString(TEXT);
 
     assert(StringView_byteCount(&view) == strlen(TEXT));
-    assert(StringView_len(&view) == (strlen(TEXT) - 3) / 2 + 3);
+    assert(StringView_len(&view) == strlen(TEXT) / 2);
     assert(!StringView_isEmpty(&view));
 
     StringView_cropLeft(&view, 2);
 
     assert(StringView_byteCount(&view) == strlen(TEXT) - 4);
-    assert(StringView_len(&view) == (strlen(TEXT) - 3 - 4) / 2 + 3);
+    assert(StringView_len(&view) == (strlen(TEXT) - 4) / 2);
     assert(!StringView_isEmpty(&view));
+
+    for (size_t i = 0; i < StringView_len(&view); i++)
+        assert(*StringView_charAt(&view, i) == TEXT[4 + i * 2]);
+
+    size_t len = strlen(TEXT);
+    for (size_t i = 1; i < StringView_len(&view); i++) {
+        assert(*StringView_charAt(&view, -i) == TEXT[len - i * 2]);
+    }
 }
 
 int main(void) {
