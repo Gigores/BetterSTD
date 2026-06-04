@@ -110,19 +110,25 @@ void StringView_revertLeft(string_view_t *string, unsigned int charCount)
 {
     for (unsigned int i = 0; i < charCount; i++)
     {
+        if (string->start == 0) return;
         size_t offset = 0;
-        while (isUtf8Continuation(*(string->data + string->start - offset - 1)))
-            offset++;
-        size_t curCharSize = utf8CharLen(*(string->data + string->start - offset - 1));
-        string->start -= curCharSize;
-        string->length += curCharSize;
+        while (string->start > offset + 1 && isUtf8Continuation(
+            (unsigned char)string->data[string->start - offset - 1])
+        ) offset++;
+        size_t charSize = utf8CharLen((unsigned char)string->data[string->start - offset - 1]);
+        if (charSize == 0 || charSize > string->start) return;
+        string->start  -= charSize;
+        string->length += charSize;
     }
 }
 void StringView_revertRight(string_view_t *string, unsigned int charCount)
 {
     for (unsigned int i = 0; i < charCount; i++)
     {
-        size_t charSize = utf8CharLen(*(string->data + string->start + string->length));
+        if (string->start + string->length >= string->capacity) return;
+        size_t charSize = utf8CharLen((unsigned char)string->data[string->start + string->length]);
+        if (charSize == 0) return;
+        if (string->start + string->length + charSize > string->capacity) return;
         string->length += charSize;
     }
 }
