@@ -307,6 +307,24 @@ static void test7(void)
         }
     ) == 0);
 }
+static void test8(void)
+{
+    printf("> test8\n");
+
+    const char *TEXT = "Ξεσκεπάζω την ψυχοφθόρα βδελυγμία";
+
+    string_view_t view = StringView_fromCString(TEXT);
+
+    assert(StringView_byteCount(&view) == strlen(TEXT));
+    assert(StringView_len(&view) == (strlen(TEXT) - 3) / 2 + 3);
+    assert(!StringView_isEmpty(&view));
+
+    StringView_cropLeft(&view, 2);
+
+    assert(StringView_byteCount(&view) == strlen(TEXT) - 4);
+    assert(StringView_len(&view) == (strlen(TEXT) - 3 - 4) / 2 + 3);
+    assert(!StringView_isEmpty(&view));
+}
 
 int main(void) {
     test1();
@@ -316,5 +334,6 @@ int main(void) {
     test5();
     test6();
     test7();
+    test8();
     printf("SUCCESS\n");
 }

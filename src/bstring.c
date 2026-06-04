@@ -132,6 +132,25 @@ void StringView_revertRight(string_view_t *string, unsigned int charCount)
         string->length += charSize;
     }
 }
+size_t StringView_byteCount(string_view_t *string)
+{
+    return string->length;
+}
+size_t StringView_len(string_view_t *string)
+{
+    size_t count = 0;
+    char *currentChar = string->data + string->start;
+    while (currentChar < string->data + string->capacity)
+    {
+        currentChar += utf8CharLen(*currentChar);
+        count++;
+    }
+    return count;
+}
+bool StringView_isEmpty(string_view_t *string)
+{
+    return !StringView_len(string);
+}
 int StringView_compare(string_view_t *a, string_view_t *b)
 {
     size_t minLen = a->length < b->length ? a->length : b->length;

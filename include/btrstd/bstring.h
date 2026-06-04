@@ -1,5 +1,6 @@
 #include "stddef.h"
 #include "stdbool.h"
+#include "stddef.h"
 
 // Owns the data
 typedef struct {
@@ -72,6 +73,27 @@ void StringView_revertLeft(string_view_t *, unsigned int charCount);
  * "გვიპყრობდა" -> crop 3 -> "გვიპყრო" -> revert 2 -> "გვიპყრობდ"
  */
 void StringView_revertRight(string_view_t *, unsigned int charCount);
+/**
+ * Returns the size of a view IN BYTES.
+ */
+size_t StringView_byteCount(string_view_t *);
+/**
+ * Returns the size of a view IN CHARACTERS.
+ */
+size_t StringView_len(string_view_t *);
+/**
+ * Tells if the string view is empty.
+ */
+bool StringView_isEmpty(string_view_t *);
+const char *StringView_charAt(string_view_t *, unsigned int index);
+bool StringView_endsWith(string_view_t *, string_view_t *postfixToSearch);
+bool StringView_startsWith(string_view_t *, string_view_t *prefixToSearch);
+string_view_t StringView_find(string_view_t *, string_view_t *substring);
+bool StringView_contains(string_view_t *, string_view_t *substring);
+string_view_t StringView_substring(string_view_t *, unsigned int start, unsigned int count);
+void StringView_trimLeft(string_view_t *);
+void StringView_trimRight(string_view_t *);
+void StringView_trim(string_view_t *);
 /**
  * Compares the two given string views.
  * Returns 0 if they are equal.
