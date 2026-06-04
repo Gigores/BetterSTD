@@ -43,6 +43,9 @@ int String_compare(string_t *, string_t *);
  * Returns 0 if they are equal.
  */
 int String_compareView(string_t *, string_view_t *);
+/**
+ * Retuns a string view of the string.
+ */
 string_view_t String_getView(string_t *);
 /**
  * Frees the memory of a string.
@@ -91,12 +94,30 @@ bool StringView_isEmpty(string_view_t *);
  * Returns `NULL` if the pointer is invalid.
  */
 const char *StringView_charAt(string_view_t *, int index);
+/**
+ * Tells if the string view ends with another string view.
+ */
 bool StringView_endsWithView(string_view_t *, string_view_t *postfixToSearch);
+/**
+ * Tells if the string view starts with another string view.
+ */
 bool StringView_startsWithView(string_view_t *, string_view_t *prefixToSearch);
-bool StringView_endsWithString(string_view_t *, string_view_t *postfixToSearch);
-bool StringView_startsWithString(string_view_t *, string_view_t *prefixToSearch);
-bool StringView_endsWithCString(string_view_t *, string_view_t *postfixToSearch);
-bool StringView_startsWithCString(string_view_t *, string_view_t *prefixToSearch);
+/**
+ * Tells if the string view ends with a given string.
+ */
+bool StringView_endsWithString(string_view_t *, string_t *postfixToSearch);
+/**
+ * Tells if the string view starts with a given string.
+ */
+bool StringView_startsWithString(string_view_t *, string_t *prefixToSearch);
+/**
+ * Tells if the string view ends with a given C string.
+ */
+bool StringView_endsWithCString(string_view_t *, const char *postfixToSearch);
+/**
+ * Tells if the string view starts with a given C string.
+ */
+bool StringView_startsWithCString(string_view_t *, const char *prefixToSearch);
 string_view_t StringView_find(string_view_t *, string_view_t *substring);
 bool StringView_contains(string_view_t *, string_view_t *substring);
 string_view_t StringView_substring(string_view_t *, unsigned int start, unsigned int count);
@@ -121,7 +142,15 @@ int StringView_compare(string_view_t *, string_view_t *);
 #define STRING_ARGS(STRING) STRING.length, STRING.data + STRING.start
 
 #define StringView_endsWith(STRING, POSTFIX) _Generic((POSTFIX), \
-    string_view_t: StringView_endsWithView,                      \
-    string_t: StringView_endsWithString,                         \
-    const char *: StringView_endsWithCString                     \
+    string_view_t *: StringView_endsWithView,                    \
+    string_t *: StringView_endsWithString,                       \
+    const char *: StringView_endsWithCString,                    \
+    char *: StringView_endsWithCString                           \
+)(STRING, POSTFIX)
+
+#define StringView_startsWith(STRING, POSTFIX) _Generic((POSTFIX), \
+    string_view_t *: StringView_startsWithView,                    \
+    string_t *: StringView_startsWithString,                       \
+    const char *: StringView_startsWithCString,                    \
+    char *: StringView_startsWithCString                           \
 )(STRING, POSTFIX)

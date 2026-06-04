@@ -62,6 +62,15 @@ int String_compare(string_t *a, string_t *b)
         return 1;
     return 0;
 }
+string_view_t String_getView(string_t *string)
+{
+    return (string_view_t) {
+        .data = string->data,
+        .capacity = string->capacity,
+        .length = string->length,
+        .start = string->start,
+    };
+}
 int String_compareView(string_t *a, string_view_t *b)
 {
     size_t minLen = a->length < b->length ? a->length : b->length;
@@ -156,22 +165,59 @@ bool StringView_isEmpty(string_view_t *string)
 const char *StringView_charAt(string_view_t *string, int index)
 {
     size_t len = StringView_len(string);
-    if (index < 0) index = len + index;
+    if (index < 0)
+        index = (int) len + index;
+    if ((size_t) index > len || index < 0)
+        return NULL;
     char *pointer = string->data + string->start;
-    if ((size_t) index > len) return NULL;
     for (size_t counter = 0; counter < (size_t) index; counter++)
         if (counter > len)
             return NULL;
         else
-            pointer += utf8CharLen(*pointer);
+            pointer += utf8CharLen((unsigned char)*pointer);
     return pointer;
 }
-bool StringView_endsWithView(string_view_t *string, string_view_t *postfixToSearch);
-bool StringView_startsWithView(string_view_t *string, string_view_t *prefixToSearch);
-bool StringView_endsWithString(string_view_t *string, string_view_t *postfixToSearch);
-bool StringView_startsWithString(string_view_t *string, string_view_t *prefixToSearch);
-bool StringView_endsWithCString(string_view_t *string, string_view_t *postfixToSearch);
-bool StringView_startsWithCString(string_view_t *string, string_view_t *prefixToSearch);
+bool StringView_endsWithView(string_view_t *string, string_view_t *postfix)
+{
+    size_t len = StringView_byteCount(string);
+    size_t lenPostfix = StringView_byteCount(postfix);
+    size_t counter = 0;
+    while (*(string->data + string->start + len - counter) == *(postfix->data + postfix->start + lenPostfix - counter) && counter < lenPostfix)
+        counter++;
+    if (counter < lenPostfix)
+        return false;
+    return true;
+}
+bool StringView_startsWithView(string_view_t *string, string_view_t *prefix)
+{
+    size_t counter = 0;
+    size_t byteCount = StringView_byteCount(prefix);
+    while (*(string->data + string->start + counter) == *(prefix->data + prefix->start + counter) && counter < byteCount)
+        counter++;
+    if (counter < byteCount)
+        return false;
+    return true;
+}
+bool StringView_endsWithString(string_view_t *string, string_t *postfix)
+{
+    string_view_t view = String_getView(postfix);
+    return StringView_endsWithView(string, &view);
+}
+bool StringView_startsWithString(string_view_t *string, string_t *prefix)
+{
+    string_view_t view = String_getView(prefix);
+    return StringView_startsWithView(string, &view);
+}
+bool StringView_endsWithCString(string_view_t *string, const char *postfix)
+{
+    string_view_t view = StringView_fromCString(postfix);
+    return StringView_endsWithView(string, &view);
+}
+bool StringView_startsWithCString(string_view_t *string, const char *prefix)
+{
+    string_view_t view = StringView_fromCString(prefix);
+    return StringView_startsWithView(string, &view);
+}
 int StringView_compare(string_view_t *a, string_view_t *b)
 {
     size_t minLen = a->length < b->length ? a->length : b->length;

@@ -329,9 +329,18 @@ static void test8(void)
         assert(*StringView_charAt(&view, i) == TEXT[4 + i * 2]);
 
     size_t len = strlen(TEXT);
-    for (size_t i = 1; i < StringView_len(&view); i++) {
+    for (size_t i = 1; i < StringView_len(&view); i++)
         assert(*StringView_charAt(&view, -i) == TEXT[len - i * 2]);
-    }
+
+    string_view_t prefix1 = StringView_fromCString("σκεπ");
+    assert(StringView_startsWith(&view, &prefix1));
+
+    string_view_t prefix2 = StringView_fromCString("οφθό");
+    assert(!StringView_startsWith(&view, &prefix2));
+
+    assert(StringView_endsWith(&view, "γμία"));
+
+    assert(!StringView_endsWith(&view, "οφθό"));
 }
 
 int main(void) {
