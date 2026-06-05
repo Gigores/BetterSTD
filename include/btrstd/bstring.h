@@ -2,41 +2,12 @@
 #include "stdbool.h"
 #include "stddef.h"
 
-// Owns the data
-typedef struct {
-    char *data;
-    unsigned int start;
-    unsigned int length;
-    unsigned int capacity;
-} string_t;
-
-// Doesn't own the data
 typedef struct {
     char *data;
     unsigned int start;
     unsigned int length;
     unsigned int capacity;
 } string_view_t;
-
-// Creates a string from an array of bytes.
-// Can return a zero-initialised structure if fails to allocate memory.
-string_t String_clone(const char *chars);
-// Crops the given count of characters from the left of the string.
-// "გვიპყრობდა" -> crop 3 -> "პყრობდა"
-void String_cropLeft(string_t *, unsigned int charCount);
-// Crops the given count of characters from the right of the string.
-// "გვიპყრობდა" -> crop 3 -> "გვიპყრო"
-void String_cropRight(string_t *, unsigned int charCount);
-// Compares the two given strings.
-// Returns 0 if they are equal.
-int String_compare(string_t *, string_t *);
-// Compares the given string and a string view.
-// Returns 0 if they are equal.
-int String_compareView(string_t *, string_view_t *);
-// Retuns a string view of the string.
-string_view_t String_getView(string_t *);
-// Frees the memory of a string.
-void String_free(string_t *);
 
 // Creates a string view from an array of bytes.
 // The string in question will not own the given data.
@@ -66,10 +37,6 @@ const char *StringView_charAt(string_view_t *, int index);
 bool StringView_endsWithView(string_view_t *, string_view_t *postfixToSearch);
 // Tells if the string view starts with another string view.
 bool StringView_startsWithView(string_view_t *, string_view_t *prefixToSearch);
-// Tells if the string view ends with a given string.
-bool StringView_endsWithString(string_view_t *, string_t *postfixToSearch);
-// Tells if the string view starts with a given string.
-bool StringView_startsWithString(string_view_t *, string_t *prefixToSearch);
 // Tells if the string view ends with a given C string.
 bool StringView_endsWithCString(string_view_t *, const char *postfixToSearch);
 // Tells if the string view starts with a given C string.
@@ -77,9 +44,6 @@ bool StringView_startsWithCString(string_view_t *, const char *prefixToSearch);
 // Returns the first instance of a substring in a string view.
 // Returns zero-initialised view if didn't find the substring.
 string_view_t StringView_findView(string_view_t *, string_view_t *substring);
-// Returns the first instance of a substring in a string view.
-// Returns zero-initialised view if didn't find the substring.
-string_view_t StringView_findString(string_view_t *, string_t *substring);
 // Returns the first instance of a substring in a string view.
 // Returns zero-initialised view if didn't find the substring.
 string_view_t StringView_findCString(string_view_t *, const char *substring);
@@ -106,28 +70,24 @@ int StringView_compare(string_view_t *, string_view_t *);
 
 #define StringView_endsWith(STRING, POSTFIX) _Generic((POSTFIX), \
     string_view_t *: StringView_endsWithView,                    \
-    string_t *: StringView_endsWithString,                       \
     const char *: StringView_endsWithCString,                    \
     char *: StringView_endsWithCString                           \
 )(STRING, POSTFIX)
 
 #define StringView_startsWith(STRING, POSTFIX) _Generic((POSTFIX), \
     string_view_t *: StringView_startsWithView,                    \
-    string_t *: StringView_startsWithString,                       \
     const char *: StringView_startsWithCString,                    \
     char *: StringView_startsWithCString                           \
 )(STRING, POSTFIX)
 
 #define StringView_find(STRING, POSTFIX) _Generic((POSTFIX), \
     string_view_t *: StringView_findView,                    \
-    string_t *: StringView_findString,                       \
     const char *: StringView_findCString,                    \
     char *: StringView_findCString                           \
 )(STRING, POSTFIX)
 
 #define StringView_contains(STRING, POSTFIX) _Generic((POSTFIX), \
     string_view_t *: StringView_containsView,                    \
-    string_t *: StringView_containsString,                       \
     const char *: StringView_containsCString,                    \
     char *: StringView_containsCString                           \
 )(STRING, POSTFIX)

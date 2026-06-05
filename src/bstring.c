@@ -17,77 +17,6 @@ static bool isUtf8Continuation(unsigned char c)
 {
     return (c & 0xC0) == 0x80;
 }
-string_t String_clone(const char *chars)
-{
-    char *newChars = malloc(strlen(chars));
-    if (!newChars) return (string_t) {0};
-    strncpy(newChars, chars, strlen(chars));
-    string_t string = {
-        .data     = newChars,
-        .start    = 0,
-        .length   = strlen(chars),
-        .capacity = strlen(chars),
-    };
-    return string;
-}
-void String_cropLeft(string_t *string, unsigned int charCount)
-{
-    for (unsigned int i = 0; i < charCount; i++)
-    {
-        size_t curCharSize = utf8CharLen(*(string->data + string->start));
-        if (curCharSize == 0 || curCharSize > string->length) break;
-        string->start  += curCharSize;
-        string->length -= curCharSize;
-    }
-}
-void String_cropRight(string_t *string, unsigned int charCount)
-{
-    for (unsigned int i = 0; i < charCount; i++)
-    {
-        size_t offset = 0;
-        while (isUtf8Continuation(*(string->data + string->start + string->length - offset - 1)))
-            offset++;
-        size_t curCharSize = utf8CharLen(*(string->data + string->start + string->length - offset - 1));
-        string->length -= curCharSize;
-    }
-}
-int String_compare(string_t *a, string_t *b)
-{
-    size_t minLen = a->length < b->length ? a->length : b->length;
-    int cmp = memcmp(a->data + a->start, b->data + b->start, minLen);
-    if (cmp != 0)
-        return cmp;
-    if (a->length < b->length)
-        return -1;
-    if (a->length > b->length)
-        return 1;
-    return 0;
-}
-string_view_t String_getView(string_t *string)
-{
-    return (string_view_t) {
-        .data = string->data,
-        .capacity = string->capacity,
-        .length = string->length,
-        .start = string->start,
-    };
-}
-int String_compareView(string_t *a, string_view_t *b)
-{
-    size_t minLen = a->length < b->length ? a->length : b->length;
-    int cmp = memcmp(a->data + a->start, b->data + b->start, minLen);
-    if (cmp != 0)
-        return cmp;
-    if (a->length < b->length)
-        return -1;
-    if (a->length > b->length)
-        return 1;
-    return 0;
-}
-void String_free(string_t *string)
-{
-    free(string->data);
-}
 string_view_t StringView_fromCString(const char *chars)
 {
     return (string_view_t) {
@@ -199,16 +128,6 @@ bool StringView_startsWithView(string_view_t *string, string_view_t *prefix)
         return false;
     return true;
 }
-bool StringView_endsWithString(string_view_t *string, string_t *postfix)
-{
-    string_view_t view = String_getView(postfix);
-    return StringView_endsWithView(string, &view);
-}
-bool StringView_startsWithString(string_view_t *string, string_t *prefix)
-{
-    string_view_t view = String_getView(prefix);
-    return StringView_startsWithView(string, &view);
-}
 bool StringView_endsWithCString(string_view_t *string, const char *postfix)
 {
     string_view_t view = StringView_fromCString(postfix);
@@ -237,11 +156,6 @@ string_view_t StringView_findView(string_view_t *string, string_view_t *substrin
         };
     }
     return (string_view_t) {0};
-}
-string_view_t StringView_findString(string_view_t *string, string_t *substring)
-{
-    string_view_t view = String_getView(substring);
-    return StringView_findView(string, &view);
 }
 string_view_t StringView_findCString(string_view_t *string, const char *substring)
 {
