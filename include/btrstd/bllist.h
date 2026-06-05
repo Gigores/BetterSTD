@@ -111,20 +111,24 @@ void BTR_BLList_clear(btr_bllist_t *);
 typedef bllist_node_t btr_bllist_node_t
 typedef bllist_t btr_bllist_t
 
-#define BLList_make BTR_BLList_make
-#define BLList_clone BTR_BLList_clone
-#define BLList_append BTR_BLList_append
+#define BLList_make    BTR_BLList_make
+#define BLList_clone   BTR_BLList_clone
+#define BLList_append  BTR_BLList_append
 #define BLList_prepend BTR_BLList_prepend
-#define BLList_insert BTR_BLList_insert
-#define BLList_pop BTR_BLList_pop
-#define BLList_get BTR_BLList_get
-#define BLList_first BTR_BLList_first
-#define BLList_last BTR_BLList_last
+#define BLList_insert  BTR_BLList_insert
+#define BLList_pop     BTR_BLList_pop
+#define BLList_get     BTR_BLList_get
+#define BLList_first   BTR_BLList_first
+#define BLList_last    BTR_BLList_last
 #define BLList_indexOf BTR_BLList_indexOf
-#define BLList_len BTR_BLList_len
+#define BLList_len     BTR_BLList_len
 #define BLList_isEmpty BTR_BLList_isEmpty
 #define BLList_reverse BTR_BLList_reverse
-#define BLList_free BTR_BLList_free
-#define BLList_clear BTR_BLList_clear
+#define BLList_free    BTR_BLList_free
+#define BLList_clear   BTR_BLList_clear
 
-#endif  // // BTR_NO_PREFIX
+#define BLLIST_FOREACH   BTR_BLLIST_FOREACH
+#define BLLIST_ENUMERATE BTR_BLLIST_ENUMERATE
+#define BLLIST           BTR_BLLIST
+
+#endif  // BTR_NO_PREFIX
