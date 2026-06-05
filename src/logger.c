@@ -1,6 +1,7 @@
 #include "btrstd/logger.h"
 #include "stdarg.h"
 #include "stdio.h"
+#include "time.h"
 
 #define BTR_TERM_COLOR_RESET "\e[0m"
 #define BTR_TERM_COLOR_INTER "\e[38;5;246m"
@@ -29,8 +30,15 @@ void BTR_Logger_log(btr_logger_t *logger, btr_log_level_t logLevel, const char *
 
     const char *logLevelString = BTR_LogLevel_toString(logLevel);
     const char *logLevelColor = BTR_LogLevel_getColor(logLevel);
-    printf(BTR_TERM_COLOR_INTER"[%s%s"BTR_TERM_COLOR_INTER"] "BTR_TERM_COLOR_RESET, logLevelColor, logLevelString);
-    if (logger->file) fprintf(logger->file, "[%s] ", logLevelString);
+    time_t currentTime = time(NULL);
+    struct tm *t = localtime(&currentTime);
+    char buffer[128];
+    strftime(buffer, sizeof(buffer), "%H:%M:%S", t);
+    struct timespec ts;
+    timespec_get(&ts, TIME_UTC);
+    long millis = ts.tv_nsec / 1000000;
+    printf(BTR_TERM_COLOR_INTER"["BTR_TERM_COLOR_RESET"%s.%03ld"BTR_TERM_COLOR_INTER"] [%s%s"BTR_TERM_COLOR_INTER"] "BTR_TERM_COLOR_RESET, buffer, millis, logLevelColor, logLevelString);
+    if (logger->file) fprintf(logger->file, "[%s.%03ld] [%s] ", buffer, millis, logLevelString);
     
     va_list args;
     va_start(args, formatString);
