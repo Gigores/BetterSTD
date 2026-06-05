@@ -17,16 +17,16 @@ static bool isUtf8Continuation(unsigned char c)
 {
     return (c & 0xC0) == 0x80;
 }
-string_view_t StringView_fromCString(const char *chars)
+btr_string_view_t BTR_StringView_fromCString(const char *chars)
 {
-    return (string_view_t) {
+    return (btr_string_view_t) {
         .data     = (char *) chars,
         .start    = 0,
         .length   = strlen(chars),
         .capacity = strlen(chars),
     };
 }
-void StringView_cropLeft(string_view_t *string, unsigned int charCount)
+void BTR_StringView_cropLeft(btr_string_view_t *string, unsigned int charCount)
 {
     for (unsigned int i = 0; i < charCount; i++)
     {
@@ -36,7 +36,7 @@ void StringView_cropLeft(string_view_t *string, unsigned int charCount)
         string->length -= curCharSize;
     }
 }
-void StringView_cropRight(string_view_t *string, unsigned int charCount)
+void BTR_StringView_cropRight(btr_string_view_t *string, unsigned int charCount)
 {
     for (unsigned int i = 0; i < charCount; i++)
     {
@@ -47,7 +47,7 @@ void StringView_cropRight(string_view_t *string, unsigned int charCount)
         string->length -= curCharSize;
     }
 }
-void StringView_revertLeft(string_view_t *string, unsigned int charCount)
+void BTR_StringView_revertLeft(btr_string_view_t *string, unsigned int charCount)
 {
     for (unsigned int i = 0; i < charCount; i++)
     {
@@ -62,7 +62,7 @@ void StringView_revertLeft(string_view_t *string, unsigned int charCount)
         string->length += charSize;
     }
 }
-void StringView_revertRight(string_view_t *string, unsigned int charCount)
+void BTR_StringView_revertRight(btr_string_view_t *string, unsigned int charCount)
 {
     for (unsigned int i = 0; i < charCount; i++)
     {
@@ -73,11 +73,11 @@ void StringView_revertRight(string_view_t *string, unsigned int charCount)
         string->length += charSize;
     }
 }
-size_t StringView_byteCount(string_view_t *string)
+size_t BTR_StringView_byteCount(btr_string_view_t *string)
 {
     return string->length;
 }
-size_t StringView_len(string_view_t *string)
+size_t BTR_StringView_len(btr_string_view_t *string)
 {
     size_t count = 0;
     char *currentChar = string->data + string->start;
@@ -88,13 +88,13 @@ size_t StringView_len(string_view_t *string)
     }
     return count;
 }
-bool StringView_isEmpty(string_view_t *string)
+bool BTR_StringView_isEmpty(btr_string_view_t *string)
 {
-    return !StringView_len(string);
+    return !BTR_StringView_len(string);
 }
-const char *StringView_charAt(string_view_t *string, int index)
+const char *BTR_StringView_charAt(btr_string_view_t *string, int index)
 {
-    size_t len = StringView_len(string);
+    size_t len = BTR_StringView_len(string);
     if (index < 0)
         index = (int) len + index;
     if ((size_t) index > len || index < 0)
@@ -107,10 +107,10 @@ const char *StringView_charAt(string_view_t *string, int index)
             pointer += utf8CharLen((unsigned char)*pointer);
     return pointer;
 }
-bool StringView_endsWithView(string_view_t *string, string_view_t *postfix)
+bool BTR_StringView_endsWithView(btr_string_view_t *string, btr_string_view_t *postfix)
 {
-    size_t len = StringView_byteCount(string);
-    size_t lenPostfix = StringView_byteCount(postfix);
+    size_t len = BTR_StringView_byteCount(string);
+    size_t lenPostfix = BTR_StringView_byteCount(postfix);
     size_t counter = 0;
     while (*(string->data + string->start + len - counter) == *(postfix->data + postfix->start + lenPostfix - counter) && counter < lenPostfix)
         counter++;
@@ -118,51 +118,51 @@ bool StringView_endsWithView(string_view_t *string, string_view_t *postfix)
         return false;
     return true;
 }
-bool StringView_startsWithView(string_view_t *string, string_view_t *prefix)
+bool BTR_StringView_startsWithView(btr_string_view_t *string, btr_string_view_t *prefix)
 {
     size_t counter = 0;
-    size_t byteCount = StringView_byteCount(prefix);
+    size_t byteCount = BTR_StringView_byteCount(prefix);
     while (*(string->data + string->start + counter) == *(prefix->data + prefix->start + counter) && counter < byteCount)
         counter++;
     if (counter < byteCount)
         return false;
     return true;
 }
-bool StringView_endsWithCString(string_view_t *string, const char *postfix)
+bool BTR_StringView_endsWithCString(btr_string_view_t *string, const char *postfix)
 {
-    string_view_t view = StringView_fromCString(postfix);
-    return StringView_endsWithView(string, &view);
+    btr_string_view_t view = BTR_StringView_fromCString(postfix);
+    return BTR_StringView_endsWithView(string, &view);
 }
-bool StringView_startsWithCString(string_view_t *string, const char *prefix)
+bool BTR_StringView_startsWithCString(btr_string_view_t *string, const char *prefix)
 {
-    string_view_t view = StringView_fromCString(prefix);
-    return StringView_startsWithView(string, &view);
+    btr_string_view_t view = BTR_StringView_fromCString(prefix);
+    return BTR_StringView_startsWithView(string, &view);
 }
-string_view_t StringView_findView(string_view_t *string, string_view_t *substring)
+btr_string_view_t BTR_StringView_findView(btr_string_view_t *string, btr_string_view_t *substring)
 {
-    size_t substringSize = StringView_byteCount(substring);
-    size_t maxCount = StringView_byteCount(string) - substringSize;
+    size_t substringSize = BTR_StringView_byteCount(substring);
+    size_t maxCount = BTR_StringView_byteCount(string) - substringSize;
     for (size_t count = 0; count < maxCount; count++)
     {
         if (!memcmp(
             string->data + string->start + count,
             substring->data + substring->start,
             substringSize
-        )) return (string_view_t) {
+        )) return (btr_string_view_t) {
             .data = string->data,
             .start = string->start + count,
             .length = substringSize,
             .capacity = string->capacity,
         };
     }
-    return (string_view_t) {0};
+    return (btr_string_view_t) {0};
 }
-string_view_t StringView_findCString(string_view_t *string, const char *substring)
+btr_string_view_t BTR_StringView_findCString(btr_string_view_t *string, const char *substring)
 {
-    string_view_t view = StringView_fromCString(substring);
-    return StringView_findView(string, &view);
+    btr_string_view_t view = BTR_StringView_fromCString(substring);
+    return BTR_StringView_findView(string, &view);
 }
-string_view_t StringView_substring(string_view_t *string, unsigned int start, unsigned int count)
+btr_string_view_t BTR_StringView_substring(btr_string_view_t *string, unsigned int start, unsigned int count)
 {
     size_t byteStart, byteCount;
     size_t counter = 0;
@@ -174,29 +174,29 @@ string_view_t StringView_substring(string_view_t *string, unsigned int start, un
         byteOffset += utf8CharLen(*(string->data + string->start + byteOffset));
         counter++;
     }
-    return (string_view_t) {
+    return (btr_string_view_t) {
         .data = string->data,
         .capacity = string->capacity,
         .start = string->start + byteStart,
         .length = byteCount,
     };
 }
-void StringView_trimLeft(string_view_t *string)
+void BTR_StringView_trimLeft(btr_string_view_t *string)
 {
     while (isspace(*(string->data + string->start)))
-        StringView_cropLeft(string, 1);
+        BTR_StringView_cropLeft(string, 1);
 }
-void StringView_trimRight(string_view_t *string)
+void BTR_StringView_trimRight(btr_string_view_t *string)
 {
     while (isspace(*(string->data + string->start + string->length - 1)))
-        StringView_cropRight(string, 1);
+        BTR_StringView_cropRight(string, 1);
 }
-void StringView_trim(string_view_t *string)
+void BTR_StringView_trim(btr_string_view_t *string)
 {
-    StringView_trimLeft(string);
-    StringView_trimRight(string);
+    BTR_StringView_trimLeft(string);
+    BTR_StringView_trimRight(string);
 }
-int StringView_compare(string_view_t *a, string_view_t *b)
+int BTR_StringView_compare(btr_string_view_t *a, btr_string_view_t *b)
 {
     size_t minLen = a->length < b->length ? a->length : b->length;
     int cmp = memcmp(a->data + a->start, b->data + b->start, minLen);
