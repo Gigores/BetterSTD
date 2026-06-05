@@ -2,6 +2,9 @@
 #include "stdbool.h"
 #include "stddef.h"
 
+// This string view implementation fully supports UTF-8.
+// All operations are performed over UTF-8 characters, unless specified otherwise.
+
 typedef struct {
     char *data;
     unsigned int start;

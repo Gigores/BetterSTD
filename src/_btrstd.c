@@ -1,2 +1,2 @@
 #include "bllist.c"
-#include "bstring.c"
+#include "string_view.c"
