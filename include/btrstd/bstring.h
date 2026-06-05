@@ -74,8 +74,14 @@ bool StringView_startsWithString(string_view_t *, string_t *prefixToSearch);
 bool StringView_endsWithCString(string_view_t *, const char *postfixToSearch);
 // Tells if the string view starts with a given C string.
 bool StringView_startsWithCString(string_view_t *, const char *prefixToSearch);
+// Returns the first instance of a substring in a string view.
+// Returns zero-initialised view if didn't find the substring.
 string_view_t StringView_findView(string_view_t *, string_view_t *substring);
+// Returns the first instance of a substring in a string view.
+// Returns zero-initialised view if didn't find the substring.
 string_view_t StringView_findString(string_view_t *, string_t *substring);
+// Returns the first instance of a substring in a string view.
+// Returns zero-initialised view if didn't find the substring.
 string_view_t StringView_findCString(string_view_t *, const char *substring);
 bool StringView_containsView(string_view_t *, string_view_t *substring);
 bool StringView_containsString(string_view_t *, string_t *substring);

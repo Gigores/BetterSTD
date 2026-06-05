@@ -341,6 +341,10 @@ static void test8(void)
     assert(StringView_endsWith(&view, "γμία"));
 
     assert(!StringView_endsWith(&view, "οφθό"));
+
+    assert(StringView_find(&view, "οφθό").data);
+
+    assert(!StringView_find(&view, "hello, great sir!").data);
 }
 
 int main(void) {

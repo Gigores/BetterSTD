@@ -218,6 +218,35 @@ bool StringView_startsWithCString(string_view_t *string, const char *prefix)
     string_view_t view = StringView_fromCString(prefix);
     return StringView_startsWithView(string, &view);
 }
+string_view_t StringView_findView(string_view_t *string, string_view_t *substring)
+{
+    size_t substringSize = StringView_byteCount(substring);
+    size_t maxCount = StringView_byteCount(string) - substringSize;
+    for (size_t count = 0; count < maxCount; count++)
+    {
+        if (!memcmp(
+            string->data + string->start + count,
+            substring->data + substring->start,
+            substringSize
+        )) return (string_view_t) {
+            .data = string->data,
+            .start = string->start + count,
+            .length = substringSize,
+            .capacity = string->capacity,
+        };
+    }
+    return (string_view_t) {0};
+}
+string_view_t StringView_findString(string_view_t *string, string_t *substring)
+{
+    string_view_t view = String_getView(substring);
+    return StringView_findView(string, &view);
+}
+string_view_t StringView_findCString(string_view_t *string, const char *substring)
+{
+    string_view_t view = StringView_fromCString(substring);
+    return StringView_findView(string, &view);
+}
 int StringView_compare(string_view_t *a, string_view_t *b)
 {
     size_t minLen = a->length < b->length ? a->length : b->length;
