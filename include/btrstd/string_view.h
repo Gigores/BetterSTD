@@ -94,3 +94,44 @@ int BTR_StringView_compare(btr_string_view_t *, btr_string_view_t *);
     const char *: BTR_StringView_containsCString,                        \
     char *: BTR_StringView_containsCString                               \
 )(STRING, POSTFIX)
+
+#ifdef BTR_NO_PREFIX
+
+typedef btr_string_view_t string_view_t;
+
+#define StringView_fromCString       BTR_StringView_fromCString
+#define StringView_cropLeft          BTR_StringView_cropLeft
+#define StringView_cropRight         BTR_StringView_cropRight
+#define StringView_revertLeft        BTR_StringView_revertLeft
+#define StringView_revertRight       BTR_StringView_revertRight
+#define StringView_byteCount         BTR_StringView_byteCount
+#define StringView_len               BTR_StringView_len
+#define StringView_isEmpty           BTR_StringView_isEmpty
+#define StringView_charAt            BTR_StringView_charAt
+
+#define StringView_endsWithView      BTR_StringView_endsWithView
+#define StringView_startsWithView    BTR_StringView_startsWithView
+
+#define StringView_endsWithCString   BTR_StringView_endsWithCString
+#define StringView_startsWithCString BTR_StringView_startsWithCString
+
+#define StringView_findView          BTR_StringView_findView
+#define StringView_findCString       BTR_StringView_findCString
+
+#define StringView_substring         BTR_StringView_substring
+
+#define StringView_trimLeft          BTR_StringView_trimLeft
+#define StringView_trimRight         BTR_StringView_trimRight
+#define StringView_trim              BTR_StringView_trim
+
+#define StringView_compare           BTR_StringView_compare
+
+#define STRING_FORMAT                BTR_STRING_FORMAT
+#define STRING_ARGS                  BTR_STRING_ARGS
+
+#define StringView_endsWith          BTR_StringView_endsWith
+#define StringView_startsWith        BTR_StringView_startsWith
+#define StringView_find              BTR_StringView_find
+#define StringView_contains          BTR_StringView_contains
+
+#endif // BTR_NO_PREFIX
