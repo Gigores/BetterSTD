@@ -108,8 +108,8 @@ void BTR_BLList_clear(btr_bllist_t *);
 
 #ifdef BTR_NO_PREFIX
 
-typedef bllist_node_t btr_bllist_node_t
-typedef bllist_t btr_bllist_t
+typedef btr_bllist_node_t bllist_node_t
+typedef btr_bllist_t bllist_t
 
 #define BLList_make    BTR_BLList_make
 #define BLList_clone   BTR_BLList_clone
