@@ -307,6 +307,7 @@ static void test7(void)
         }
     ) == 0);
 }
+// test a bunch of shit
 static void test8(void)
 {
     printf("> test8\n");
@@ -345,6 +346,23 @@ static void test8(void)
     assert(StringView_find(&view, "οφθό").data);
 
     assert(!StringView_find(&view, "hello, great sir!").data);
+
+    string_view_t sub = StringView_substring(&view, 2, 8);
+    string_view_t testView = StringView_fromCString("επάζωτην");
+    assert(!StringView_compare(&sub, &testView));
+}
+// test `trim`
+static void test9(void)
+{
+    printf("> test9\n");
+
+    const char *TEXT = "   я не знаю что значит этот текст      ";
+
+    string_view_t view = StringView_fromCString(TEXT);
+
+    StringView_trim(&view);
+    string_view_t testView = StringView_fromCString("я не знаю что значит этот текст");
+    assert(!StringView_compare(&view, &testView));
 }
 
 int main(void) {
@@ -356,5 +374,6 @@ int main(void) {
     test6();
     test7();
     test8();
+    test9();
     printf("SUCCESS\n");
 }

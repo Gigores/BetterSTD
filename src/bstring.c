@@ -1,6 +1,7 @@
 #include "btrstd/bstring.h"
 #include "string.h"
 #include "stdlib.h"
+#include "ctype.h"
 
 #include "stdio.h"
 
@@ -246,6 +247,40 @@ string_view_t StringView_findCString(string_view_t *string, const char *substrin
 {
     string_view_t view = StringView_fromCString(substring);
     return StringView_findView(string, &view);
+}
+string_view_t StringView_substring(string_view_t *string, unsigned int start, unsigned int count)
+{
+    size_t byteStart, byteCount;
+    size_t counter = 0;
+    size_t byteOffset = 0;
+    while (string->data + string->start + byteOffset < string->data + string->start + string->length)
+    {
+        if (counter == start) byteStart = byteOffset;
+        if (counter == start + count) byteCount = byteOffset - byteStart;
+        byteOffset += utf8CharLen(*(string->data + string->start + byteOffset));
+        counter++;
+    }
+    return (string_view_t) {
+        .data = string->data,
+        .capacity = string->capacity,
+        .start = string->start + byteStart,
+        .length = byteCount,
+    };
+}
+void StringView_trimLeft(string_view_t *string)
+{
+    while (isspace(*(string->data + string->start)))
+        StringView_cropLeft(string, 1);
+}
+void StringView_trimRight(string_view_t *string)
+{
+    while (isspace(*(string->data + string->start + string->length - 1)))
+        StringView_cropRight(string, 1);
+}
+void StringView_trim(string_view_t *string)
+{
+    StringView_trimLeft(string);
+    StringView_trimRight(string);
 }
 int StringView_compare(string_view_t *a, string_view_t *b)
 {

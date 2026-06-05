@@ -83,9 +83,13 @@ string_view_t StringView_findString(string_view_t *, string_t *substring);
 // Returns the first instance of a substring in a string view.
 // Returns zero-initialised view if didn't find the substring.
 string_view_t StringView_findCString(string_view_t *, const char *substring);
+// Returns a substring with the given start and length.
 string_view_t StringView_substring(string_view_t *, unsigned int start, unsigned int count);
+// Trims whitespaces from the left of the view.
 void StringView_trimLeft(string_view_t *);
+// Trims whitespaces from the right of the view.
 void StringView_trimRight(string_view_t *);
+// Trims whitespaces from left and right of the view.
 void StringView_trim(string_view_t *);
 // Compares the two given string views.
 // Returns 0 if they are equal.
