@@ -24,7 +24,7 @@ const char *BTR_LogLevel_getColor(btr_log_level_t level)
         default: return BTR_TERM_COLOR_RESET;
     }
 }
-void BTR_Logger_log(btr_logger_t *logger, btr_log_level_t logLevel, const char *formatString, ...)
+void BTR_Logger_log(btr_logger_t *logger, btr_log_level_t logLevel, const char *logPrefix, const char *formatString, ...)
 {
     if (logLevel < logger->minLogLevel) return;
 
@@ -37,8 +37,8 @@ void BTR_Logger_log(btr_logger_t *logger, btr_log_level_t logLevel, const char *
     struct timespec ts;
     timespec_get(&ts, TIME_UTC);
     long millis = ts.tv_nsec / 1000000;
-    printf(BTR_TERM_COLOR_INTER"["BTR_TERM_COLOR_RESET"%s.%03ld"BTR_TERM_COLOR_INTER"] [%s%s"BTR_TERM_COLOR_INTER"] "BTR_TERM_COLOR_RESET, buffer, millis, logLevelColor, logLevelString);
-    if (logger->file) fprintf(logger->file, "[%s.%03ld] [%s] ", buffer, millis, logLevelString);
+    printf(BTR_TERM_COLOR_INTER"["BTR_TERM_COLOR_RESET"%s.%03ld"BTR_TERM_COLOR_INTER"] [%s%s"BTR_TERM_COLOR_INTER"] ["BTR_TERM_COLOR_RESET"%s"BTR_TERM_COLOR_INTER"]: "BTR_TERM_COLOR_RESET, buffer, millis, logLevelColor, logLevelString, logPrefix);
+    if (logger->file) fprintf(logger->file, "[%s.%03ld] [%s] [%s]: ", buffer, millis, logLevelString, logPrefix);
     
     va_list args;
     va_start(args, formatString);

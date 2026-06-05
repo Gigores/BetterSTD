@@ -23,5 +23,5 @@ typedef struct {
     FILE *file;
 } btr_logger_t;
 
-void BTR_Logger_log(btr_logger_t *, btr_log_level_t logLevel, const char *formatString, ...);
+void BTR_Logger_log(btr_logger_t *, btr_log_level_t logLevel, const char *logPrefix, const char *formatString, ...);
 
