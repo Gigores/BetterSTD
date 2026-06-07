@@ -5,6 +5,13 @@
 
 #include "stdio.h"
 
+static void checkNull(btr_balist_t *this)
+{
+    if (!this) return;
+    if (!this->data)
+        *this = BTR_BAList_makeEmpty(8);
+}
+
 btr_balist_t BTR_BAList_make(void *items[], size_t itemCount)
 {
     void **newData = malloc(itemCount * sizeof(void *));
@@ -25,6 +32,33 @@ btr_balist_t BTR_BAList_makeEmpty(size_t capacity)
         .capacity = capacity,
         .count = 0,
     };
+}
+void BTR_BAList_append(btr_balist_t *this, void *data)
+{
+    if (!this) return;
+    checkNull(this);
+    if (this->count >= this->capacity)
+    {
+        void **newData = realloc(this->data, this->capacity * 1.5 * sizeof(void *));
+        if (!newData) return;
+        this->data = newData;
+        this->capacity *= 1.5;
+    }
+    this->data[this->count++] = data;
+}
+void *BTR_BAList_pop(btr_balist_t *this, long index)
+{
+    if (!this) return NULL;
+    checkNull(this);
+    if (!this->count) return NULL;
+    if (index < 0) index = this->count + index;
+    void *toReturn = this->data[index];
+    for (size_t i = index; i < this->count - 1; i++)
+    {
+        this->data[i] = this->data[i + 1];
+    }
+    this->count--;
+    return toReturn;
 }
 void *BTR_BAList_get(const btr_balist_t *this, long index)
 {

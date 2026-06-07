@@ -9,7 +9,8 @@ static int getInt(void *p)
 }
 static void checkList(btr_balist_t *list, int expected[], size_t n)
 {
-    assert(!memcmp(list, expected, n));
+    for(size_t i = 0; i < n; i++)
+        assert(getInt(BTR_BAList_get(list, i)) == expected[i]);
 }
 static bool cmp_int(const void *a, const void *b)
 {
@@ -54,34 +55,34 @@ static void test1(void)
     }
     BTR_BAList_free(&list);
 }
-// // test `append` and `pop`
-// static void test2(void)
-// {
-//     printf("> test2\n");
-//
-//     const int INPUT[] = {
-//         654, 64357, 2475, 7465
-//     };
-//     const int EXPECT_AFTER_POP[] = {
-//         654, 7465
-//     };
-//
-//     btr_balist_t list = {0};
-//     size_t n = sizeof(INPUT)/sizeof(INPUT[0]);
-//     for (size_t i = 0; i < n; i++)
-//         BTR_BAList_append(&list, (void *)&INPUT[i]);
-//     int a = getInt(BTR_BAList_pop(&list, 1));
-//     int b = getInt(BTR_BAList_pop(&list, 1));
-//     assert(a == INPUT[1]);
-//     assert(b == INPUT[2]);
-//     checkList(&list, (int *)EXPECT_AFTER_POP, 2);
-//     int c = getInt(BTR_BAList_pop(&list, -1));
-//     int d = getInt(BTR_BAList_pop(&list, -1));
-//     assert(c == INPUT[3]);
-//     assert(d == INPUT[0]);
-//     assert(list.count == 0);
-//     BTR_BAList_free(&list);
-// }
+// test `append` and `pop`
+static void test2(void)
+{
+    printf("> test2\n");
+
+    const int INPUT[] = {
+        654, 64357, 2475, 7465
+    };
+    const int EXPECT_AFTER_POP[] = {
+        654, 7465
+    };
+
+    btr_balist_t list = {0};
+    size_t n = sizeof(INPUT)/sizeof(INPUT[0]);
+    for (size_t i = 0; i < n; i++)
+        BTR_BAList_append(&list, (void *)&INPUT[i]);
+    int a = getInt(BTR_BAList_pop(&list, 1));
+    int b = getInt(BTR_BAList_pop(&list, 1));
+    assert(a == INPUT[1]);
+    assert(b == INPUT[2]);
+    checkList(&list, (int *)EXPECT_AFTER_POP, 2);
+    int c = getInt(BTR_BAList_pop(&list, -1));
+    int d = getInt(BTR_BAList_pop(&list, -1));
+    assert(c == INPUT[3]);
+    assert(d == INPUT[0]);
+    assert(list.count == 0);
+    BTR_BAList_free(&list);
+}
 // // test 'clone'
 // static void test3(void)
 // {
@@ -295,7 +296,7 @@ static void test1(void)
 
 int main(void) {
     test1();
-    // test2();
+    test2();
     // test3();
     // test4();
     // test5();
