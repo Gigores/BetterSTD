@@ -23,6 +23,7 @@ btr_balist_t BTR_BAList_make(void *items[], size_t itemCount);
 // Creates a new empty Borrowing Array List.
 // Might return a zero-initialized list if allocation goes wrong.
 btr_balist_t BTR_BAList_makeEmpty(size_t capacity);
+// Creates a new borrowing array list from another borrowing array list with the same data.
 btr_balist_t BTR_BAList_clone(const btr_balist_t *list);
 // Appends the data to the end of the borrowing array list.
 void BTR_BAList_append(btr_balist_t *, void *data);

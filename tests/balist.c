@@ -83,36 +83,36 @@ static void test2(void)
     assert(list.count == 0);
     BTR_BAList_free(&list);
 }
-// // test 'clone'
-// static void test3(void)
-// {
-//     printf("> test3\n");
-//
-//     const int VALUES[] = {0,10,20,30,40,50,60,70,80,90};
-//     const size_t N = sizeof(VALUES)/sizeof(VALUES[0]);
-//     btr_balist_t list = BTR_BALIST(
-//         (void *)&VALUES[0],
-//         (void *)&VALUES[1],
-//         (void *)&VALUES[2],
-//         (void *)&VALUES[3],
-//         (void *)&VALUES[4],
-//         (void *)&VALUES[5],
-//         (void *)&VALUES[6],
-//         (void *)&VALUES[7],
-//         (void *)&VALUES[8],
-//         (void *)&VALUES[9]
-//     );
-//     btr_balist_t clone = BTR_BAList_clone(&list);
-//     assert(clone.count == list.count);
-//     for (size_t i = 0; i < N; i++)
-//     {
-//         int a = getInt(BTR_BAList_get(&list, i));
-//         int b = getInt(BTR_BAList_get(&clone, i));
-//         assert(a == b);
-//     }
-//     BTR_BAList_free(&list);
-//     BTR_BAList_free(&clone);
-// }
+// test 'clone'
+static void test3(void)
+{
+    printf("> test3\n");
+
+    const int VALUES[] = {0,10,20,30,40,50,60,70,80,90};
+    const size_t N = sizeof(VALUES)/sizeof(VALUES[0]);
+    btr_balist_t list = BTR_BALIST(
+        (void *)&VALUES[0],
+        (void *)&VALUES[1],
+        (void *)&VALUES[2],
+        (void *)&VALUES[3],
+        (void *)&VALUES[4],
+        (void *)&VALUES[5],
+        (void *)&VALUES[6],
+        (void *)&VALUES[7],
+        (void *)&VALUES[8],
+        (void *)&VALUES[9]
+    );
+    btr_balist_t clone = BTR_BAList_clone(&list);
+    assert(clone.count == list.count);
+    for (size_t i = 0; i < N; i++)
+    {
+        int a = getInt(BTR_BAList_get(&list, i));
+        int b = getInt(BTR_BAList_get(&clone, i));
+        assert(a == b);
+    }
+    BTR_BAList_free(&list);
+    BTR_BAList_free(&clone);
+}
 // // test `prepend`
 // static void test4(void)
 // {
@@ -297,7 +297,7 @@ static void test2(void)
 int main(void) {
     test1();
     test2();
-    // test3();
+    test3();
     // test4();
     // test5();
     // test6();

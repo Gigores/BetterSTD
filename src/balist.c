@@ -33,6 +33,16 @@ btr_balist_t BTR_BAList_makeEmpty(size_t capacity)
         .count = 0,
     };
 }
+btr_balist_t BTR_BAList_clone(const btr_balist_t *list)
+{
+    void **data = malloc(list->capacity * sizeof(void *));
+    memcpy(data, list->data, list->capacity * sizeof(void *));
+    return (btr_balist_t) {
+        .data = data,
+        .capacity = list->capacity,
+        .count = list->count,
+    };
+}
 void BTR_BAList_append(btr_balist_t *this, void *data)
 {
     if (!this) return;
