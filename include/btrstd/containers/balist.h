@@ -11,8 +11,14 @@ typedef struct {
     size_t capacity;
 } btr_balist_t;
 
-// Creates a new Borrowing Array List from the given data.
-// The data is cloned, so might return a zero-initialized list if allocation goes wrong.
+// Creates a new borrowing array list from an array of given values.
+// Example:
+// ```c
+// int a = 20;
+// int b = 26;
+// int c = 43;
+// btr_balist_t list = BTR_BAList_make({&a, &b, &c}, 3);
+// ```
 btr_balist_t BTR_BAList_make(void *items[], size_t itemCount);
 // Creates a new empty Borrowing Array List.
 // Might return a zero-initialized list if allocation goes wrong.
@@ -33,7 +39,7 @@ long BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void 
 size_t BTR_BAList_len(const btr_balist_t *);
 bool BTR_BAList_isEmpty(const btr_balist_t *);
 void BTR_BAList_reverse(btr_balist_t *);
-// Frees the given Borrowing Array List
+// Deallocates the borrowing array list.
 void BTR_BAList_free(btr_balist_t *);
 void BTR_BAList_clear(btr_balist_t *);
 

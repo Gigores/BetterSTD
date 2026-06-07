@@ -25,7 +25,7 @@ typedef struct {
 // int a = 20;
 // int b = 26;
 // int c = 43;
-// bllist_t list = BLList_make({&a, &b, &c}, 3);
+// btr_bllist_t list = BTR_BLList_make({&a, &b, &c}, 3);
 // ```
 btr_bllist_t BTR_BLList_make(void *items[], size_t itemCount);
 // Creates a new borrowing linked list from another borrowing linked list with the same data.
