@@ -30,6 +30,8 @@ void *BTR_BAList_get(const btr_balist_t *this, long index)
 {
     if (!this) return NULL;
     if (index < 0) index = this->count + index;
+    if ((size_t)index > this->count) return NULL;
+    if (index < 0) return NULL;
     return this->data[index];
 }
 void BTR_BAList_free(btr_balist_t *this)
