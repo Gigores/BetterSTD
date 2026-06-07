@@ -3,6 +3,8 @@
 #include "stddef.h"
 #include "stdbool.h"
 
+// Borrowing Linked List
+
 // The idea of the Borrowing Linked List is that it does not own the data,
 // it only points to data that you own.
 // So it is your responsibility to allocate and free the data.

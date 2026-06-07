@@ -1,0 +1,64 @@
+#pragma once
+
+#include "stddef.h"
+#include "stdbool.h"
+
+// Borrowing Array List
+
+typedef struct {
+    void **data;
+    size_t count;
+    size_t capacity;
+} btr_balist_t;
+
+// Creates a new Borrowing Array List from the given data.
+// The data is cloned, so might return a zero-initialized list if allocation goes wrong.
+btr_balist_t BTR_BAList_make(void *items[], size_t itemCount);
+// Creates a new empty Borrowing Array List.
+// Might return a zero-initialized list if allocation goes wrong.
+btr_balist_t BTR_BAList_makeEmpty(size_t capacity);
+btr_balist_t BTR_BAList_clone(const btr_balist_t *list);
+void BTR_BAList_append(btr_balist_t *, void *data);
+void BTR_BAList_prepend(btr_balist_t *, void *data);
+void BTR_BAList_insert(btr_balist_t *, void *data, long index);
+void *BTR_BAList_pop(btr_balist_t *, long index);
+void *BTR_BAList_get(const btr_balist_t *, long index);
+void *BTR_BAList_first(const btr_balist_t *);
+void *BTR_BAList_last(const btr_balist_t *);
+long BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
+size_t BTR_BAList_len(const btr_balist_t *);
+bool BTR_BAList_isEmpty(const btr_balist_t *);
+void BTR_BAList_reverse(btr_balist_t *);
+void BTR_BAList_free(btr_balist_t *);
+void BTR_BAList_clear(btr_balist_t *);
+
+// Example usage:
+// ```c
+// btr_balist_t list = {...};  // a list of strings
+// BTR_BALIST_FOREACH(list, item)
+//     printf("%s\n", (char *)item);
+// ```
+#define BTR_BALIST_FOREACH(LIST, i) \
+    void *i; \
+    for (size_t _i = 0; _i < (LIST)->count && ((i = (LIST)->data[_i]), 1); _i++)
+    
+// Example usage:
+// ```c
+// btr_balist_t list = {...};  // a list of strings
+// BTR_BALIST_ENUMERATE(list, item, index)
+//     printf("%zu: %s\n", index, (char *)item);
+// ```
+#define BTR_BALIST_ENUMERATE(LIST, i, n) \
+    void *i; \
+    for (size_t n = 0; n < (LIST)->count && ((i = (LIST)->data[_i]), 1); n++)
+
+// Example usage:
+// ```c
+// int a = 14, b = 43, c = 34;
+// btr_balist_t list = BALIST(&a, &b, &c);
+// ```
+#define BTR_BALIST(...)                                    \
+    BTR_BAList_make(                                       \
+        (void *[]){ __VA_ARGS__ },                         \
+        sizeof((void *[]){ __VA_ARGS__ }) / sizeof(void *) \
+    )
