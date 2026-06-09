@@ -126,7 +126,7 @@ long BTR_BLList_indexOf(btr_bllist_t *this, void *value, bool (*cmp)(const void 
 }
 size_t BTR_BLList_len(const btr_bllist_t *this)
 {
-    if (!this) return -1;
+    if (!this) return 0;
     return this->size;
 }
 bool BTR_BLList_isEmpty(const btr_bllist_t *this)
