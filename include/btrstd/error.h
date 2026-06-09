@@ -20,7 +20,7 @@ typedef enum {
     };                            \
 }
 
-void BTR_panicImpl(const char *file, int line, const char *format, ...);
+void BTR_panicImpl(const char *file, int line, const char *func, const char *format, ...);
 
 // This macro prints out the formatted error message and stops the program.
 // Usage example:
@@ -31,9 +31,9 @@ void BTR_panicImpl(const char *file, int line, const char *format, ...);
 //     // ...
 // }
 // ```
-#define BTR_panic(first, ...) BTR_panicImpl(__FILE__, __LINE__, first __VA_OPT__(,) __VA_ARGS__)
+#define BTR_panic(format, ...) BTR_panicImpl(__FILE__, __LINE__, __FUNCTION__, format __VA_OPT__(,) __VA_ARGS__)
 
-void BTR_panicImplIf(const char *file, int line, bool condition, const char *format, ...);
+void BTR_panicImplIf(const char *file, int line, const char *func, bool condition, const char *format, ...);
 
 // This macro prints out the formatted error message and stops the program if the condition is true.
 // Usage example:
@@ -44,7 +44,7 @@ void BTR_panicImplIf(const char *file, int line, bool condition, const char *for
 //     // ...
 // }
 // ```
-#define BTR_panicIf(condition, second, ...) BTR_panicImplIf(__FILE__, __LINE__, condition, second __VA_OPT__(,) __VA_ARGS__)
+#define BTR_panicIf(condition, format, ...) BTR_panicImplIf(__FILE__, __LINE__, __FUNCTION__, condition, format __VA_OPT__(,) __VA_ARGS__)
 
 // This macro panics with the given formatted error message if the given result is Err.
 // Otherwise evaluates to the .value of the result.
