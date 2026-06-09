@@ -95,49 +95,49 @@ void BTR_BAList_insert(btr_balist_t *this, void *data, long index)
     this->count++;
     this->data[index] = data;
 }
-btr_balist_ptr_result_t BTR_BAList_pop(btr_balist_t *this, long index)
+btr_container_ptr_result_t BTR_BAList_pop(btr_balist_t *this, long index)
 {
     BTR_panicIf(!this, "`this` is invalid");
     checkNull(this);
     if (index < 0) index = this->count + index;
     if (index < 0 || (size_t)index >= this->count)
-        BTR_Err(btr_balist_ptr_result_t, BTR_BALIST_ERR_OUT_OF_BOUNDS);
+        BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
     void *toReturn = this->data[index];
     for (size_t i = index; i < this->count - 1; i++)
         this->data[i] = this->data[i + 1];
     this->count--;
     checkSizeToShrink(this);
-    BTR_Ok(btr_balist_ptr_result_t, toReturn);
+    BTR_Ok(btr_container_ptr_result_t, toReturn);
 }
-btr_balist_ptr_result_t BTR_BAList_get(const btr_balist_t *this, long index)
+btr_container_ptr_result_t BTR_BAList_get(const btr_balist_t *this, long index)
 {
     BTR_panicIf(!this, "`this` is invalid");
     if (index < 0) index = this->count + index;
     if (index < 0 || (size_t)index >= this->count)
-        BTR_Err(btr_balist_ptr_result_t, BTR_BALIST_ERR_OUT_OF_BOUNDS);
-    BTR_Ok(btr_balist_ptr_result_t, this->data[index]);
+        BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    BTR_Ok(btr_container_ptr_result_t, this->data[index]);
 }
-btr_balist_ptr_result_t BTR_BAList_first(const btr_balist_t *this)
+btr_container_ptr_result_t BTR_BAList_first(const btr_balist_t *this)
 {
     BTR_panicIf(!this, "`this` is invalid");
     if (!this->count)
-        BTR_Err(btr_balist_ptr_result_t, BTR_BALIST_ERR_OUT_OF_BOUNDS);
-    BTR_Ok(btr_balist_ptr_result_t, this->data[0]);
+        BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    BTR_Ok(btr_container_ptr_result_t, this->data[0]);
 }
-btr_balist_ptr_result_t BTR_BAList_last(const btr_balist_t *this)
+btr_container_ptr_result_t BTR_BAList_last(const btr_balist_t *this)
 {
     BTR_panicIf(!this, "`this` is invalid");
     if (!this->count)
-        BTR_Err(btr_balist_ptr_result_t, BTR_BALIST_ERR_OUT_OF_BOUNDS);
-    BTR_Ok(btr_balist_ptr_result_t, this->data[this->count - 1]);
+        BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    BTR_Ok(btr_container_ptr_result_t, this->data[this->count - 1]);
 }
-btr_balist_idx_result_t BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *))
+btr_container_idx_result_t BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *))
 {
     BTR_panicIf(!list, "`list` is invalid");
     BTR_BALIST_ENUMERATE(list, i, n)
         if (cmp(i, value))
-            BTR_Ok(btr_balist_idx_result_t, n);
-    BTR_Err(btr_balist_idx_result_t, BTR_BALIST_ERR_NOT_FOUND);
+            BTR_Ok(btr_container_idx_result_t, n);
+    BTR_Err(btr_container_idx_result_t, BTR_CONTAINER_ERR_NOT_FOUND);
 }
 size_t BTR_BAList_len(const btr_balist_t *this)
 {

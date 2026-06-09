@@ -2,7 +2,8 @@
 
 #include "stddef.h"
 #include "stdbool.h"
-#include "btrstd/error.h"
+
+#include "btrstd/containers/generic_contaier_data.h"
 
 // Borrowing Array List
 
@@ -11,14 +12,6 @@ typedef struct {
     size_t count;
     size_t capacity;
 } btr_balist_t;
-
-typedef enum {
-    BTR_BALIST_ERR_OUT_OF_BOUNDS,
-    BTR_BALIST_ERR_NOT_FOUND,
-} btr_balist_error_t;
-
-typedef BTR_Result(void *, btr_balist_error_t) btr_balist_ptr_result_t;
-typedef BTR_Result(long, btr_balist_error_t) btr_balist_idx_result_t;
 
 // Creates a new borrowing array list from an array of given values.
 // Example:
@@ -43,20 +36,20 @@ void BTR_BAList_insert(btr_balist_t *, void *data, long index);
 // Pops the data of the specified index from a borrowing array list.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_BALIST_ERR_OUT_OF_BOUNDS` if the index is invalid.
-btr_balist_ptr_result_t BTR_BAList_pop(btr_balist_t *, long index);
+btr_container_ptr_result_t BTR_BAList_pop(btr_balist_t *, long index);
 // Returns the data of the specified index of the borrowing array list.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_BALIST_ERR_OUT_OF_BOUNDS` if the index is invalid.
-btr_balist_ptr_result_t BTR_BAList_get(const btr_balist_t *, long index);
+btr_container_ptr_result_t BTR_BAList_get(const btr_balist_t *, long index);
 // Returns the first item of the borrowing array list.
 // Returns `BTR_ERR` with `BTR_BALIST_ERR_OUT_OF_BOUNDS` if the list is empty.
-btr_balist_ptr_result_t BTR_BAList_first(const btr_balist_t *);
+btr_container_ptr_result_t BTR_BAList_first(const btr_balist_t *);
 // Returns the last item of the borrowing array list.
 // Returns `BTR_ERR` with `BTR_BALIST_ERR_OUT_OF_BOUNDS` if the list is empty.
-btr_balist_ptr_result_t BTR_BAList_last(const btr_balist_t *);
+btr_container_ptr_result_t BTR_BAList_last(const btr_balist_t *);
 // Returns the index of the first occurance of the item.
 // Returns `BTR_ERR` with `BTR_BALIST_ERR_NOT_FOUND` if the item wasn't found.
-btr_balist_idx_result_t BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
+btr_container_idx_result_t BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing array list.
 size_t BTR_BAList_len(const btr_balist_t *);
 // Tells if the borrowing array list is empty.
@@ -101,13 +94,8 @@ void BTR_BAList_clear(btr_balist_t *);
 
 #ifdef BTR_NO_PREFIX
 
-#define BALIST_ERR_OUT_OF_BOUNDS BTR_BALIST_ERR_OUT_OF_BOUNDS
-#define BALIST_ERR_NOT_FOUND BTR_BALIST_ERR_NOT_FOUND
-
 typedef btr_balist_t balist_t;
 typedef btr_balist_error_t balist_error_t;
-typedef btr_balist_ptr_result_t balist_ptr_result_t;
-typedef btr_balist_idx_result_t balist_idx_result_t;
 
 #define BAList_make      BTR_BAList_make
 #define BAList_makeEmpty BTR_BAList_makeEmpty

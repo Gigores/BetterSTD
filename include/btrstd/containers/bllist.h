@@ -2,7 +2,8 @@
 
 #include "stddef.h"
 #include "stdbool.h"
-#include "btrstd/error.h"
+
+#include "btrstd/containers/generic_contaier_data.h"
 
 // Borrowing Linked List
 
@@ -15,14 +16,6 @@ typedef struct {
     btr_bllist_node_t *head;
     size_t size;
 } btr_bllist_t;
-
-typedef enum {
-    BTR_BLLIST_ERR_OUT_OF_BOUNDS,
-    BTR_BLLIST_ERR_NOT_FOUND,
-} btr_bllist_error_t;
-
-typedef BTR_Result(void *, btr_bllist_error_t) btr_bllist_ptr_result_t;
-typedef BTR_Result(long, btr_bllist_error_t) btr_bllist_idx_result_t;
 
 // Creates a new borrowing linked list from an array of given values.
 // Example:
@@ -44,20 +37,20 @@ void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
 // Pops the data of the specified index from a borrowing linked list.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_BLLIST_ERR_OUT_OF_BOUNDS` if the index is invalid.
-btr_bllist_ptr_result_t BTR_BLList_pop(btr_bllist_t *, long index);
+btr_container_ptr_result_t BTR_BLList_pop(btr_bllist_t *, long index);
 // Returns the data of the specified index of the borrowing linked list.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_BLLIST_ERR_OUT_OF_BOUNDS` if the index is invalid.
-btr_bllist_ptr_result_t BTR_BLList_get(const btr_bllist_t *, long index);
+btr_container_ptr_result_t BTR_BLList_get(const btr_bllist_t *, long index);
 // Returns the first item of the borrowing linked list.
 // Returns `BTR_ERR` with `BTR_BLLIST_ERR_OUT_OF_BOUNDS` if the list is empty.
-btr_bllist_ptr_result_t BTR_BLList_first(const btr_bllist_t *);
+btr_container_ptr_result_t BTR_BLList_first(const btr_bllist_t *);
 // Returns the last item of the borrowing linked list.
 // Returns `BTR_ERR` with `BTR_BLLIST_ERR_OUT_OF_BOUNDS` if the list is empty.
-btr_bllist_ptr_result_t BTR_BLList_last(const btr_bllist_t *);
+btr_container_ptr_result_t BTR_BLList_last(const btr_bllist_t *);
 // Returns the index of the first occurance of the item.
 // Returns `BTR_ERR` with `BTR_BLLIST_ERR_NOT_FOUND` if the item wasn't found.
-btr_bllist_idx_result_t BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
+btr_container_idx_result_t BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing linked list.
 size_t BTR_BLList_len(const btr_bllist_t *);
 // Tells if the borrowing linked list is empty.
@@ -109,14 +102,8 @@ void BTR_BLList_clear(btr_bllist_t *);
 
 #ifdef BTR_NO_PREFIX
 
-#define BLLIST_ERR_OUT_OF_BOUNDS BTR_BLLIST_ERR_OUT_OF_BOUNDS
-#define BLLIST_ERR_NOT_FOUND BTR_BLLIST_ERR_NOT_FOUND
-
 typedef btr_bllist_node_t bllist_node_t;
 typedef btr_bllist_t bllist_t;
-typedef btr_bllist_error_t bllist_error_t;
-typedef btr_bllist_ptr_result_t bllist_ptr_result_t;
-typedef btr_bllist_idx_result_t bllist_idx_result_t;
 
 #define BLList_make    BTR_BLList_make
 #define BLList_clone   BTR_BLList_clone

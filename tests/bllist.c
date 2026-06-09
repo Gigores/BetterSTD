@@ -253,10 +253,10 @@ static void test7(void)
 
     // non-existing value
     int missing = 999;
-    btr_bllist_idx_result_t not_found = BTR_BLList_indexOf(&list, &missing, cmp_int);
+    btr_container_idx_result_t not_found = BTR_BLList_indexOf(&list, &missing, cmp_int);
 
     assert(not_found.status == BTR_ERR);
-    assert(not_found.error == BTR_BLLIST_ERR_NOT_FOUND);
+    assert(not_found.error == BTR_CONTAINER_ERR_NOT_FOUND);
 
     // duplicate case
     int dup = 30;
