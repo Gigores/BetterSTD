@@ -61,6 +61,7 @@ bool BTR_BAList_isEmpty(const btr_balist_t *);
 void BTR_BAList_reverse(btr_balist_t *);
 // Deallocates the borrowing array list.
 void BTR_BAList_free(btr_balist_t *);
+// The exact same as `BAList_free`
 void BTR_BAList_clear(btr_balist_t *);
 
 // Example usage:

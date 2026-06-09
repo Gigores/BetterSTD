@@ -136,4 +136,11 @@ void BTR_BAList_reverse(btr_balist_t *this)
 void BTR_BAList_free(btr_balist_t *this)
 {
     free(this->data);
+    this->data = NULL;
+    this->count = 0;
+    this->capacity = 0;
+}
+void BTR_BAList_clear(btr_balist_t *this)
+{
+    BTR_BAList_free(this);
 }
