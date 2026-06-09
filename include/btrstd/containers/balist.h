@@ -2,6 +2,7 @@
 
 #include "stddef.h"
 #include "stdbool.h"
+#include "btrstd/error.h"
 
 // Borrowing Array List
 
@@ -10,6 +11,14 @@ typedef struct {
     size_t count;
     size_t capacity;
 } btr_balist_t;
+
+typedef enum {
+    BTR_BALIST_ERR_OUT_OF_BOUNDS,
+    BTR_BALIST_ERR_NOT_FOUND,
+} btr_balist_error_t;
+
+typedef BTR_Result(void *, btr_balist_error_t) btr_balist_ptr_result_t;
+typedef BTR_Result(long, btr_balist_error_t) btr_balist_idx_result_t;
 
 // Creates a new borrowing array list from an array of given values.
 // Example:
@@ -33,20 +42,20 @@ void BTR_BAList_prepend(btr_balist_t *, void *data);
 void BTR_BAList_insert(btr_balist_t *, void *data, long index);
 // Pops the data of the specified index from a borrowing array list and returns it.
 // Can accept negative indexes.
-void *BTR_BAList_pop(btr_balist_t *, long index);
+btr_balist_ptr_result_t BTR_BAList_pop(btr_balist_t *, long index);
 // Returns the data of the specified index of the borrowing array list.
 // Returns `NULL` if the index is invalid.
 // Can accept negative indexes.
-void *BTR_BAList_get(const btr_balist_t *, long index);
+btr_balist_ptr_result_t BTR_BAList_get(const btr_balist_t *, long index);
 // Returns the first item of the borrowing array list.
 // Returns `NULL` if the list is empty.
-void *BTR_BAList_first(const btr_balist_t *);
+btr_balist_ptr_result_t BTR_BAList_first(const btr_balist_t *);
 // Returns the last item of the borrowing array list.
 // Returns `NULL` if the list is empty.
-void *BTR_BAList_last(const btr_balist_t *);
+btr_balist_ptr_result_t BTR_BAList_last(const btr_balist_t *);
 // Returns the index of the first occurance of the item.
 // Returns -1 if the item wasn't found.
-long BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
+btr_balist_idx_result_t BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing array list.
 size_t BTR_BAList_len(const btr_balist_t *);
 // Tells if the borrowing array list is empty.
