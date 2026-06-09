@@ -11,6 +11,16 @@ static void checkNull(btr_balist_t *this)
     if (!this->data)
         *this = BTR_BAList_makeEmpty(8);
 }
+static void checkSizeToGrow(btr_balist_t *this)
+{
+    if (this->count >= this->capacity)
+    {
+        void **newData = realloc(this->data, this->capacity * 1.5 * sizeof(void *));
+        if (!newData) return;
+        this->data = newData;
+        this->capacity *= 1.5;
+    }
+}
 
 btr_balist_t BTR_BAList_make(void *items[], size_t itemCount)
 {
@@ -47,14 +57,18 @@ void BTR_BAList_append(btr_balist_t *this, void *data)
 {
     if (!this) return;
     checkNull(this);
-    if (this->count >= this->capacity)
-    {
-        void **newData = realloc(this->data, this->capacity * 1.5 * sizeof(void *));
-        if (!newData) return;
-        this->data = newData;
-        this->capacity *= 1.5;
-    }
+    checkSizeToGrow(this);
     this->data[this->count++] = data;
+}
+void BTR_BAList_prepend(btr_balist_t *this, void *data)
+{
+    if (!this) return;
+    checkNull(this);
+    checkSizeToGrow(this);
+    for (size_t i = this->count; i > 0; i--)
+        this->data[i] = this->data[i - 1];
+    this->count++;
+    this->data[0] = data;
 }
 void *BTR_BAList_pop(btr_balist_t *this, long index)
 {
@@ -64,9 +78,7 @@ void *BTR_BAList_pop(btr_balist_t *this, long index)
     if (index < 0) index = this->count + index;
     void *toReturn = this->data[index];
     for (size_t i = index; i < this->count - 1; i++)
-    {
         this->data[i] = this->data[i + 1];
-    }
     this->count--;
     return toReturn;
 }

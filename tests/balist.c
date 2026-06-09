@@ -113,29 +113,29 @@ static void test3(void)
     BTR_BAList_free(&list);
     BTR_BAList_free(&clone);
 }
-// // test `prepend`
-// static void test4(void)
-// {
-//     printf("> test4\n");
-//
-//     const int VALUES[] = {
-//         0, 10, 20, 30, 40, 50, 60, 70, 80, 90
-//     };
-//     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
-//     btr_balist_t list = {0};
-//     for (size_t i = 0; i < N; i++)
-//         BTR_BAList_prepend(&list, (void *)&VALUES[i]);
-//     size_t i = 0;
-//     BTR_BALIST_FOREACH(&list, node)
-//     {
-//         int v = getInt(node);
-//         int expected = VALUES[N - 1 - i];
-//         assert(v == expected);
-//         i++;
-//     }
-//     assert(i == N);
-//     BTR_BAList_free(&list);
-// }
+// test `prepend`
+static void test4(void)
+{
+    printf("> test4\n");
+
+    const int VALUES[] = {
+        0, 10, 20, 30, 40, 50, 60, 70, 80, 90
+    };
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+    btr_balist_t list = {0};
+    for (size_t i = 0; i < N; i++)
+        BTR_BAList_prepend(&list, (void *)&VALUES[i]);
+    size_t i = 0;
+    BTR_BALIST_FOREACH(&list, node)
+    {
+        int v = getInt(node);
+        int expected = VALUES[N - 1 - i];
+        assert(v == expected);
+        i++;
+    }
+    assert(i == N);
+    BTR_BAList_free(&list);
+}
 // // test `insert`
 // static void test5(void)
 // {
@@ -298,7 +298,7 @@ int main(void) {
     test1();
     test2();
     test3();
-    // test4();
+    test4();
     // test5();
     // test6();
     // test7();
