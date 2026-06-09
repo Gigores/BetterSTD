@@ -53,6 +53,7 @@ void *BTR_BAList_last(const btr_balist_t *);
 long BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
 size_t BTR_BAList_len(const btr_balist_t *);
 bool BTR_BAList_isEmpty(const btr_balist_t *);
+// Reverses the order of items in the borrowing array list.
 void BTR_BAList_reverse(btr_balist_t *);
 // Deallocates the borrowing array list.
 void BTR_BAList_free(btr_balist_t *);

@@ -59,7 +59,6 @@ size_t BTR_BLList_len(const btr_bllist_t *);
 // Returns -1 if the pointer to the borrowing linked list is invalid.
 bool BTR_BLList_isEmpty(const btr_bllist_t *);
 // Reverses the order of items in the borrowing linked list.
-// Returns `false` if the pointer to the borrowing linked list is invalid.
 void BTR_BLList_reverse(btr_bllist_t *);
 // Deallocates the borrowing linked list.
 void BTR_BLList_free(btr_bllist_t *);

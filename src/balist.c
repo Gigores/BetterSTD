@@ -114,6 +114,15 @@ long BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void 
         if (cmp(i, value)) return n;
     return -1;
 }
+void BTR_BAList_reverse(btr_balist_t *this)
+{
+    void **newData = malloc(this->capacity * sizeof(void *));
+    if (!newData) return;
+    BTR_BALIST_ENUMERATE(this, i, n)
+        newData[this->count - n - 1] = i;
+    free(this->data);
+    this->data = newData;
+}
 void BTR_BAList_free(btr_balist_t *this)
 {
     free(this->data);
