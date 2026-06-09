@@ -47,6 +47,9 @@ void *BTR_BAList_first(const btr_balist_t *);
 // Returns `NULL` if the list is empty.
 // Returns `NULL` if the pointer to the borrowing array list is invalid.
 void *BTR_BAList_last(const btr_balist_t *);
+// Returns the index of the first occurance of the item.
+// Returns -1 if the item wasn't found.
+// Returns -1 if the pointer to the borrowing array list is invalid.
 long BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
 size_t BTR_BAList_len(const btr_balist_t *);
 bool BTR_BAList_isEmpty(const btr_balist_t *);
@@ -73,7 +76,7 @@ void BTR_BAList_clear(btr_balist_t *);
 // ```
 #define BTR_BALIST_ENUMERATE(LIST, i, n) \
     void *i; \
-    for (size_t n = 0; n < (LIST)->count && ((i = (LIST)->data[_i]), 1); n++)
+    for (size_t n = 0; n < (LIST)->count && ((i = (LIST)->data[n]), 1); n++)
 
 // Example usage:
 // ```c

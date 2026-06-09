@@ -107,6 +107,13 @@ void *BTR_BAList_last(const btr_balist_t *this)
     if (!this->count) return NULL;
     return this->data[this->count - 1];
 }
+long BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *))
+{
+    if (!list) return -1;
+    BTR_BALIST_ENUMERATE(list, i, n)
+        if (cmp(i, value)) return n;
+    return -1;
+}
 void BTR_BAList_free(btr_balist_t *this)
 {
     free(this->data);

@@ -223,45 +223,45 @@ static void test6(void)
 
     BTR_BAList_free(&list);
 }
-// // test `indexOf`
-// static void test7(void)
-// {
-//     printf("> test7\n");
-//
-//     const int VALUES[] = {
-//         10, 20, 30, 40, 50
-//     };
-//     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
-//
-//     btr_balist_t list = {0};
-//
-//     // build list
-//     for (size_t i = 0; i < N; i++)
-//         BTR_BAList_append(&list, (void *)&VALUES[i]);
-//
-//     // check all valid indices
-//     for (size_t i = 0; i < N; i++)
-//     {
-//         long idx = BTR_BAList_indexOf(&list, (void *)&VALUES[i], cmp_int);
-//         assert(idx == (long)i);
-//     }
-//
-//     // non-existing value
-//     int missing = 999;
-//     long not_found = BTR_BAList_indexOf(&list, &missing, cmp_int);
-//
-//     assert(not_found == -1);
-//
-//     // duplicate case
-//     int dup = 30;
-//     BTR_BAList_append(&list, &dup);
-//
-//     long first_occurrence = BTR_BAList_indexOf(&list, &dup, cmp_int);
-//
-//     assert(first_occurrence == 2); // first 30
-//
-//     BTR_BAList_free(&list);
-// }
+// test `indexOf`
+static void test7(void)
+{
+    printf("> test7\n");
+
+    const int VALUES[] = {
+        10, 20, 30, 40, 50
+    };
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+
+    btr_balist_t list = {0};
+
+    // build list
+    for (size_t i = 0; i < N; i++)
+        BTR_BAList_append(&list, (void *)&VALUES[i]);
+
+    // check all valid indices
+    for (size_t i = 0; i < N; i++)
+    {
+        long idx = BTR_BAList_indexOf(&list, (void *)&VALUES[i], cmp_int);
+        assert(idx == (long)i);
+    }
+
+    // non-existing value
+    int missing = 999;
+    long not_found = BTR_BAList_indexOf(&list, &missing, cmp_int);
+
+    assert(not_found == -1);
+
+    // duplicate case
+    int dup = 30;
+    BTR_BAList_append(&list, &dup);
+
+    long first_occurrence = BTR_BAList_indexOf(&list, &dup, cmp_int);
+
+    assert(first_occurrence == 2); // first 30
+
+    BTR_BAList_free(&list);
+}
 // // test `reverse`
 // static void test8(void)
 // {
@@ -301,7 +301,7 @@ int main(void) {
     test4();
     test5();
     test6();
-    // test7();
+    test7();
     // test8();
     printf("SUCCESS\n");
     return 0;
