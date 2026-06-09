@@ -39,7 +39,13 @@ void *BTR_BAList_pop(btr_balist_t *, long index);
 // Returns `NULL` if the pointer to the borrowing array list is invalid.
 // Can accept negative indexes.
 void *BTR_BAList_get(const btr_balist_t *, long index);
+// Returns the first item of the borrowing array list.
+// Returns `NULL` if the list is empty.
+// Returns `NULL` if the pointer to the borrowing array list is invalid.
 void *BTR_BAList_first(const btr_balist_t *);
+// Returns the last item of the borrowing array list.
+// Returns `NULL` if the list is empty.
+// Returns `NULL` if the pointer to the borrowing array list is invalid.
 void *BTR_BAList_last(const btr_balist_t *);
 long BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
 size_t BTR_BAList_len(const btr_balist_t *);

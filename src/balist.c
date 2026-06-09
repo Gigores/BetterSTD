@@ -95,6 +95,18 @@ void *BTR_BAList_get(const btr_balist_t *this, long index)
     if (index < 0) return NULL;
     return this->data[index];
 }
+void *BTR_BAList_first(const btr_balist_t *this)
+{
+    if (!this) return NULL;
+    if (!this->count) return NULL;
+    return this->data[0];
+}
+void *BTR_BAList_last(const btr_balist_t *this)
+{
+    if (!this) return NULL;
+    if (!this->count) return NULL;
+    return this->data[this->count - 1];
+}
 void BTR_BAList_free(btr_balist_t *this)
 {
     free(this->data);

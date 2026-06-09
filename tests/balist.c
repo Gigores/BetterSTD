@@ -182,47 +182,47 @@ static void test5(void)
 
     BTR_BAList_free(&list);
 }
-// // test `first` & `last`
-// static void test6(void)
-// {
-//     printf("> test6\n");
-//
-//     const int VALUES[] = {10, 20, 30, 40, 50};
-//     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
-//
-//     btr_balist_t list = {0};
-//
-//     // build list
-//     for (size_t i = 0; i < N; i++)
-//         BTR_BAList_append(&list, (void *)&VALUES[i]);
-//
-//     // first element
-//     int first = *(int *)BTR_BAList_first(&list);
-//     assert(first == VALUES[0]);
-//
-//     // last element
-//     int last = *(int *)BTR_BAList_last(&list);
-//     assert(last == VALUES[N - 1]);
-//
-//     // structural consistency check
-//     checkList(&list, (int *)VALUES, N);
-//
-//     // pop last and re-check
-//     int popped_last = *(int *)BTR_BAList_pop(&list, -1);
-//     assert(popped_last == VALUES[N - 1]);
-//
-//     const int VALUES_AFTER[] = {10, 20, 30, 40};
-//     checkList(&list, (int *)VALUES_AFTER, N - 1);
-//
-//     // pop first and re-check
-//     int popped_first = *(int *)BTR_BAList_pop(&list, 0);
-//     assert(popped_first == VALUES_AFTER[0]);
-//
-//     const int VALUES_AFTER2[] = {20, 30, 40};
-//     checkList(&list, (int *)VALUES_AFTER2, N - 2);
-//
-//     BTR_BAList_free(&list);
-// }
+// test `first` & `last`
+static void test6(void)
+{
+    printf("> test6\n");
+
+    const int VALUES[] = {10, 20, 30, 40, 50};
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+
+    btr_balist_t list = {0};
+
+    // build list
+    for (size_t i = 0; i < N; i++)
+        BTR_BAList_append(&list, (void *)&VALUES[i]);
+
+    // first element
+    int first = *(int *)BTR_BAList_first(&list);
+    assert(first == VALUES[0]);
+
+    // last element
+    int last = *(int *)BTR_BAList_last(&list);
+    assert(last == VALUES[N - 1]);
+
+    // structural consistency check
+    checkList(&list, (int *)VALUES, N);
+
+    // pop last and re-check
+    int popped_last = *(int *)BTR_BAList_pop(&list, -1);
+    assert(popped_last == VALUES[N - 1]);
+
+    const int VALUES_AFTER[] = {10, 20, 30, 40};
+    checkList(&list, (int *)VALUES_AFTER, N - 1);
+
+    // pop first and re-check
+    int popped_first = *(int *)BTR_BAList_pop(&list, 0);
+    assert(popped_first == VALUES_AFTER[0]);
+
+    const int VALUES_AFTER2[] = {20, 30, 40};
+    checkList(&list, (int *)VALUES_AFTER2, N - 2);
+
+    BTR_BAList_free(&list);
+}
 // // test `indexOf`
 // static void test7(void)
 // {
@@ -300,7 +300,7 @@ int main(void) {
     test3();
     test4();
     test5();
-    // test6();
+    test6();
     // test7();
     // test8();
     printf("SUCCESS\n");
