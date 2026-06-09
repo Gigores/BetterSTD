@@ -109,8 +109,11 @@ void BTR_BLList_clear(btr_bllist_t *);
 
 #ifdef BTR_NO_PREFIX
 
-typedef btr_bllist_node_t bllist_node_t
-typedef btr_bllist_t bllist_t
+#define BLLIST_ERR_OUT_OF_BOUNDS BTR_BLLIST_ERR_OUT_OF_BOUNDS
+#define BLLIST_ERR_NOT_FOUND BTR_BLLIST_ERR_NOT_FOUND
+
+typedef btr_bllist_node_t bllist_node_t;
+typedef btr_bllist_t bllist_t;
 typedef btr_bllist_error_t bllist_error_t;
 typedef btr_bllist_ptr_result_t bllist_ptr_result_t;
 typedef btr_bllist_idx_result_t bllist_idx_result_t;

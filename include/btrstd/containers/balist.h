@@ -98,3 +98,36 @@ void BTR_BAList_clear(btr_balist_t *);
         (void *[]){ __VA_ARGS__ },                         \
         sizeof((void *[]){ __VA_ARGS__ }) / sizeof(void *) \
     )
+
+#ifdef BTR_NO_PREFIX
+
+#define BALIST_ERR_OUT_OF_BOUNDS BTR_BALIST_ERR_OUT_OF_BOUNDS
+#define BALIST_ERR_NOT_FOUND BTR_BALIST_ERR_NOT_FOUND
+
+typedef btr_balist_t balist_t;
+typedef btr_balist_error_t balist_error_t;
+typedef btr_balist_ptr_result_t balist_ptr_result_t;
+typedef btr_balist_idx_result_t balist_idx_result_t;
+
+#define BAList_make      BTR_BAList_make
+#define BAList_makeEmpty BTR_BAList_makeEmpty
+#define BAList_clone     BTR_BAList_clone
+#define BAList_append    BTR_BAList_append
+#define BAList_prepend   BTR_BAList_prepend
+#define BAList_insert    BTR_BAList_insert
+#define BAList_pop       BTR_BAList_pop
+#define BAList_get       BTR_BAList_get
+#define BAList_first     BTR_BAList_first
+#define BAList_last      BTR_BAList_last
+#define BAList_indexOf   BTR_BAList_indexOf
+#define BAList_len       BTR_BAList_len
+#define BAList_isEmpty   BTR_BAList_isEmpty
+#define BAList_reverse   BTR_BAList_reverse
+#define BAList_free      BTR_BAList_free
+#define BAList_clear     BTR_BAList_clear
+
+#define BALIST_FOREACH   BTR_BALIST_FOREACH
+#define BALIST_ENUMERATE BTR_BALIST_ENUMERATE
+#define BALIST           BTR_BALIST
+
+#endif  // BTR_NO_PREFIX
