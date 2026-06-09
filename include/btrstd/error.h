@@ -99,4 +99,4 @@ typedef btr_result_status_t result_status_t;
 #define Ok BTR_Ok
 #define Err BTR_Err
 
-#endif
+#endif  // BTR_NO_PREFIX

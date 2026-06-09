@@ -36,4 +36,4 @@ typedef btr_log_level_t log_level_t;
 typedef btr_logger_t logger_t;
 #define Logger_log BTR_Logger_log
 
-#endif
+#endif  // BTR_NO_PREFIX
