@@ -20,6 +20,17 @@ static void checkSizeToGrow(btr_balist_t *this)
         this->capacity = newCapacity;
     }
 }
+static void checkSizeToShrink(btr_balist_t *this)
+{
+    if (this->count <= this->capacity / 4)
+    {
+        size_t newCapacity = this->capacity / 4;
+        void **newData = realloc(this->data, newCapacity * sizeof(void *));
+        BTR_panicIf(!newData, "reallocation failed");
+        this->data = newData;
+        this->capacity = newCapacity;
+    }
+}
 
 btr_balist_t BTR_BAList_make(void *items[], size_t itemCount)
 {
@@ -89,6 +100,7 @@ btr_balist_ptr_result_t BTR_BAList_pop(btr_balist_t *this, long index)
     for (size_t i = index; i < this->count - 1; i++)
         this->data[i] = this->data[i + 1];
     this->count--;
+    checkSizeToShrink(this);
     BTR_Ok(btr_balist_ptr_result_t, toReturn);
 }
 btr_balist_ptr_result_t BTR_BAList_get(const btr_balist_t *this, long index)
