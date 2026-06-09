@@ -7,7 +7,7 @@ typedef enum {
     BTR_ERR,
 } btr_result_status_t;
 
-// This macro lets you define your own generic Result values.
+// Defines a generic Result type.
 // Usage example:
 // ```c
 // typedef BTR_Result(void *, alloc_error_t) alloc_result_t;
@@ -23,7 +23,7 @@ typedef enum {
 void BTR_panicNormal(const char *format, ...);
 void BTR_panicErrCode(int errCode, const char *format, ...);
 
-// This macro prints out the formated error message and stops the program.
+// This macro prints out the formatted error message and stops the program.
 // Usage example:
 // ```c
 // void SomeStruct_someMethod(some_struct_t *this, int someData)
@@ -43,7 +43,7 @@ void BTR_panicErrCode(int errCode, const char *format, ...);
 void BTR_panicNormalIf(bool condition, const char *format, ...);
 void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
 
-// This macro prints out the formated error message and stops the program if the condition is true.
+// This macro prints out the formatted error message and stops the program if the condition is true.
 // Usage example:
 // ```c
 // void SomeStruct_someMethod(some_struct_t *this, int someData)
@@ -60,8 +60,8 @@ void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
     int: BTR_panicErrCodeIf,                                   \
 )(condition, second __VA_OPT__(,) __VA_ARGS__)
 
-// This macro panics with the given formated error message if the given result is Err.
-// Otherwise returns the .value of the result.
+// This macro panics with the given formatted error message if the given result is Err.
+// Otherwise evaluates to the .value of the result.
 #define BTR_expect(result, message, ...) ({                 \
     __auto_type _r = (result);                              \
     if (_r.status == BTR_ERR)                               \
@@ -70,7 +70,7 @@ void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
 })
 
 // This macro panics if the given result is Err.
-// Otherwise returns the .value of the result.
+// Otherwise evaluates to the .value of the result.
 #define BTR_unwrap(result) ({             \
     __auto_type _r = (result);            \
     if (_r.status == BTR_ERR)             \
@@ -78,8 +78,8 @@ void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
     _r.value;                             \
 })
 
-// This macro returns the given "fallback" value if the result is Err.
-// Otherwise returns the .value of the result.
+// This macro evaluates to the given "fallback" value if the result is Err.
+// Otherwise evaluates to the .value of the result.
 #define BTR_unwrapOr(result, fallback) ({ \
     __auto_type _r = (result);            \
     _r.status == BTR_OK                   \
@@ -87,7 +87,7 @@ void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
         : (fallback);                     \
 })
 
-// This macro returns the .error of the result if it is Err.
+// This macro evaluates to the .error of the result if it is Err.
 // Otherwise panics.
 #define BTR_unwrapErr(result) ({           \
     __auto_type _r = (result);             \
