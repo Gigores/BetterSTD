@@ -25,3 +25,15 @@ typedef struct {
 
 void BTR_Logger_log(btr_logger_t *, btr_log_level_t logLevel, const char *logPrefix, const char *formatString, ...);
 
+#ifdef BTR_NO_PREFIX
+
+#define LOG_LEVELS BTR_LOG_LEVELS
+typedef btr_log_level_t log_level_t;
+
+#define LogLevel_toString BTR_LogLevel_toString
+#define LogLevel_getColor BTR_LogLevel_getColor
+
+typedef btr_logger_t logger_t;
+#define Logger_log BTR_Logger_log
+
+#endif
