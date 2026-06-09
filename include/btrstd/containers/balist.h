@@ -56,7 +56,7 @@ void BTR_BAList_clear(btr_balist_t *);
 #define BTR_BALIST_FOREACH(LIST, i) \
     void *i; \
     for (size_t _i = 0; _i < (LIST)->count && ((i = (LIST)->data[_i]), 1); _i++)
-    
+
 // Example usage:
 // ```c
 // btr_balist_t list = {...};  // a list of strings
