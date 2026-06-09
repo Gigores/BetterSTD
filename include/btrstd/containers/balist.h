@@ -29,6 +29,7 @@ btr_balist_t BTR_BAList_clone(const btr_balist_t *list);
 void BTR_BAList_append(btr_balist_t *, void *data);
 // Prepends the data to the beginning of the borrowing array list.
 void BTR_BAList_prepend(btr_balist_t *, void *data);
+// Inserts an item into the borrowing array list so that it's index is the specified one.
 void BTR_BAList_insert(btr_balist_t *, void *data, long index);
 // Pops the data of the specified index from a borrowing array list and returns it.
 // Can accept negative indexes.

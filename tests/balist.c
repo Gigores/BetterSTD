@@ -136,52 +136,52 @@ static void test4(void)
     assert(i == N);
     BTR_BAList_free(&list);
 }
-// // test `insert`
-// static void test5(void)
-// {
-//     printf("> test5\n");
-//
-//     btr_balist_t list = {0};
-//
-//     int a = 1, b = 2, c = 3, d = 4;
-//
-//     // insert into empty list
-//     BTR_BAList_insert(&list, &a, 0);
-//     {
-//         int exp[] = {1};
-//         checkList(&list, exp, 1);
-//     }
-//
-//     // append (index == size)
-//     BTR_BAList_insert(&list, &b, 1);
-//     {
-//         int exp[] = {1, 2};
-//         checkList(&list, exp, 2);
-//     }
-//
-//     // insert in middle
-//     BTR_BAList_insert(&list, &c, 1);
-//     {
-//         int exp[] = {1, 3, 2};
-//         checkList(&list, exp, 3);
-//     }
-//
-//     // insert at head
-//     BTR_BAList_insert(&list, &d, 0);
-//     {
-//         int exp[] = {4, 1, 3, 2};
-//         checkList(&list, exp, 4);
-//     }
-//
-//     // negative index (-1 == before last, depending on your design)
-//     BTR_BAList_insert(&list, &a, -1);
-//     {
-//         int exp[] = {4, 1, 3, 1, 2};
-//         checkList(&list, exp, 5);
-//     }
-//
-//     BTR_BAList_free(&list);
-// }
+// test `insert`
+static void test5(void)
+{
+    printf("> test5\n");
+
+    btr_balist_t list = {0};
+
+    int a = 1, b = 2, c = 3, d = 4;
+
+    // insert into empty list
+    BTR_BAList_insert(&list, &a, 0);
+    {
+        int exp[] = {1};
+        checkList(&list, exp, 1);
+    }
+
+    // append (index == size)
+    BTR_BAList_insert(&list, &b, 1);
+    {
+        int exp[] = {1, 2};
+        checkList(&list, exp, 2);
+    }
+
+    // insert in middle
+    BTR_BAList_insert(&list, &c, 1);
+    {
+        int exp[] = {1, 3, 2};
+        checkList(&list, exp, 3);
+    }
+
+    // insert at head
+    BTR_BAList_insert(&list, &d, 0);
+    {
+        int exp[] = {4, 1, 3, 2};
+        checkList(&list, exp, 4);
+    }
+
+    // negative index (-1 == before last, depending on your design)
+    BTR_BAList_insert(&list, &a, -1);
+    {
+        int exp[] = {4, 1, 3, 1, 2};
+        checkList(&list, exp, 5);
+    }
+
+    BTR_BAList_free(&list);
+}
 // // test `first` & `last`
 // static void test6(void)
 // {
@@ -299,7 +299,7 @@ int main(void) {
     test2();
     test3();
     test4();
-    // test5();
+    test5();
     // test6();
     // test7();
     // test8();

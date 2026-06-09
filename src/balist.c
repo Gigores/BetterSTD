@@ -62,13 +62,18 @@ void BTR_BAList_append(btr_balist_t *this, void *data)
 }
 void BTR_BAList_prepend(btr_balist_t *this, void *data)
 {
+    BTR_BAList_insert(this, data, 0);
+}
+void BTR_BAList_insert(btr_balist_t *this, void *data, long index)
+{
     if (!this) return;
     checkNull(this);
     checkSizeToGrow(this);
-    for (size_t i = this->count; i > 0; i--)
+    if (index < 0) index = this->count + index;
+    for (size_t i = this->count; i > (size_t)index; i--)
         this->data[i] = this->data[i - 1];
     this->count++;
-    this->data[0] = data;
+    this->data[index] = data;
 }
 void *BTR_BAList_pop(btr_balist_t *this, long index)
 {
