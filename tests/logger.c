@@ -2,14 +2,18 @@
 
 int main(void)
 {
-    btr_logger_t logger = {
+    BTR_setLogger((btr_logger_t) {
         .file = fopen("log.log", "w+"),
-    };
-    BTR_Logger_log(&logger, LOG_DEBUG, "Test", "this is a test log");
-    BTR_Logger_log(&logger, LOG_INFO, "Test", "this is a test log");
-    BTR_Logger_log(&logger, LOG_WARN, "Test", "this is a test log");
-    BTR_Logger_log(&logger, LOG_ERROR, "Test", "this is a test log");
-    BTR_Logger_log(&logger, LOG_FATAL, "Test", "this is a test log");
-    fclose(logger.file);
+        .logTime = true,
+        .logFile = true,
+        .logFunc = true,
+        .logLine = true,
+    });
+    BTR_log(LOG_DEBUG, "this is a test log");
+    BTR_log(LOG_INFO, "this is a test log");
+    BTR_log(LOG_WARN, "this is a test log");
+    BTR_log(LOG_ERROR, "this is a test log");
+    BTR_log(LOG_FATAL, "this is a test log");
+    fclose(BTR_getLogger()->file);
     return 0;
 }
