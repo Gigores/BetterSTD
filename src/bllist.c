@@ -1,9 +1,6 @@
 #include "btrstd/containers/bllist.h"
 
-#include "btrstd/error.h"
-
 #include "stdlib.h"
-#include <stdio.h>
 
 btr_bllist_t BTR_BLList_make(void *items[], size_t itemCount)
 {
@@ -28,7 +25,7 @@ void BTR_BLList_append(btr_bllist_t *this, void *data)
     while (*currNode)
         currNode = &(*currNode)->next;
     *currNode = malloc(sizeof(btr_bllist_node_t));
-    if (!*currNode) return;
+    BTR_panicIf(!*currNode, "allocation failed");
     (*currNode)->payload = data;
     (*currNode)->next = NULL;
     this->size++;
@@ -38,7 +35,7 @@ void BTR_BLList_prepend(btr_bllist_t *this, void *data)
     BTR_panicIf(!this || !data, "`this` is null");
     btr_bllist_node_t *oldFirst = this->head;
     btr_bllist_node_t *newFirst = malloc(sizeof(btr_bllist_node_t));
-    if (!newFirst) return;
+    BTR_panicIf(!newFirst, "allocation failed");
     newFirst->payload = data;
     newFirst->next = oldFirst;
     this->head = newFirst;
@@ -48,25 +45,23 @@ void BTR_BLList_insert(btr_bllist_t *this, void *data, long index)
 {
     BTR_panicIf(!this || !data, "`this` is null");
     if (index < 0) index = (long)this->size + index;
-    if (index < 0 || (size_t)index > this->size) return;
+    BTR_panicIf(index < 0 || (size_t)index > this->size, "index out of bounds");
     if (index == 0) {
         BTR_BLList_prepend(this, data);
         return;
     }
     btr_bllist_node_t *currNode = this->head;
-    for (size_t i = 0; i < (size_t) index - 1; i++) {
-        if (!currNode) return;
+    for (size_t i = 0; i < (size_t) index - 1; i++)
         currNode = currNode->next;
-    }
-    if (!currNode) return;
+    BTR_panicIf(!currNode, "unexpected null node");
     btr_bllist_node_t *newNode = malloc(sizeof(btr_bllist_node_t));
-    if (!newNode) return;
+    BTR_panicIf(!newNode, "allocation failed");
     newNode->next = currNode->next;
     newNode->payload = data;
     currNode->next = newNode;
     this->size++;
 }
-void *BTR_BLList_pop(btr_bllist_t *this, long index)
+btr_bllist_ptr_result_t BTR_BLList_pop(btr_bllist_t *this, long index)
 {
     BTR_panicIf(!this, "`this` is null");
     BTR_panicIf(!this->head, "`this` is invalid");
@@ -77,52 +72,58 @@ void *BTR_BLList_pop(btr_bllist_t *this, long index)
         free(this->head);
         this->head = connectTo;
         this->size--;
-        return data;
+        BTR_Ok(btr_bllist_ptr_result_t, data);
     } else {
         btr_bllist_node_t **currNode = &this->head;
         for (long currIndex = 0; currIndex != index - 1 && *currNode != NULL; currIndex++)
             currNode = &(*currNode)->next;
-        if (!*currNode) return NULL;
-        if (!(*currNode)->next) return NULL;
+        if (!*currNode)
+            BTR_Err(btr_bllist_ptr_result_t, BTR_BLLIST_ERR_OUT_OF_BOUNDS);
+        if (!(*currNode)->next)
+            BTR_Err(btr_bllist_ptr_result_t, BTR_BLLIST_ERR_OUT_OF_BOUNDS);
         btr_bllist_node_t *connectTo = (*currNode)->next->next;
         void *data = (*currNode)->next->payload;
         free((*currNode)->next);
         (*currNode)->next = connectTo;
         this->size--;
-        return data;
+        BTR_Ok(btr_bllist_ptr_result_t, data);
     }
 }
-void *BTR_BLList_get(const btr_bllist_t *this, long index)
+btr_bllist_ptr_result_t BTR_BLList_get(const btr_bllist_t *this, long index)
 {
     BTR_panicIf(!this, "`this` is null");
     btr_bllist_node_t *currNode = this->head;
     if (index < 0) index = this->size + index;
     for (long currIndex = 0; currIndex != index && currNode != NULL; currIndex++)
         currNode = currNode->next;
-    if (!currNode) return NULL;
-    return currNode->payload;
+    if (!currNode)
+        BTR_Err(btr_bllist_ptr_result_t, BTR_BLLIST_ERR_OUT_OF_BOUNDS);
+    BTR_Ok(btr_bllist_ptr_result_t, currNode->payload);
 }
-void *BTR_BLList_first(const btr_bllist_t *this)
+btr_bllist_ptr_result_t BTR_BLList_first(const btr_bllist_t *this)
 {
     BTR_panicIf(!this, "`this` is null");
-    if (this->size == 0) return NULL;
-    return this->head->payload;
+    if (this->size == 0)
+        BTR_Err(btr_bllist_ptr_result_t, BTR_BLLIST_ERR_OUT_OF_BOUNDS);
+    BTR_Ok(btr_bllist_ptr_result_t, this->head->payload);
 }
-void *BTR_BLList_last(const btr_bllist_t *this)
+btr_bllist_ptr_result_t BTR_BLList_last(const btr_bllist_t *this)
 {
     BTR_panicIf(!this, "`this` is null");
-    if (this->size == 0) return NULL;
+    if (this->size == 0)
+        BTR_Err(btr_bllist_ptr_result_t, BTR_BLLIST_ERR_OUT_OF_BOUNDS);
     btr_bllist_node_t *currNode = this->head;
     while (currNode->next)
         currNode = currNode->next;
-    return currNode->payload;
+    BTR_Ok(btr_bllist_ptr_result_t, currNode->payload);
 }
-long BTR_BLList_indexOf(btr_bllist_t *this, void *value, bool (*cmp)(const void *, const void *))
+btr_bllist_idx_result_t BTR_BLList_indexOf(btr_bllist_t *this, void *value, bool (*cmp)(const void *, const void *))
 {
     BTR_panicIf(!this, "`this` is null");
     BTR_BLLIST_ENUMERATE(this, i, n)
-        if(cmp(i, value)) return n;
-    return -1;
+        if(cmp(i, value))
+            BTR_Ok(btr_bllist_idx_result_t, n);
+    BTR_Err(btr_bllist_idx_result_t, BTR_BLLIST_ERR_NOT_FOUND);
 }
 size_t BTR_BLList_len(const btr_bllist_t *this)
 {

@@ -102,9 +102,9 @@ void BTR_panicImplIf(const char *file, int line, const char *func, bool conditio
 #define BTR_isErr(result) ((result).status == BTR_ERR)
 
 // Returns an Ok result from the current function.
-#define BTR_Ok(T, Value) do { return ((T) { .status = BTR_OK, .value = (Value) }) } while(0)
+#define BTR_Ok(T, Value) do { return ((T) { .status = BTR_OK, .value = (Value) }); } while(0)
 // Returns an Err result from the current function.
-#define BTR_Err(T, Error) do { return ((T) { .status = BTR_ERR, .error = (Error) }) } while(0)
+#define BTR_Err(T, Error) do { return ((T) { .status = BTR_ERR, .error = (Error) }); } while(0)
 
 #ifdef BTR_NO_PREFIX
 

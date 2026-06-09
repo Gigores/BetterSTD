@@ -55,7 +55,7 @@ static void test1(void)
     // negative indexing check
     for (long k = -1; k >= -(long)N; k--)
     {
-        int v = getInt(BTR_BLList_get(&list, k));
+        int v = getInt(BTR_unwrap(BTR_BLList_get(&list, k)));
         assert(v == VALUES[N + k]);
     }
     BTR_BLList_free(&list);
@@ -76,13 +76,13 @@ static void test2(void)
     size_t n = sizeof(INPUT)/sizeof(INPUT[0]);
     for (size_t i = 0; i < n; i++)
         BTR_BLList_append(&list, (void *)&INPUT[i]);
-    int a = getInt(BTR_BLList_pop(&list, 1));
-    int b = getInt(BTR_BLList_pop(&list, 1));
+    int a = getInt(BTR_unwrap(BTR_BLList_pop(&list, 1)));
+    int b = getInt(BTR_unwrap(BTR_BLList_pop(&list, 1)));
     assert(a == INPUT[1]);
     assert(b == INPUT[2]);
     checkList(&list, (int *)EXPECT_AFTER_POP, 2);
-    int c = getInt(BTR_BLList_pop(&list, -1));
-    int d = getInt(BTR_BLList_pop(&list, -1));
+    int c = getInt(BTR_unwrap(BTR_BLList_pop(&list, -1)));
+    int d = getInt(BTR_unwrap(BTR_BLList_pop(&list, -1)));
     assert(c == INPUT[3]);
     assert(d == INPUT[0]);
     assert(list.size == 0);
@@ -111,8 +111,8 @@ static void test3(void)
     assert(clone.size == list.size);
     for (size_t i = 0; i < N; i++)
     {
-        int a = getInt(BTR_BLList_get(&list, i));
-        int b = getInt(BTR_BLList_get(&clone, i));
+        int a = getInt(BTR_unwrap(BTR_BLList_get(&list, i)));
+        int b = getInt(BTR_unwrap(BTR_BLList_get(&clone, i)));
         assert(a == b);
     }
     BTR_BLList_free(&list);
@@ -202,25 +202,25 @@ static void test6(void)
         BTR_BLList_append(&list, (void *)&VALUES[i]);
 
     // first element
-    int first = *(int *)BTR_BLList_first(&list);
+    int first = *(int *)BTR_unwrap(BTR_BLList_first(&list));
     assert(first == VALUES[0]);
 
     // last element
-    int last = *(int *)BTR_BLList_last(&list);
+    int last = *(int *)BTR_unwrap(BTR_BLList_last(&list));
     assert(last == VALUES[N - 1]);
 
     // structural consistency check
     checkList(&list, (int *)VALUES, N);
 
     // pop last and re-check
-    int popped_last = *(int *)BTR_BLList_pop(&list, -1);
+    int popped_last = *(int *)BTR_unwrap(BTR_BLList_pop(&list, -1));
     assert(popped_last == VALUES[N - 1]);
 
     const int VALUES_AFTER[] = {10, 20, 30, 40};
     checkList(&list, (int *)VALUES_AFTER, N - 1);
 
     // pop first and re-check
-    int popped_first = *(int *)BTR_BLList_pop(&list, 0);
+    int popped_first = *(int *)BTR_unwrap(BTR_BLList_pop(&list, 0));
     assert(popped_first == VALUES_AFTER[0]);
 
     const int VALUES_AFTER2[] = {20, 30, 40};
@@ -247,21 +247,22 @@ static void test7(void)
     // check all valid indices
     for (size_t i = 0; i < N; i++)
     {
-        long idx = BTR_BLList_indexOf(&list, (void *)&VALUES[i], cmp_int);
+        long idx = BTR_unwrap(BTR_BLList_indexOf(&list, (void *)&VALUES[i], cmp_int));
         assert(idx == (long)i);
     }
 
     // non-existing value
     int missing = 999;
-    long not_found = BTR_BLList_indexOf(&list, &missing, cmp_int);
+    btr_bllist_idx_result_t not_found = BTR_BLList_indexOf(&list, &missing, cmp_int);
 
-    assert(not_found == -1);
+    assert(not_found.status == BTR_ERR);
+    assert(not_found.error == BTR_BLLIST_ERR_NOT_FOUND);
 
     // duplicate case
     int dup = 30;
     BTR_BLList_append(&list, &dup);
 
-    long first_occurrence = BTR_BLList_indexOf(&list, &dup, cmp_int);
+    long first_occurrence = BTR_unwrap(BTR_BLList_indexOf(&list, &dup, cmp_int));
 
     assert(first_occurrence == 2); // first 30
 
@@ -284,7 +285,7 @@ static void test8(void)
     BTR_BLList_reverse(&list);
     for (size_t i = 0; i < N; i++)
     {
-        int v = *(int *)BTR_BLList_get(&list, i);
+        int v = *(int *)BTR_unwrap(BTR_BLList_get(&list, i));
         int expected = VALUES[N - 1 - i];
         assert(v == expected);
     }
@@ -292,7 +293,7 @@ static void test8(void)
     BTR_BLList_reverse(&list);
     for (size_t i = 0; i < N; i++)
     {
-        int v = *(int *)BTR_BLList_get(&list, i);
+        int v = *(int *)BTR_unwrap(BTR_BLList_get(&list, i));
         assert(v == VALUES[i]);
     }
     assert(list.size == N);

@@ -2,6 +2,7 @@
 
 #include "stddef.h"
 #include "stdbool.h"
+#include "btrstd/error.h"
 
 // Borrowing Linked List
 
@@ -14,6 +15,14 @@ typedef struct {
     btr_bllist_node_t *head;
     size_t size;
 } btr_bllist_t;
+
+typedef enum {
+    BTR_BLLIST_ERR_OUT_OF_BOUNDS,
+    BTR_BLLIST_ERR_NOT_FOUND,
+} btr_bllist_error_t;
+
+typedef BTR_Result(void *, btr_bllist_error_t) btr_bllist_ptr_result_t;
+typedef BTR_Result(long, btr_bllist_error_t) btr_bllist_idx_result_t;
 
 // Creates a new borrowing linked list from an array of given values.
 // Example:
@@ -34,20 +43,20 @@ void BTR_BLList_prepend(btr_bllist_t *, void *data);
 void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
 // Pops the data of the specified index from a borrowing linked list and returns it.
 // Can accept negative indexes.
-void *BTR_BLList_pop(btr_bllist_t *, long index);
+btr_bllist_ptr_result_t BTR_BLList_pop(btr_bllist_t *, long index);
 // Returns the data of the specified index of the borrowing linked list.
 // Returns `NULL` if the index is invalid.
 // Can accept negative indexes.
-void *BTR_BLList_get(const btr_bllist_t *, long index);
+btr_bllist_ptr_result_t BTR_BLList_get(const btr_bllist_t *, long index);
 // Returns the first item of the borrowing linked list.
 // Returns `NULL` if the list is empty.
-void *BTR_BLList_first(const btr_bllist_t *);
+btr_bllist_ptr_result_t BTR_BLList_first(const btr_bllist_t *);
 // Returns the last item of the borrowing linked list.
 // Returns `NULL` if the list is empty.
-void *BTR_BLList_last(const btr_bllist_t *);
+btr_bllist_ptr_result_t BTR_BLList_last(const btr_bllist_t *);
 // Returns the index of the first occurance of the item.
 // Returns -1 if the item wasn't found.
-long BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
+btr_bllist_idx_result_t BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing linked list.
 size_t BTR_BLList_len(const btr_bllist_t *);
 // Tells if the borrowing linked list is empty.
@@ -101,6 +110,9 @@ void BTR_BLList_clear(btr_bllist_t *);
 
 typedef btr_bllist_node_t bllist_node_t
 typedef btr_bllist_t bllist_t
+typedef btr_bllist_error_t bllist_error_t;
+typedef btr_bllist_ptr_result_t bllist_ptr_result_t;
+typedef btr_bllist_idx_result_t bllist_idx_result_t;
 
 #define BLList_make    BTR_BLList_make
 #define BLList_clone   BTR_BLList_clone
