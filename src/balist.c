@@ -25,10 +25,16 @@ static void checkSizeToShrink(btr_balist_t *this)
     if (this->count <= this->capacity / 4)
     {
         size_t newCapacity = this->capacity / 4;
-        void **newData = realloc(this->data, newCapacity * sizeof(void *));
-        BTR_panicIf(!newData, "reallocation failed");
-        this->data = newData;
-        this->capacity = newCapacity;
+        if (newCapacity == 0) {
+            free(this->data);
+            this->data = NULL;
+            this->capacity = 0;
+        } else {
+            void **newData = realloc(this->data, newCapacity * sizeof(void *));
+            BTR_panicIf(!newData, "checkSizeToShrink: reallocation failed");
+            this->data = newData;
+            this->capacity = newCapacity;
+        }
     }
 }
 
