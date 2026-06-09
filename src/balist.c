@@ -1,13 +1,13 @@
 #include "btrstd/containers/balist.h"
 
+#include "btrstd/error.h"
+
 #include "stdlib.h"
 #include "string.h"
 
-#include "stdio.h"
-
 static void checkNull(btr_balist_t *this)
 {
-    if (!this) return;
+    BTR_panicIf(!this, "`this` is invalid");
     if (!this->data)
         *this = BTR_BAList_makeEmpty(8);
 }
@@ -45,6 +45,7 @@ btr_balist_t BTR_BAList_makeEmpty(size_t capacity)
 }
 btr_balist_t BTR_BAList_clone(const btr_balist_t *list)
 {
+    BTR_panicIf(!list, "`list` is invalid");
     void **data = malloc(list->capacity * sizeof(void *));
     memcpy(data, list->data, list->capacity * sizeof(void *));
     return (btr_balist_t) {
@@ -55,18 +56,19 @@ btr_balist_t BTR_BAList_clone(const btr_balist_t *list)
 }
 void BTR_BAList_append(btr_balist_t *this, void *data)
 {
-    if (!this) return;
+    BTR_panicIf(!this, "`this` is invalid");
     checkNull(this);
     checkSizeToGrow(this);
     this->data[this->count++] = data;
 }
 void BTR_BAList_prepend(btr_balist_t *this, void *data)
 {
+    BTR_panicIf(!this, "`this` is invalid");
     BTR_BAList_insert(this, data, 0);
 }
 void BTR_BAList_insert(btr_balist_t *this, void *data, long index)
 {
-    if (!this) return;
+    BTR_panicIf(!this, "`this` is invalid");
     checkNull(this);
     checkSizeToGrow(this);
     if (index < 0) index = this->count + index;
@@ -77,7 +79,7 @@ void BTR_BAList_insert(btr_balist_t *this, void *data, long index)
 }
 void *BTR_BAList_pop(btr_balist_t *this, long index)
 {
-    if (!this) return NULL;
+    BTR_panicIf(!this, "`this` is invalid");
     checkNull(this);
     if (!this->count) return NULL;
     if (index < 0) index = this->count + index;
@@ -89,7 +91,7 @@ void *BTR_BAList_pop(btr_balist_t *this, long index)
 }
 void *BTR_BAList_get(const btr_balist_t *this, long index)
 {
-    if (!this) return NULL;
+    BTR_panicIf(!this, "`this` is invalid");
     if (index < 0) index = this->count + index;
     if ((size_t)index > this->count) return NULL;
     if (index < 0) return NULL;
@@ -97,35 +99,36 @@ void *BTR_BAList_get(const btr_balist_t *this, long index)
 }
 void *BTR_BAList_first(const btr_balist_t *this)
 {
-    if (!this) return NULL;
+    BTR_panicIf(!this, "`this` is invalid");
     if (!this->count) return NULL;
     return this->data[0];
 }
 void *BTR_BAList_last(const btr_balist_t *this)
 {
-    if (!this) return NULL;
+    BTR_panicIf(!this, "`this` is invalid");
     if (!this->count) return NULL;
     return this->data[this->count - 1];
 }
 long BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *))
 {
-    if (!list) return -1;
+    BTR_panicIf(!list, "`list` is invalid");
     BTR_BALIST_ENUMERATE(list, i, n)
         if (cmp(i, value)) return n;
     return -1;
 }
 size_t BTR_BAList_len(const btr_balist_t *this)
 {
-    if (!this) return 0;
+    BTR_panicIf(!this, "`this` is invalid");
     return this->count;
 }
 bool BTR_BAList_isEmpty(const btr_balist_t *this)
 {
-    if (!this) return false;
+    BTR_panicIf(!this, "`this` is invalid");
     return this->count == 0;
 }
 void BTR_BAList_reverse(btr_balist_t *this)
 {
+    BTR_panicIf(!this, "`this` is invalid");
     void **newData = malloc(this->capacity * sizeof(void *));
     if (!newData) return;
     BTR_BALIST_ENUMERATE(this, i, n)
@@ -135,6 +138,7 @@ void BTR_BAList_reverse(btr_balist_t *this)
 }
 void BTR_BAList_free(btr_balist_t *this)
 {
+    BTR_panicIf(!this, "`this` is invalid");
     free(this->data);
     this->data = NULL;
     this->count = 0;
@@ -142,5 +146,6 @@ void BTR_BAList_free(btr_balist_t *this)
 }
 void BTR_BAList_clear(btr_balist_t *this)
 {
+    BTR_panicIf(!this, "`this` is invalid");
     BTR_BAList_free(this);
 }

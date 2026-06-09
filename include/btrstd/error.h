@@ -37,7 +37,7 @@ void BTR_panicErrCode(int errCode, const char *format, ...);
 #define BTR_panic(first, ...) _Generic((first), \
     const char *: BTR_panicNormal,              \
     char *: BTR_panicNormal,                    \
-    int: BTR_panicErrCode,                      \
+    int: BTR_panicErrCode                       \
 )(first __VA_OPT__(,) __VA_ARGS__)
 
 void BTR_panicNormalIf(bool condition, const char *format, ...);
@@ -57,7 +57,7 @@ void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
 #define BTR_panicIf(condition, second, ...) _Generic((second), \
     const char *: BTR_panicNormalIf,                           \
     char *: BTR_panicNormalIf,                                 \
-    int: BTR_panicErrCodeIf,                                   \
+    int: BTR_panicErrCodeIf                                    \
 )(condition, second __VA_OPT__(,) __VA_ARGS__)
 
 // This macro panics with the given formatted error message if the given result is Err.

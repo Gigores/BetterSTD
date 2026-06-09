@@ -37,26 +37,20 @@ void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
 void *BTR_BLList_pop(btr_bllist_t *, long index);
 // Returns the data of the specified index of the borrowing linked list.
 // Returns `NULL` if the index is invalid.
-// Returns `NULL` if the pointer to the borrowing linked list is invalid.
 // Can accept negative indexes.
 void *BTR_BLList_get(const btr_bllist_t *, long index);
 // Returns the first item of the borrowing linked list.
 // Returns `NULL` if the list is empty.
-// Returns `NULL` if the pointer to the borrowing linked list is invalid.
 void *BTR_BLList_first(const btr_bllist_t *);
 // Returns the last item of the borrowing linked list.
 // Returns `NULL` if the list is empty.
-// Returns `NULL` if the pointer to the borrowing linked list is invalid.
 void *BTR_BLList_last(const btr_bllist_t *);
 // Returns the index of the first occurance of the item.
 // Returns -1 if the item wasn't found.
-// Returns -1 if the pointer to the borrowing linked list is invalid.
 long BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing linked list.
-// Returns 0 if the pointer to the borrowing linked list is invalid.
 size_t BTR_BLList_len(const btr_bllist_t *);
 // Tells if the borrowing linked list is empty.
-// Returns `false` if the pointer to the borrowing linked list is invalid.
 bool BTR_BLList_isEmpty(const btr_bllist_t *);
 // Reverses the order of items in the borrowing linked list.
 void BTR_BLList_reverse(btr_bllist_t *);
