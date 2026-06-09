@@ -3,6 +3,7 @@
 #include "btrstd/error.h"
 
 #include "stdlib.h"
+#include <stdio.h>
 
 btr_bllist_t BTR_BLList_make(void *items[], size_t itemCount)
 {

@@ -20,8 +20,7 @@ typedef enum {
     };                            \
 }
 
-void BTR_panicNormal(const char *format, ...);
-void BTR_panicErrCode(int errCode, const char *format, ...);
+void BTR_panicImpl(const char *file, int line, const char *format, ...);
 
 // This macro prints out the formatted error message and stops the program.
 // Usage example:
@@ -32,16 +31,9 @@ void BTR_panicErrCode(int errCode, const char *format, ...);
 //     // ...
 // }
 // ```
-// You can optionally pass a 32-bit integer as the first parameter to make the program exit with this code.
-// The default exit code is 1.
-#define BTR_panic(first, ...) _Generic((first), \
-    const char *: BTR_panicNormal,              \
-    char *: BTR_panicNormal,                    \
-    int: BTR_panicErrCode                       \
-)(first __VA_OPT__(,) __VA_ARGS__)
+#define BTR_panic(first, ...) BTR_panicImpl(__FILE__, __LINE__, first __VA_OPT__(,) __VA_ARGS__)
 
-void BTR_panicNormalIf(bool condition, const char *format, ...);
-void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
+void BTR_panicImplIf(const char *file, int line, bool condition, const char *format, ...);
 
 // This macro prints out the formatted error message and stops the program if the condition is true.
 // Usage example:
@@ -52,20 +44,14 @@ void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
 //     // ...
 // }
 // ```
-// You can optionally pass a 32-bit integer as the second parameter to make the program exit with this code.
-// The default exit code is 1.
-#define BTR_panicIf(condition, second, ...) _Generic((second), \
-    const char *: BTR_panicNormalIf,                           \
-    char *: BTR_panicNormalIf,                                 \
-    int: BTR_panicErrCodeIf                                    \
-)(condition, second __VA_OPT__(,) __VA_ARGS__)
+#define BTR_panicIf(condition, second, ...) BTR_panicImplIf(__FILE__, __LINE__, condition, second __VA_OPT__(,) __VA_ARGS__)
 
 // This macro panics with the given formatted error message if the given result is Err.
 // Otherwise evaluates to the .value of the result.
 #define BTR_expect(result, message, ...) ({                 \
     __auto_type _r = (result);                              \
     if (_r.status == BTR_ERR)                               \
-        BTR_panicNormal(message __VA_OPT__(,) __VA_ARGS__); \
+        BTR_panic(message __VA_OPT__(,) __VA_ARGS__); \
     _r.value;                                               \
 })
 
@@ -74,7 +60,7 @@ void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
 #define BTR_unwrap(result) ({             \
     __auto_type _r = (result);            \
     if (_r.status == BTR_ERR)             \
-        BTR_panicNormal("unwrap failed"); \
+        BTR_panic("unwrap failed"); \
     _r.value;                             \
 })
 
@@ -92,7 +78,7 @@ void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
 #define BTR_unwrapErr(result) ({           \
     __auto_type _r = (result);             \
     if (_r.status == BTR_OK)               \
-        BTR_panicNormal("expected error"); \
+        BTR_panic("expected error"); \
     _r.error;                              \
 })
 
@@ -125,12 +111,7 @@ void BTR_panicErrCodeIf(bool condition, int errCode, const char *format, ...);
 typedef btr_result_status_t result_status_t;
 #define Result BTR_Result
 
-#define panicNormal BTR_panicNormal
-#define panicErrCode BTR_panicErrCode
 #define panic BTR_panic
-
-#define panicNormalIf BTR_panicNormalIf
-#define panicErrCodeIf BTR_panicErrCodeIf
 #define panicIf BTR_panicIf
 
 #define expect BTR_expect
