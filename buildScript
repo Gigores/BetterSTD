@@ -3,6 +3,7 @@
 from typing import Final, List
 import subprocess
 import argparse
+import shutil
 import os
 
 
@@ -23,6 +24,12 @@ def load_args() -> List[str]:
 
 def task_build() -> None:
 
+    if shutil.which("gcc") is None:
+        print("GCC not found")
+        return
+    if shutil.which("ar") is None:
+        print("ar not found")
+        return
     if not os.path.exists(BUILD_DIR):
         os.mkdir(BUILD_DIR)
     res: subprocess.CompletedProcess[bytes] = subprocess.run([
@@ -33,16 +40,19 @@ def task_build() -> None:
         "-o",
         os.path.join(BUILD_DIR, OBJ_FILE)
     ])
-    if res.returncode == 0:
-        print("Build successfull")
-    else:
+    if res.returncode != 0:
         print(f"Build failed with return code of {res.returncode}")
         return
-    subprocess.run([
+    res = subprocess.run([
         "ar", "rcs",
         os.path.join(BUILD_DIR, LIB_FILE),
         os.path.join(BUILD_DIR, OBJ_FILE)
     ])
+    if res.returncode == 0:
+        print("Build successfull")
+    else:
+        print(f"Archiving failed with return code of {res.returncode}")
+        return
 
 def task_test() -> None:
 
@@ -51,11 +61,12 @@ def task_test() -> None:
     if not os.path.exists(TESTS_BUILD_DIR):
         os.mkdir(TESTS_BUILD_DIR)
 
+    build_args: Final[List[str]] = load_args()
     for test in os.listdir(TESTS_DIR):
         test_name: str = os.path.basename(test).split(".")[0]
         buildResult: subprocess.CompletedProcess[bytes] = subprocess.run([
             "gcc",
-            *load_args(),
+            *build_args,
             "-fsanitize=address",
             os.path.join(TESTS_DIR, test),
             "-Lbuild",
