@@ -1,0 +1,87 @@
+#! /usr/bin/python
+
+from typing import Final, List
+import subprocess
+import argparse
+import os
+
+
+BUILD_ARGS_FILE: Final[str] = "compile_flags.txt"
+TESTS_DIR      : Final[str] = "tests"
+BUILD_DIR      : Final[str] = "build"
+OBJ_FILE       : Final[str] = "_btrstd.o"
+LIB_FILE       : Final[str] = "libbtrstd.a"
+COMPILE_THIS   : Final[str] = os.path.join("src", "_btrstd.c")
+TESTS_BUILD_DIR: Final[str] = os.path.join(BUILD_DIR, "tests")
+
+
+def load_args() -> List[str]:
+    with open(BUILD_ARGS_FILE, "r") as f:
+        result: Final[str] = f.read()
+    return result.split()
+
+
+def task_build() -> None:
+
+    if not os.path.exists(BUILD_DIR):
+        os.mkdir(BUILD_DIR)
+    res: subprocess.CompletedProcess[bytes] = subprocess.run([
+        "gcc",
+        *load_args(),
+        "-c",
+        COMPILE_THIS,
+        "-o",
+        os.path.join(BUILD_DIR, OBJ_FILE)
+    ])
+    if res.returncode == 0:
+        print("Build successfull")
+    else:
+        print(f"Build failed with return code of {res.returncode}")
+        return
+    subprocess.run([
+        "ar", "rcs",
+        os.path.join(BUILD_DIR, LIB_FILE),
+        os.path.join(BUILD_DIR, OBJ_FILE)
+    ])
+
+def task_test() -> None:
+
+    task_build()
+
+    if not os.path.exists(TESTS_BUILD_DIR):
+        os.mkdir(TESTS_BUILD_DIR)
+
+    for test in os.listdir(TESTS_DIR):
+        test_name: str = os.path.basename(test).split(".")[0]
+        buildResult: subprocess.CompletedProcess[bytes] = subprocess.run([
+            "gcc",
+            *load_args(),
+            "-fsanitize=address",
+            os.path.join(TESTS_DIR, test),
+            "-Lbuild",
+            "-lbtrstd",
+            "-o",
+            os.path.join("build", test_name)
+        ])
+        if buildResult.returncode != 0:
+            print(f"Build of {os.path.basename(test)} failed with return code of {buildResult.returncode}")
+            continue
+        print(f">>> Testing {os.path.basename(test)}")
+        testResult: subprocess.CompletedProcess[bytes] = subprocess.run([
+            os.path.join("build", test_name)
+        ])
+        if testResult.returncode != 0:
+            print(f"Test {os.path.basename(test)} failed with return code of {buildResult.returncode}")
+
+
+if __name__ == "__main__":
+
+    parser: Final[argparse.ArgumentParser] = argparse.ArgumentParser(prog="BetterSTD build script")
+    parser.add_argument("action")
+
+    action: str = parser.parse_args().action
+
+    if action == "build":  task_build()
+    elif action == "test": task_test()
+    else:                  print(f"Invalid action \"{action}\"")
+
