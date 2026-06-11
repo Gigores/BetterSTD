@@ -5,7 +5,7 @@
 #include "stddef.h"
 
 // This string view implementation fully supports UTF-8.
-// All operations are performed over UTF-8 characters, unless specified otherwis.
+// All operations are performed over UTF-8 characters, unless specified otherwise.
 
 typedef struct {
     char *data;

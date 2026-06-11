@@ -1,7 +1,8 @@
 # BetterSTD
 
 BetterSTD is a library for C, that was made to "extend" C's standard library with features like different kinds of containers (list, dynamic array, ...) and utilities like logging system, string views and rust-like error handling.
-This library, as might have already guessed, is quite opinionated. It was designed by myself, for myself. Just so that I don't have to reimplement stuff I already implemented in every project I work on. But if you still want to use this library, you can follow the tutorial down below.
+
+This library, as you might have already guessed, is quite opinionated. It was designed by myself, for myself. Just so that I don't have to reimplement stuff I already implemented in every project I work on. But if you still want to use this library, you can follow the tutorial down below.
 
 ## Using
 
@@ -16,7 +17,7 @@ After obtaining the `libbtrstd.a` file, you can link with it like this:
 gcc main.c -L/path/to/library -lbtrstd -o program
 ```
 
-If the headers are located in a custom directory, add the include path:
+If headers are located in a custom directory, add the include path:
 
 ```shell
 gcc main.c -I/path/to/include -L/path/to/library -lbtrstd -o program
