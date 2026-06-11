@@ -1,1 +1,1 @@
--std=c11 -Iinclude -Wall -Wextra -Wno-unused-function
+-std=gnu11 -Iinclude -Wall -Wextra -Wno-unused-function
