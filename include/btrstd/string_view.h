@@ -1,6 +1,5 @@
 #pragma once
 
-#include "stddef.h"
 #include "stdbool.h"
 #include "stddef.h"
 
@@ -69,7 +68,6 @@ int BTR_StringView_compare(btr_string_view_t *, btr_string_view_t *);
 // ```c
 // printf("Printing > "STRING_FORMAT"\n", STRING_ARGS(str));
 // ```
-// Can accept both string_t and string_view_t.
 #define BTR_STRING_FORMAT "%.*s"
 #define BTR_STRING_ARGS(STRING) STRING.length, STRING.data + STRING.start
 

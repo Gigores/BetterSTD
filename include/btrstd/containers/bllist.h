@@ -3,7 +3,7 @@
 #include "stddef.h"
 #include "stdbool.h"
 
-#include "btrstd/containers/generic_contaier_data.h"
+#include "btrstd/containers/generic_container_data.h"
 
 // Borrowing Linked List
 
@@ -32,7 +32,7 @@ btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list);
 void BTR_BLList_append(btr_bllist_t *, void *data);
 // Prepends the data to the beginning of the borrowing linked list.
 void BTR_BLList_prepend(btr_bllist_t *, void *data);
-// Inserts an item so that it's index is the specified one.
+// Inserts an item so that its index is the specified one.
 void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
 // Pops the data of the specified index from a borrowing linked list.
 // Can accept negative indexes.
@@ -48,7 +48,7 @@ btr_container_ptr_result_t BTR_BLList_first(const btr_bllist_t *);
 // Returns the last item of the borrowing linked list.
 // Returns `BTR_ERR` with `BTR_BLLIST_ERR_OUT_OF_BOUNDS` if the list is empty.
 btr_container_ptr_result_t BTR_BLList_last(const btr_bllist_t *);
-// Returns the index of the first occurance of the item.
+// Returns the index of the first occurrence of the item.
 // Returns `BTR_ERR` with `BTR_BLLIST_ERR_NOT_FOUND` if the item wasn't found.
 btr_container_idx_result_t BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing linked list.
@@ -59,7 +59,7 @@ bool BTR_BLList_isEmpty(const btr_bllist_t *);
 void BTR_BLList_reverse(btr_bllist_t *);
 // Deallocates the borrowing linked list.
 void BTR_BLList_free(btr_bllist_t *);
-// The exact same as `BLList_free`
+// Exactly the same as `BLList_free`
 void BTR_BLList_clear(btr_bllist_t *);
 // Example usage:
 // ```c

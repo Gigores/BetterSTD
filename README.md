@@ -2,7 +2,7 @@
 
 BetterSTD is a library for C, that was made to "extend" C's standard library with features like different kinds of containers (list, dynamic array, ...) and utilities like logging system, string views and rust-like error handling.
 
-This library, as you might have already guessed, is quite opinionated. It was designed by myself, for myself. Just so that I don't have to reimplement stuff I already implemented in every project I work on. But if you still want to use this library, you can follow the tutorial down below.
+This library, as you might have already guessed, is quite opinionated. It was designed by me, for me. Just so that I don't have to reimplement stuff I already implemented in every project I work on. But if you still want to use this library, you can follow the tutorial below.
 
 ## Using
 
@@ -64,7 +64,7 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
 
 - [x] [Error handling system](./include/btrstd/error.h)
 - [x] [Logging system](./include/btrstd/logger.h)
-- [x] [String view](./include/btrstd/string_view.h)
+- [x] [String view](./include/btrstd/string_view.h) (Supports UTF-8)
 - [ ] Allocators
   - [ ] Arena
   - [ ] Pool
@@ -79,5 +79,5 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
   - [ ] Unique pointer
   - [ ] Shared pointer
 
-If you need documentation, just read throught the header files. They are well documented.
+If you need documentation, just read through the header files. They are well documented.
 
