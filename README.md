@@ -28,16 +28,16 @@ Then you just include headers and use the library:
 ```c
 // #include "btrstd/btrstd.h"  // You can use this header to include the entire library
 // #define BTR_NO_PREFIX       // You can also define this macro to get aliases without prefixes
+#include "btrstd/smart_pointers.h"
 #include "btrstd/logger.h"
 
 int main(void)
 {
+    BTR_autoFile file = fopen("log.log", "w+");
     BTR_setLogger((btr_logger_t) {
-        .file = fopen("log.log", "w+"),
-        .logTime = true,
+        .file = file,
     });
     BTR_log(LOG_INFO, "We are logging!");
-    fclose(BTR_getLogger()->file);
     return 0;
 }
 ```
@@ -65,6 +65,7 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
 - [x] [Error handling system](./include/btrstd/error.h)
 - [x] [Logging system](./include/btrstd/logger.h)
 - [x] [String view](./include/btrstd/string_view.h) (Supports UTF-8)
+- [x] [Smart pointers](./include/btrstd/smart_pointers.h)
 - [ ] Allocators
   - [ ] Arena
   - [ ] Pool
@@ -75,9 +76,6 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
   - [ ] Hash Map
   - [ ] Hash Set ?
 - [ ] Json
-- [ ] Smart pointers
-  - [ ] Unique pointer
-  - [ ] Shared pointer
 
 If you need documentation, just read through the header files. They are well documented.
 

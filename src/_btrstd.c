@@ -3,3 +3,4 @@
 #include "string_view.c"
 #include "logger.c"
 #include "error.c"
+#include "smart_pointers.c"
