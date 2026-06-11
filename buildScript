@@ -84,6 +84,11 @@ def task_test() -> None:
         if testResult.returncode != 0:
             print(f"Test {os.path.basename(test)} failed with return code of {buildResult.returncode}")
 
+def task_clean() -> None:
+
+    if os.path.exists(BUILD_DIR):
+        shutil.rmtree(BUILD_DIR)
+
 
 if __name__ == "__main__":
 
@@ -92,7 +97,8 @@ if __name__ == "__main__":
 
     action: str = parser.parse_args().action
 
-    if action == "build":  task_build()
-    elif action == "test": task_test()
-    else:                  print(f"Invalid action \"{action}\"")
+    if   action == "build": task_build()
+    elif action == "test":  task_test()
+    elif action == "clean": task_clean()
+    else: print(f"Invalid action \"{action}\"")
 
