@@ -3,6 +3,7 @@
 #include "stdio.h"
 
 // These are pointers, that perform proper cleanup automatically.
+// Its basically an comfier alias to __attribute__((cleanup(cleanup_fn))) gcc extension
 
 void BTR_autoFileCleanup(FILE **file);
 void BTR_autoHeapCleanup(void *p);
