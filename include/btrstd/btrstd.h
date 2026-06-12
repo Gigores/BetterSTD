@@ -1,7 +1,10 @@
 #pragma once
 
 #include "btrstd/containers.h"
+#include "btrstd/allocators.h"
 #include "btrstd/error.h"
 #include "btrstd/logger.h"
 #include "btrstd/string_view.h"
 #include "btrstd/smart_pointers.h"
+#include "btrstd/allocators.h"
+#include "btrstd/allocator.h"

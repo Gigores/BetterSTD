@@ -4,3 +4,5 @@
 #include "logger.c"
 #include "error.c"
 #include "smart_pointers.c"
+#include "global.c"
+#include "allocator.c"
