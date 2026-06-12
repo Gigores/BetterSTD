@@ -72,7 +72,7 @@ static void test2(void)
         654, 7465
     };
 
-    btr_bllist_t list = {0};
+    btr_bllist_t list = BTR_BLList_make(NULL);
     size_t n = sizeof(INPUT)/sizeof(INPUT[0]);
     for (size_t i = 0; i < n; i++)
         BTR_BLList_append(&list, (void *)&INPUT[i]);
@@ -107,7 +107,7 @@ static void test3(void)
         (void *)&VALUES[8],
         (void *)&VALUES[9]
     );
-    btr_bllist_t clone = BTR_BLList_clone(&list);
+    btr_bllist_t clone = BTR_BLList_clone(&list, NULL);
     assert(clone.size == list.size);
     for (size_t i = 0; i < N; i++)
     {
@@ -127,7 +127,7 @@ static void test4(void)
         0, 10, 20, 30, 40, 50, 60, 70, 80, 90
     };
     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
-    btr_bllist_t list = {0};
+    btr_bllist_t list = BTR_BLList_make(NULL);
     for (size_t i = 0; i < N; i++)
         BTR_BLList_prepend(&list, (void *)&VALUES[i]);
     size_t i = 0;
@@ -146,7 +146,7 @@ static void test5(void)
 {
     printf("> test5\n");
 
-    btr_bllist_t list = {0};
+    btr_bllist_t list = BTR_BLList_make(NULL);
 
     int a = 1, b = 2, c = 3, d = 4;
 
@@ -195,7 +195,7 @@ static void test6(void)
     const int VALUES[] = {10, 20, 30, 40, 50};
     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
 
-    btr_bllist_t list = {0};
+    btr_bllist_t list = BTR_BLList_make(NULL);
 
     // build list
     for (size_t i = 0; i < N; i++)
@@ -238,7 +238,7 @@ static void test7(void)
     };
     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
 
-    btr_bllist_t list = {0};
+    btr_bllist_t list = BTR_BLList_make(NULL);
 
     // build list
     for (size_t i = 0; i < N; i++)
@@ -277,7 +277,7 @@ static void test8(void)
         10, 20, 30, 40, 50
     };
     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
-    btr_bllist_t list = {0};
+    btr_bllist_t list = BTR_BLList_make(NULL);
 
     for (size_t i = 0; i < N; i++)
         BTR_BLList_append(&list, (void *)&VALUES[i]);

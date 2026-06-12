@@ -4,6 +4,7 @@
 #include "stdbool.h"
 
 #include "btrstd/containers/generic_container_data.h"
+#include "btrstd/allocator.h"
 
 // Borrowing Linked List
 
@@ -14,6 +15,7 @@ typedef struct BLListNode {
 
 typedef struct {
     btr_bllist_node_t *head;
+    btr_allocator_t *allocator;
     size_t size;
 } btr_bllist_t;
 
@@ -25,9 +27,14 @@ typedef struct {
 // int c = 43;
 // btr_bllist_t list = BTR_BLList_make({&a, &b, &c}, 3);
 // ```
-btr_bllist_t BTR_BLList_make(void *items[], size_t itemCount);
+// The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
+btr_bllist_t BTR_BLList_makeFrom(void *items[], size_t itemCount, btr_allocator_t *allocator);
+// Creates an empty Borrowing Linked List.
+// The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
+btr_bllist_t BTR_BLList_make(btr_allocator_t *allocator);
 // Creates a new borrowing linked list from another borrowing linked list with the same data.
-btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list);
+// The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
+btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list, btr_allocator_t *allocator);
 // Appends the data to the end of the borrowing linked list.
 void BTR_BLList_append(btr_bllist_t *, void *data);
 // Prepends the data to the beginning of the borrowing linked list.
@@ -94,10 +101,11 @@ void BTR_BLList_clear(btr_bllist_t *);
 // int a = 14, b = 43, c = 34;
 // btr_bllist_t list = BLLIST(&a, &b, &c);
 // ```
-#define BTR_BLLIST(...)                                    \
-    BTR_BLList_make(                                       \
-        (void *[]){ __VA_ARGS__ },                         \
-        sizeof((void *[]){ __VA_ARGS__ }) / sizeof(void *) \
+#define BTR_BLLIST(...)                                     \
+    BTR_BLList_makeFrom(                                    \
+        (void *[]){ __VA_ARGS__ },                          \
+        sizeof((void *[]){ __VA_ARGS__ }) / sizeof(void *), \
+        NULL                                                \
     )
 
 #ifdef BTR_NO_PREFIX
@@ -105,21 +113,22 @@ void BTR_BLList_clear(btr_bllist_t *);
 typedef btr_bllist_node_t bllist_node_t;
 typedef btr_bllist_t bllist_t;
 
-#define BLList_make    BTR_BLList_make
-#define BLList_clone   BTR_BLList_clone
-#define BLList_append  BTR_BLList_append
-#define BLList_prepend BTR_BLList_prepend
-#define BLList_insert  BTR_BLList_insert
-#define BLList_pop     BTR_BLList_pop
-#define BLList_get     BTR_BLList_get
-#define BLList_first   BTR_BLList_first
-#define BLList_last    BTR_BLList_last
-#define BLList_indexOf BTR_BLList_indexOf
-#define BLList_len     BTR_BLList_len
-#define BLList_isEmpty BTR_BLList_isEmpty
-#define BLList_reverse BTR_BLList_reverse
-#define BLList_free    BTR_BLList_free
-#define BLList_clear   BTR_BLList_clear
+#define BLList_makeFrom BTR_BLList_makeFrom
+#define BLList_make     BTR_BLList_make
+#define BLList_clone    BTR_BLList_clone
+#define BLList_append   BTR_BLList_append
+#define BLList_prepend  BTR_BLList_prepend
+#define BLList_insert   BTR_BLList_insert
+#define BLList_pop      BTR_BLList_pop
+#define BLList_get      BTR_BLList_get
+#define BLList_first    BTR_BLList_first
+#define BLList_last     BTR_BLList_last
+#define BLList_indexOf  BTR_BLList_indexOf
+#define BLList_len      BTR_BLList_len
+#define BLList_isEmpty  BTR_BLList_isEmpty
+#define BLList_reverse  BTR_BLList_reverse
+#define BLList_free     BTR_BLList_free
+#define BLList_clear    BTR_BLList_clear
 
 #define BLLIST_FOREACH   BTR_BLLIST_FOREACH
 #define BLLIST_ENUMERATE BTR_BLLIST_ENUMERATE
