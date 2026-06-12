@@ -8,7 +8,7 @@ btr_alloc_result_t BTR_allocate(size_t size)
     if (!pointer) BTR_Err(btr_alloc_result_t, BTR_ALLOC_ERR_OUT_OF_MEMORY);
     BTR_Ok(btr_alloc_result_t, pointer);
 }
-btr_alloc_result_t BTR_reallocte(void *pointer, size_t newSize)
+btr_alloc_result_t BTR_reallocate(void *pointer, size_t newSize)
 {
     void *newPointer = realloc(pointer, newSize);
     if (!newPointer) BTR_Err(btr_alloc_result_t, BTR_ALLOC_ERR_OUT_OF_MEMORY);
