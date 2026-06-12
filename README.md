@@ -14,12 +14,6 @@ Project requirements:
 After obtaining the `libbtrstd.a` file, you can link with it like this:
 
 ```shell
-gcc main.c -L/path/to/library -lbtrstd -o program
-```
-
-If headers are located in a custom directory, add the include path:
-
-```shell
 gcc main.c -I/path/to/include -L/path/to/library -lbtrstd -o program
 ```
 
