@@ -4,6 +4,7 @@
 #include "stdbool.h"
 
 #include "btrstd/containers/generic_container_data.h"
+#include "btrstd/allocator.h"
 
 // Borrowing Array List
 
@@ -11,6 +12,7 @@ typedef struct {
     void **data;
     size_t count;
     size_t capacity;
+    btr_allocator_t *allocator;
 } btr_balist_t;
 
 // Creates a new borrowing array list from an array of given values.
@@ -21,12 +23,14 @@ typedef struct {
 // int c = 43;
 // btr_balist_t list = BTR_BAList_make({&a, &b, &c}, 3);
 // ```
-btr_balist_t BTR_BAList_make(void *items[], size_t itemCount);
+// The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
+btr_balist_t BTR_BAList_makeFrom(void *items[], size_t itemCount, btr_allocator_t *allocator);
 // Creates a new empty Borrowing Array List.
-// Panics on allocation failure.
-btr_balist_t BTR_BAList_makeEmpty(size_t capacity);
+// The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
+btr_balist_t BTR_BAList_make(size_t capacity, btr_allocator_t *allocator);
 // Creates a new borrowing array list from another borrowing array list with the same data.
-btr_balist_t BTR_BAList_clone(const btr_balist_t *list);
+// The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
+btr_balist_t BTR_BAList_clone(const btr_balist_t *list, btr_allocator_t *allocator);
 // Appends the data to the end of the borrowing array list.
 void BTR_BAList_append(btr_balist_t *, void *data);
 // Prepends the data to the beginning of the borrowing array list.
@@ -86,10 +90,11 @@ void BTR_BAList_clear(btr_balist_t *);
 // int a = 14, b = 43, c = 34;
 // btr_balist_t list = BALIST(&a, &b, &c);
 // ```
-#define BTR_BALIST(...)                                    \
-    BTR_BAList_make(                                       \
-        (void *[]){ __VA_ARGS__ },                         \
-        sizeof((void *[]){ __VA_ARGS__ }) / sizeof(void *) \
+#define BTR_BALIST(...)                                     \
+    BTR_BAList_makeFrom(                                    \
+        (void *[]){ __VA_ARGS__ },                          \
+        sizeof((void *[]){ __VA_ARGS__ }) / sizeof(void *), \
+        NULL                                                \
     )
 
 #ifdef BTR_NO_PREFIX
