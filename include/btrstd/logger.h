@@ -2,6 +2,7 @@
 
 #include "stdio.h"
 #include "stdbool.h"
+#include "stdarg.h"
 
 #define BTR_LOG_LEVELS       \
     X(DEBUG, "\e[38;5;245m") \
@@ -32,6 +33,7 @@ void BTR_setLogger(btr_logger_t);
 btr_logger_t *BTR_getLogger(void);
 
 void BTR_logImpl(const char *file, int line, const char *func, btr_log_level_t logLevel, const char *formatString, ...);
+void BTR_vlogImpl(const char *file, int line, const char *func, btr_log_level_t logLevel, const char *formatString, va_list args);
 
 #define BTR_log(logLevel, formatString, ...) BTR_logImpl(__FILE__, __LINE__, __FUNCTION__, logLevel, formatString __VA_OPT__(,) __VA_ARGS__)
 
@@ -73,6 +75,7 @@ typedef btr_log_level_t log_level_t;
 
 typedef btr_logger_t logger_t;
 #define log BTR_log
+#define vlogImpl BTR_vlogImpl
 
 #define debugInt BTR_debugInt
 #define debugUInt BTR_debugUInt

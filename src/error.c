@@ -13,7 +13,7 @@ void BTR_panicImpl(const char *file, int line, const char *func, const char *for
 {
     va_list args;
     va_start(args, format);
-    BTR_logImpl(file, line, func, LOG_FATAL, format, args);
+    BTR_vlogImpl(file, line, func, LOG_FATAL, format, args);
     va_end(args);
     fflush(NULL);
     abort();
@@ -23,6 +23,6 @@ void BTR_panicImplIf(const char *file, int line, const char *func, bool conditio
     if (!condition) return;
     va_list args;
     va_start(args, format);
-    BTR_panicImpl(file, line, func, format, args);
+    BTR_vlogImpl(file, line, func, LOG_FATAL, format, args);
     va_end(args);
 }

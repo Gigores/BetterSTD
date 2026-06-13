@@ -75,7 +75,7 @@ static void doLogFile(btr_logger_t *logger, const char *file, int line, const ch
     if (logger->logLine) fprintf(logger->file, ":%d", line);
     fprintf(logger->file, "] ");
 }
-void BTR_logImpl(const char *file, int line, const char *func, btr_log_level_t logLevel, const char *formatString, ...)
+void BTR_vlogImpl(const char *file, int line, const char *func, btr_log_level_t logLevel, const char *formatString, va_list args)
 {
     btr_logger_t *logger = &BTR_g_logger;
 
@@ -88,12 +88,17 @@ void BTR_logImpl(const char *file, int line, const char *func, btr_log_level_t l
     printf(COL_INTER": "COL_RESET);
     if (logger->file) fprintf(logger->file, ": ");
     
-    va_list args;
-    va_start(args, formatString);
     vprintf(formatString, args);
     if (logger->file) vfprintf(logger->file, formatString, args);
-    va_end(args);
 
     printf("\n");
     if (logger->file) fprintf(logger->file, "\n");
+}
+
+void BTR_logImpl(const char *file, int line, const char *func, btr_log_level_t logLevel, const char *formatString, ...)
+{
+    va_list args;
+    va_start(args, formatString);
+    BTR_vlogImpl(file, line, func, logLevel, formatString, args);
+    va_end(args);
 }
