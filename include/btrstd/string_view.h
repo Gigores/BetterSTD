@@ -89,12 +89,6 @@ int BTR_StringView_compare(btr_string_view_t *, btr_string_view_t *);
     char *: BTR_StringView_findCString                               \
 )(STRING, POSTFIX)
 
-#define BTR_StringView_contains(STRING, POSTFIX) _Generic((POSTFIX), \
-    btr_string_view_t *: BTR_StringView_containsView,                    \
-    const char *: BTR_StringView_containsCString,                        \
-    char *: BTR_StringView_containsCString                               \
-)(STRING, POSTFIX)
-
 #ifdef BTR_NO_PREFIX
 
 typedef btr_string_view_t string_view_t;
@@ -132,6 +126,5 @@ typedef btr_string_view_t string_view_t;
 #define StringView_endsWith          BTR_StringView_endsWith
 #define StringView_startsWith        BTR_StringView_startsWith
 #define StringView_find              BTR_StringView_find
-#define StringView_contains          BTR_StringView_contains
 
 #endif // BTR_NO_PREFIX

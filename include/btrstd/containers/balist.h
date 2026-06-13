@@ -102,7 +102,7 @@ void BTR_BAList_clear(btr_balist_t *);
 typedef btr_balist_t balist_t;
 
 #define BAList_make      BTR_BAList_make
-#define BAList_makeEmpty BTR_BAList_makeEmpty
+#define BAList_makeFrom  BTR_BAList_makeFrom
 #define BAList_clone     BTR_BAList_clone
 #define BAList_append    BTR_BAList_append
 #define BAList_prepend   BTR_BAList_prepend
