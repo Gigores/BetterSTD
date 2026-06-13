@@ -164,7 +164,7 @@ btr_string_view_t BTR_StringView_findCString(btr_string_view_t *string, const ch
 }
 btr_string_view_t BTR_StringView_substring(btr_string_view_t *string, unsigned int start, unsigned int count)
 {
-    size_t byteStart, byteCount;
+    size_t byteStart = 0, byteCount = 0;
     size_t counter = 0;
     size_t byteOffset = 0;
     while (string->data + string->start + byteOffset < string->data + string->start + string->length)
