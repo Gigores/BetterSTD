@@ -1,13 +1,16 @@
 #include "btrstd/allocators/arena.h"
 
+#include "_util.h"
+
 btr_arena_t BTR_Arena_make(size_t capacity, btr_allocator_t *parentAllocator)
 {
-    void *data = BTR_expect(BTR_Allocator_allocate(parentAllocator, capacity), "Allocation failed");
+    btr_allocator_t *theAllocator = getAllocator(parentAllocator);
+    void *data = BTR_expect(BTR_Allocator_allocate(theAllocator, capacity), "Allocation failed");
     return (btr_arena_t) {
         .data = data,
         .capacity = capacity,
         .next = 0,
-        .allocator = parentAllocator,
+        .allocator = theAllocator,
     };
 }
 btr_alloc_result_t BTR_Arena_allocate(btr_arena_t *this, size_t size)
