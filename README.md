@@ -1,6 +1,6 @@
 # BetterSTD
 
-BetterSTD is a library for C, that was made to "extend" C's standard library with features like different kinds of containers (list, dynamic array, ...) and utilities like logging system, string views and robust error handling.
+BetterSTD is a bloated library for C, that was made to "extend" C's standard library with features like different kinds of containers (list, dynamic array, ...) and utilities like logging system, string views and clunky error handling.
 
 This library is quite opinionated. It was designed by me, for me. Just so that I don't have to reimplement stuff I already implemented in every project I work on. But if you still want to use this library, you can follow the tutorial below.
 
