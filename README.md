@@ -6,7 +6,7 @@ This library is quite opinionated. It was designed by me, for me. Just so that I
 
 ## Using
 
-Project requirements oww:
+Project requirements:
 - **Compiler**: GNU C Compiler
 - **C standard**: GNU C11 and newer
 - **Operating system**: Linux or Windows
