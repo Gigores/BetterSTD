@@ -14,3 +14,13 @@ btr_alloc_result_t BTR_reallocate(void *pointer, size_t newSize);
 void BTR_deallocate(void *pointer);
 
 const btr_allocator_t *BTR_getGlobalAllocator(void);
+
+#ifdef BTR_NO_PREFIX
+
+#define allocate   BTR_allocate
+#define reallocate BTR_reallocate
+#define deallocate BTR_deallocate
+
+#define getGlobalAllocator BTR_getGlobalAllocator
+
+#endif  // BTR_NO_PREFIX

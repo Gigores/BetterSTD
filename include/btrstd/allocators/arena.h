@@ -31,3 +31,15 @@ void BTR_Arena_destroy(btr_arena_t *);
 void BTR_Arena_reset(btr_arena_t *, size_t newCapacity);
 // Returns a `btr_allocator_t` wrapper for the specified Arena.
 btr_allocator_t BTR_Arena_getWrapper(btr_arena_t *);
+
+#ifdef BTR_NO_PREFIX
+
+typedef btr_arena_t arena_t;
+
+#define Arena_make       BTR_Arena_make
+#define Arena_allocate   BTR_Arena_allocate
+#define Arena_destroy    BTR_Arena_destroy
+#define Arena_reset      BTR_Arena_reset
+#define Arena_getWrapper BTR_Arena_getWrapper
+
+#endif  // BTR_NO_PREFIX
