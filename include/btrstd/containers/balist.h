@@ -8,6 +8,9 @@
 
 // Borrowing Array List
 
+// Allocator required capabilities:
+//   allocate, deallocate
+
 typedef struct {
     void **data;
     size_t count;

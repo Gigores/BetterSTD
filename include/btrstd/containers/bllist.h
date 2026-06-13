@@ -8,6 +8,9 @@
 
 // Borrowing Linked List
 
+// Allocator required capabilities:
+//   allocate, deallocate
+
 typedef struct BLListNode {
     void *payload;
     struct BLListNode *next;
