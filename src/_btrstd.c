@@ -7,3 +7,4 @@
 #include "smart_pointers.c"
 #include "global.c"
 #include "allocator.c"
+#include "arena.c"
