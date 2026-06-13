@@ -72,6 +72,7 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
   - [ ] Hash Map
   - [ ] Hash Set ?
 - [ ] Json
+- [ ] Iterators
 
 If you need documentation, just read through the header files. They are well documented.
 

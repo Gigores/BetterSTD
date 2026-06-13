@@ -106,6 +106,13 @@ void BTR_panicImplIf(const char *file, int line, const char *func, bool conditio
 // Returns an Err result from the current function.
 #define BTR_Err(T, Error) do { return ((T) { .status = BTR_ERR, .error = (Error) }); } while(0)
 
+// Can be used as a placeholer for unfinished code.
+#define BTR_todo(...) BTR_panic("Not yet implemented" __VA_OPT__(": " __VA_ARGS__) )
+// Can be used for the code, that will not be implemented.
+#define BTR_unimplemented(...) BTR_panic("Not implemented" __VA_OPT__(": " __VA_ARGS__) )
+// Can be used for deprecating code.
+#define BTR_deprecated(...) BTR_panic("Deprecated" __VA_OPT__(": " __VA_ARGS__) )
+
 #ifdef BTR_NO_PREFIX
 
 typedef btr_result_status_t result_status_t;
