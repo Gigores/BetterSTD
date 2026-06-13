@@ -5,7 +5,7 @@
 // __Arena__ is a linear allocator. That means, that it is __fast__, but cannot free or deallocate individual pointers.
 
 // Allocator capabilities:
-// - allocate:   OK/OOM
+// - allocate:   OK/BTR_ALLOC_ERR_OUT_OF_MEMORY
 // - reallocate: BTR_ALLOC_ERR_UNSUPPORTED_OPERATION
 // - deallocate: OK (no-op)
 

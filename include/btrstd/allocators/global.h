@@ -5,8 +5,8 @@
 // A wrapper around the global stdlib allocator.
 
 // Allocator capabilities:
-// - allocate:   OK/OOM
-// - reallocate: OK/OOM
+// - allocate:   OK/BTR_ALLOC_ERR_OUT_OF_MEMORY
+// - reallocate: OK/BTR_ALLOC_ERR_OUT_OF_MEMORY
 // - deallocate: OK
 
 btr_alloc_result_t BTR_allocate(size_t size);
