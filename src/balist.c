@@ -39,6 +39,7 @@ static void checkSizeToShrink(btr_balist_t *this)
 
 btr_balist_t BTR_BAList_makeFrom(void *items[], size_t itemCount, btr_allocator_t *allocator)
 {
+    BTR_panicIf(!items && itemCount > 0, "`items` is NULL with non-zero itemCount");
     void **newData = BTR_expect(BTR_Allocator_allocate(getAllocator(allocator), itemCount * sizeof(void *)), "Allocation failed");
     memcpy(newData, items, itemCount * sizeof(void *));
     return (btr_balist_t) {

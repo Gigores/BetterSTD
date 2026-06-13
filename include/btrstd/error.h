@@ -20,7 +20,7 @@ typedef enum {
     };                            \
 }
 
-void BTR_panicImpl(const char *file, int line, const char *func, const char *format, ...);
+__attribute__((noreturn)) void BTR_panicImpl(const char *file, int line, const char *func, const char *format, ...);
 
 // This macro prints out the formatted error message and stops the program.
 // Usage example:

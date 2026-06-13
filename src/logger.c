@@ -30,7 +30,7 @@ const char *BTR_LogLevel_toString(btr_log_level_t level)
 #define X(LEVEL, COLOR) case (LOG_##LEVEL): return #LEVEL;
         BTR_LOG_LEVELS
 #undef X
-        default: return "INVALID_LOG_LEVEL";
+        default: BTR_panic("invalid log level %d", level);
     }
 }
 const char *BTR_LogLevel_getColor(btr_log_level_t level)
@@ -39,7 +39,7 @@ const char *BTR_LogLevel_getColor(btr_log_level_t level)
 #define X(LEVEL, COLOR) case (LOG_##LEVEL): return COLOR;
         BTR_LOG_LEVELS
 #undef X
-        default: return COL_RESET;
+        default: BTR_panic("invalid log level %d", level);
     }
 }
 static void doLogTime(btr_logger_t *logger)

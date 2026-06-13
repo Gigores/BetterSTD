@@ -19,6 +19,7 @@ static bool isUtf8Continuation(unsigned char c)
 }
 btr_string_view_t BTR_StringView_fromCString(const char *chars)
 {
+    BTR_panicIf(!chars, "`chars` is NULL");
     return (btr_string_view_t) {
         .data     = (char *) chars,
         .start    = 0,
@@ -28,6 +29,7 @@ btr_string_view_t BTR_StringView_fromCString(const char *chars)
 }
 void BTR_StringView_cropLeft(btr_string_view_t *string, unsigned int charCount)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     for (unsigned int i = 0; i < charCount; i++)
     {
         size_t curCharSize = utf8CharLen(*(string->data + string->start));
@@ -38,6 +40,7 @@ void BTR_StringView_cropLeft(btr_string_view_t *string, unsigned int charCount)
 }
 void BTR_StringView_cropRight(btr_string_view_t *string, unsigned int charCount)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     for (unsigned int i = 0; i < charCount; i++)
     {
         size_t offset = 0;
@@ -49,6 +52,7 @@ void BTR_StringView_cropRight(btr_string_view_t *string, unsigned int charCount)
 }
 void BTR_StringView_revertLeft(btr_string_view_t *string, unsigned int charCount)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     for (unsigned int i = 0; i < charCount; i++)
     {
         if (string->start == 0) return;
@@ -64,6 +68,7 @@ void BTR_StringView_revertLeft(btr_string_view_t *string, unsigned int charCount
 }
 void BTR_StringView_revertRight(btr_string_view_t *string, unsigned int charCount)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     for (unsigned int i = 0; i < charCount; i++)
     {
         if (string->start + string->length >= string->capacity) return;
@@ -75,10 +80,12 @@ void BTR_StringView_revertRight(btr_string_view_t *string, unsigned int charCoun
 }
 size_t BTR_StringView_byteCount(btr_string_view_t *string)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     return string->length;
 }
 size_t BTR_StringView_len(btr_string_view_t *string)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     size_t count = 0;
     char *currentChar = string->data + string->start;
     while (currentChar < string->data + string->capacity)
@@ -90,10 +97,12 @@ size_t BTR_StringView_len(btr_string_view_t *string)
 }
 bool BTR_StringView_isEmpty(btr_string_view_t *string)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     return !BTR_StringView_len(string);
 }
 const char *BTR_StringView_charAt(btr_string_view_t *string, int index)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     size_t len = BTR_StringView_len(string);
     if (index < 0)
         index = (int) len + index;
@@ -109,6 +118,7 @@ const char *BTR_StringView_charAt(btr_string_view_t *string, int index)
 }
 bool BTR_StringView_endsWithView(btr_string_view_t *string, btr_string_view_t *postfix)
 {
+    BTR_panicIf(!string || !postfix, "`string` or `postfix` is NULL");
     size_t len = BTR_StringView_byteCount(string);
     size_t lenPostfix = BTR_StringView_byteCount(postfix);
     size_t counter = 0;
@@ -120,6 +130,7 @@ bool BTR_StringView_endsWithView(btr_string_view_t *string, btr_string_view_t *p
 }
 bool BTR_StringView_startsWithView(btr_string_view_t *string, btr_string_view_t *prefix)
 {
+    BTR_panicIf(!string || !prefix, "`string` or `prefix` is NULL");
     size_t counter = 0;
     size_t byteCount = BTR_StringView_byteCount(prefix);
     while (*(string->data + string->start + counter) == *(prefix->data + prefix->start + counter) && counter < byteCount)
@@ -130,16 +141,19 @@ bool BTR_StringView_startsWithView(btr_string_view_t *string, btr_string_view_t 
 }
 bool BTR_StringView_endsWithCString(btr_string_view_t *string, const char *postfix)
 {
+    BTR_panicIf(!string || !postfix, "`string` or `postfix` is NULL");
     btr_string_view_t view = BTR_StringView_fromCString(postfix);
     return BTR_StringView_endsWithView(string, &view);
 }
 bool BTR_StringView_startsWithCString(btr_string_view_t *string, const char *prefix)
 {
+    BTR_panicIf(!string || !prefix, "`string` or `prefix` is NULL");
     btr_string_view_t view = BTR_StringView_fromCString(prefix);
     return BTR_StringView_startsWithView(string, &view);
 }
 btr_string_view_t BTR_StringView_findView(btr_string_view_t *string, btr_string_view_t *substring)
 {
+    BTR_panicIf(!string || !substring, "`string` or `substring` is NULL");
     size_t substringSize = BTR_StringView_byteCount(substring);
     size_t maxCount = BTR_StringView_byteCount(string) - substringSize;
     for (size_t count = 0; count < maxCount; count++)
@@ -159,11 +173,13 @@ btr_string_view_t BTR_StringView_findView(btr_string_view_t *string, btr_string_
 }
 btr_string_view_t BTR_StringView_findCString(btr_string_view_t *string, const char *substring)
 {
+    BTR_panicIf(!string || !substring, "`string` or `substring` is NULL");
     btr_string_view_t view = BTR_StringView_fromCString(substring);
     return BTR_StringView_findView(string, &view);
 }
 btr_string_view_t BTR_StringView_substring(btr_string_view_t *string, unsigned int start, unsigned int count)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     size_t byteStart = 0, byteCount = 0;
     size_t counter = 0;
     size_t byteOffset = 0;
@@ -183,21 +199,25 @@ btr_string_view_t BTR_StringView_substring(btr_string_view_t *string, unsigned i
 }
 void BTR_StringView_trimLeft(btr_string_view_t *string)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     while (isspace(*(string->data + string->start)))
         BTR_StringView_cropLeft(string, 1);
 }
 void BTR_StringView_trimRight(btr_string_view_t *string)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     while (isspace(*(string->data + string->start + string->length - 1)))
         BTR_StringView_cropRight(string, 1);
 }
 void BTR_StringView_trim(btr_string_view_t *string)
 {
+    BTR_panicIf(!string, "`string` is NULL");
     BTR_StringView_trimLeft(string);
     BTR_StringView_trimRight(string);
 }
 int BTR_StringView_compare(btr_string_view_t *a, btr_string_view_t *b)
 {
+    BTR_panicIf(!a || !b, "`a` or `b` is NULL");
     size_t minLen = a->length < b->length ? a->length : b->length;
     int cmp = memcmp(a->data + a->start, b->data + b->start, minLen);
     if (cmp != 0)
