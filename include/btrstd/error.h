@@ -118,19 +118,23 @@ void BTR_panicImplIf(const char *file, int line, const char *func, bool conditio
 typedef btr_result_status_t result_status_t;
 #define Result BTR_Result
 
-#define panic BTR_panic
+#define panic   BTR_panic
 #define panicIf BTR_panicIf
 
-#define expect BTR_expect
-#define unwrap BTR_unwrap
-#define unwrapOr BTR_unwrapOr
+#define expect    BTR_expect
+#define unwrap    BTR_unwrap
+#define unwrapOr  BTR_unwrapOr
 #define unwrapErr BTR_unwrapErr
-#define try BTR_try
+#define try       BTR_try
 
-#define isOk BTR_isOk
+#define isOk  BTR_isOk
 #define isErr BTR_isErr
 
-#define Ok BTR_Ok
+#define Ok  BTR_Ok
 #define Err BTR_Err
+
+#define todo          BTR_todo
+#define unimplemented BTR_unimplemented
+#define deprecated    BTR_deprecated
 
 #endif  // BTR_NO_PREFIX
