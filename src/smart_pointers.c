@@ -1,6 +1,5 @@
 #include "btrstd/smart_pointers.h"
-
-#include "stdlib.h"
+#include "btrstd/allocators/global.h"
 
 void BTR_autoFileCleanup(FILE **file)
 {
@@ -8,5 +7,5 @@ void BTR_autoFileCleanup(FILE **file)
 }
 void BTR_autoHeapCleanup(void *p)
 {
-    free(*(void **)p);
+    BTR_deallocate(*(void **)p);
 }

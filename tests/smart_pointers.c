@@ -1,7 +1,6 @@
 #include "btrstd/smart_pointers.h"
 #include "btrstd/logger.h"
-
-#include "stdlib.h"
+#include "btrstd/allocators/global.h"
 
 
 int main(void)
@@ -12,7 +11,7 @@ int main(void)
     });
     BTR_log(LOG_INFO, "We are logging!");
 
-    BTR_autoHeap(int) BUFFER = malloc(sizeof(int) * 1024);
+    BTR_autoHeap(int) BUFFER = BTR_unwrap(BTR_allocate(sizeof(int) * 1024));
 
     return 0;
 }

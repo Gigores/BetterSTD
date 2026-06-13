@@ -35,10 +35,10 @@ void BTR_autoHeapCleanup(void *p);
 // // Will be freed automatically
 // ```
 #define BTR_autoFile __attribute__((cleanup(BTR_autoFileCleanup))) FILE *
-// Convenience "autoPtr" macro for heap-allocated pointers.
+// Convenience "autoPtr" macro for pointers, allocated with global allocator.
 // Example:
 // ```c
-// BTR_autoHeap(int) BUFFER = malloc(sizeof(int) * 1024 * 1024);
+// BTR_autoHeap(int) BUFFER = BTR_unwrap(BTR_allocate(sizeof(int) * 1024 * 1024));
 // // Will be freed automatically
 // ```
 #define BTR_autoHeap(T) __attribute__((cleanup(BTR_autoHeapCleanup))) T *
