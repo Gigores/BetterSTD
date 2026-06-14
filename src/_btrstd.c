@@ -8,3 +8,4 @@
 #include "global.c"
 #include "allocator.c"
 #include "arena.c"
+#include "bit_set.c"
