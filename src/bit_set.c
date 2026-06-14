@@ -1,13 +1,13 @@
 #include "btrstd/containers/bit_set.h"
 #include "_util.h"
 
-#include "btrstd/logger.h"
+#include "string.h"
+
 
 btr_bit_set_t BTR_BitSet_make(size_t bitCapacity, btr_allocator_t *allocator)
 {
     size_t capacity = bitCapacity / 8;
     capacity += (bitCapacity % 8) ? 1 : 0;
-    BTR_debugSize(capacity);
     btr_allocator_t *theAllocator = getAllocator(allocator);
     char *data = BTR_expect(BTR_Allocator_allocate(theAllocator, capacity), "Allocation failed");
     return (btr_bit_set_t) {
@@ -16,7 +16,20 @@ btr_bit_set_t BTR_BitSet_make(size_t bitCapacity, btr_allocator_t *allocator)
         .allocator = theAllocator,
     };
 }
-btr_bit_set_t BTR_BitSet_clone(const btr_bit_set_t *bitSet, btr_allocator_t *allocator);
+btr_bit_set_t BTR_BitSet_clone(const btr_bit_set_t *bitSet, btr_allocator_t *allocator)
+{
+    BTR_panicIf(!bitSet, "`bitSet` is null");
+    size_t capacity = bitSet->bitCount / 8;
+    capacity += (bitSet->bitCount % 8) ? 1 : 0;
+    btr_allocator_t *theAllocator = getAllocator(allocator);
+    char *data = BTR_expect(BTR_Allocator_allocate(theAllocator, capacity), "Allocation failed");
+    memcpy(data, bitSet->data, capacity);
+    return (btr_bit_set_t) {
+        .data      = data,
+        .bitCount  = bitSet->bitCount,
+        .allocator = theAllocator,
+    };
+}
 btr_bit_result_t BTR_BitSet_get(const btr_bit_set_t *this, long index)
 {
     BTR_panicIf(!this, "`this` is null");
