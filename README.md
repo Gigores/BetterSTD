@@ -54,7 +54,7 @@ python buildScript build
 
 The `libbtrstd.a` file will be available inside of `build/` directory.
 
-## Current modules
+## Current and planned
 
 - [x] [Error handling system](./include/btrstd/error.h)
 - [x] [Logging system](./include/btrstd/logger.h)
