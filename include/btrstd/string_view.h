@@ -5,17 +5,17 @@
 
 // String View
 
-// String view is an object, that represents a string. But unlike regular C strings,
-// which are pointers to characters array, terminated by a \0 character, string view
+// String view is an object that represents a string. But unlike regular C strings,
+// which are pointers to character array, terminated by a \0 character, string view
 // doesn't need to be terminated.
-// String view stores its length, as well as start offset, which helps efficiently
-// clice and manipulate memory without destructive operations.
+// String view stores its length, as well as a start offset, which helps efficiently
+// slice and manipulate memory without destructive operations.
 //     strView{length, start, data}
 //                │      │      └▷  [This is a test string!0]
 //                │      └▷               |
 //                └▷                      ---------
 // When printed: "is a test"
-// It also doesn't own the string it points to, which also helps in saving memory.
+// It also doesn't own the string it points to, which helps save memory.
 
 // This string view implementation fully supports UTF-8.
 // All operations are performed over UTF-8 characters, unless specified otherwise.

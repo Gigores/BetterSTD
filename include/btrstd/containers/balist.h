@@ -8,7 +8,7 @@
 
 // Borrowing Array List
 
-// Array list, also known as "dynamic array", is an array, that automatically scales up or down when needed.
+// Array list, also known as "dynamic array", is an array that automatically scales up or down when needed.
 
 // Allocator required capabilities:
 //   allocate, deallocate
@@ -44,20 +44,20 @@ void BTR_BAList_prepend(btr_balist_t *, void *data);
 void BTR_BAList_insert(btr_balist_t *, void *data, long index);
 // Pops the data of the specified index from a borrowing array list.
 // Can accept negative indexes.
-// Returns `BTR_ERR` with `BTR_BALIST_ERR_OUT_OF_BOUNDS` if the index is invalid.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
 btr_container_ptr_result_t BTR_BAList_pop(btr_balist_t *, long index);
 // Returns the data of the specified index of the borrowing array list.
 // Can accept negative indexes.
-// Returns `BTR_ERR` with `BTR_BALIST_ERR_OUT_OF_BOUNDS` if the index is invalid.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
 btr_container_ptr_result_t BTR_BAList_get(const btr_balist_t *, long index);
 // Returns the first item of the borrowing array list.
-// Returns `BTR_ERR` with `BTR_BALIST_ERR_OUT_OF_BOUNDS` if the list is empty.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
 btr_container_ptr_result_t BTR_BAList_first(const btr_balist_t *);
 // Returns the last item of the borrowing array list.
-// Returns `BTR_ERR` with `BTR_BALIST_ERR_OUT_OF_BOUNDS` if the list is empty.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
 btr_container_ptr_result_t BTR_BAList_last(const btr_balist_t *);
 // Returns the index of the first occurrence of the item.
-// Returns `BTR_ERR` with `BTR_BALIST_ERR_NOT_FOUND` if the item wasn't found.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_NOT_FOUND` if the item wasn't found.
 btr_container_idx_result_t BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing array list.
 size_t BTR_BAList_len(const btr_balist_t *);

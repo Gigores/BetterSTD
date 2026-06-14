@@ -8,9 +8,9 @@
 
 // Borrowing Linked List
 
-// Linked list is a data structure, that has an array-like interface, but allows dynamic sizing.
+// Linked list is a data structure that has an array-like interface, but allows dynamic sizing.
 // It uses a "node" structure to represent a specific index. The node itself stores not only its
-// data, but also a pointer to a next node.
+// data, but also a pointer to the next node.
 //     list{size, ptr}
 //                 ↓
 //               node{data, ptr}
@@ -57,20 +57,20 @@ void BTR_BLList_prepend(btr_bllist_t *, void *data);
 void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
 // Pops the data of the specified index from a borrowing linked list.
 // Can accept negative indexes.
-// Returns `BTR_ERR` with `BTR_BLLIST_ERR_OUT_OF_BOUNDS` if the index is invalid.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
 btr_container_ptr_result_t BTR_BLList_pop(btr_bllist_t *, long index);
 // Returns the data of the specified index of the borrowing linked list.
 // Can accept negative indexes.
-// Returns `BTR_ERR` with `BTR_BLLIST_ERR_OUT_OF_BOUNDS` if the index is invalid.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
 btr_container_ptr_result_t BTR_BLList_get(const btr_bllist_t *, long index);
 // Returns the first item of the borrowing linked list.
-// Returns `BTR_ERR` with `BTR_BLLIST_ERR_OUT_OF_BOUNDS` if the list is empty.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
 btr_container_ptr_result_t BTR_BLList_first(const btr_bllist_t *);
 // Returns the last item of the borrowing linked list.
-// Returns `BTR_ERR` with `BTR_BLLIST_ERR_OUT_OF_BOUNDS` if the list is empty.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
 btr_container_ptr_result_t BTR_BLList_last(const btr_bllist_t *);
 // Returns the index of the first occurrence of the item.
-// Returns `BTR_ERR` with `BTR_BLLIST_ERR_NOT_FOUND` if the item wasn't found.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_NOT_FOUND` if the item wasn't found.
 btr_container_idx_result_t BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing linked list.
 size_t BTR_BLList_len(const btr_bllist_t *);

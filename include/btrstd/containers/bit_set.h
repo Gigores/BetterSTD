@@ -8,12 +8,12 @@
 
 // Bit Set
 
-// Bit set is a data structure, made to store booleans in a compact way.
+// Bit set is a data structure made to store booleans in a compact way.
 // Normally one boolean variable consumes a whole byte and looks like this in memory:
 //     00000000 → false
 //     00000001 → true
 // This is extremely inefficient. Bit set fixes this issue by using each bit of a byte to store values.
-// In this way, a bit set of size 16 will only consume 2 bytes, instead of 16 like a regular array, and looks like this in memory:
+// For example, a bit set of size 16 will only consume 2 bytes, instead of 16 like a regular array, and looks like this in memory:
 //     10110101 01001101
 //     [0] → true
 //     [1] → false
@@ -41,7 +41,7 @@ btr_bit_set_t BTR_BitSet_make(size_t capacity, btr_allocator_t *allocator);
 btr_bit_set_t BTR_BitSet_clone(const btr_bit_set_t *bitSet, btr_allocator_t *allocator);
 // Returns the data of the specified index of the bit set.
 // Can accept negative indexes.
-// Returns `BTR_ERR` with `BTR_BLLIST_ERR_OUT_OF_BOUNDS` if the index is invalid.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
 btr_bit_result_t BTR_BitSet_get(const btr_bit_set_t *, long index);
 // Sets the value at the given index to `true`.
 // Can accept negative indexes.
