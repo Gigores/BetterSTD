@@ -69,7 +69,7 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
 - [ ] Containers
   - [x] [Borrowing Array List](./include/btrstd/containers/balist.h)
   - [x] [Borrowing Linked List](./include/btrstd/containers/bllist.h)
-  - [ ] Bit Set
+  - [x] [Bit Set](./include/btrstd/containers/bit_set.h)
   - [ ] Hash Map
   - [ ] Hash Set
   - [ ] Dynamic String (Supports UTF-8)
