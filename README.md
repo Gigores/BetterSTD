@@ -63,16 +63,22 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
 - [ ] Allocators
   - [x] [Global](./include/btrstd/allocators/global.h)
   - [x] [Arena](./include/btrstd/allocators/arena.h)
-  - [ ] Bit Set
   - [ ] Pool
   - [ ] Heap
+  - [ ] Stack
 - [ ] Containers
   - [x] [Borrowing Array List](./include/btrstd/containers/balist.h)
   - [x] [Borrowing Linked List](./include/btrstd/containers/bllist.h)
+  - [ ] Bit Set
   - [ ] Hash Map
-  - [ ] Hash Set ?
+  - [ ] Hash Set
+  - [ ] Dynamic String (Supports UTF-8)
 - [ ] Json
+- [ ] TOML
 - [ ] Iterators
+- [ ] Slices
+- [ ] Time
+- [ ] File System
 
 If you need documentation, just read through the header files. They are well documented.
 
