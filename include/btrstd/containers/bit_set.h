@@ -12,8 +12,9 @@
 // Normally one boolean variable consumes a whole byte and looks like this in memory:
 //     00000000 → false
 //     00000001 → true
-// This is extremely inefficient. Bit set fixes this issue by using each bit of a byte to store values.
-// For example, a bit set of size 16 will only consume 2 bytes, instead of 16 like a regular array, and looks like this in memory:
+// This is extremely inefficient. Bit set fixes this issue by using each bit of a byte to
+// store values. For example, a bit set of size 16 will only consume 2 bytes, instead of 16
+// like a regular array, and looks like this in memory:
 //     10110101 01001101
 //     [0] → true
 //     [1] → false
