@@ -36,6 +36,8 @@ int main(void)
 }
 ```
 
+For documentation read header files.
+
 ## Building
 
 Requirements:
@@ -79,6 +81,4 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
 - [ ] Slices
 - [ ] Time
 - [ ] File System
-
-If you need documentation, just read through the header files. They are well documented.
 
