@@ -8,6 +8,8 @@
 
 // Borrowing Array List
 
+// Array list, also known as "dynamic array", is an array, that automatically scales up or down when needed.
+
 // Allocator required capabilities:
 //   allocate, deallocate
 

@@ -8,6 +8,17 @@
 
 // Borrowing Linked List
 
+// Linked list is a data structure, that has an array-like interface, but allows dynamic sizing.
+// It uses a "node" structure to represent a specific index. The node itself stores not only its
+// data, but also a pointer to a next node.
+//     list{size, ptr}
+//                 ↓
+//               node{data, ptr}
+//                           ↓
+//                         node{data, ptr}
+//                                     ↓
+//                                    NULL
+
 // Allocator required capabilities:
 //   allocate, deallocate
 
