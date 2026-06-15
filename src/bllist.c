@@ -109,6 +109,16 @@ btr_container_ptr_result_t BTR_BLList_get(const btr_bllist_t *this, long index)
         BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
     BTR_Ok(btr_container_ptr_result_t, currNode->payload);
 }
+void BTR_BLList_set(btr_bllist_t *this, void *data, long index)
+{
+    BTR_panicIf(!this, "`this` is null");
+    btr_bllist_node_t *currNode = this->head;
+    if (index < 0) index = this->size + index;
+    for (long currIndex = 0; currIndex != index && currNode != NULL; currIndex++)
+        currNode = currNode->next;
+    BTR_panicIf(!currNode, "index out of bounds");
+    currNode->payload = data;
+}
 btr_container_ptr_result_t BTR_BLList_first(const btr_bllist_t *this)
 {
     BTR_panicIf(!this, "`this` is null");

@@ -295,6 +295,41 @@ static void test8(void)
     BTR_BAList_free(&list);
 }
 
+// test `set`
+static void test9(void)
+{
+    printf("> test9\n");
+
+    int values[] = {10, 20, 30, 40, 50};
+    size_t n = sizeof(values) / sizeof(values[0]);
+
+    btr_balist_t list = BTR_BAList_make(8, NULL);
+    for (size_t i = 0; i < n; i++)
+        BTR_BAList_append(&list, (void *)&values[i]);
+
+    // set at positive index
+    int newVal = 99;
+    BTR_BAList_set(&list, &newVal, 2);
+    assert(getInt(BTR_unwrap(BTR_BAList_get(&list, 2))) == 99);
+    // verify others unchanged
+    assert(getInt(BTR_unwrap(BTR_BAList_get(&list, 0))) == 10);
+    assert(getInt(BTR_unwrap(BTR_BAList_get(&list, 4))) == 50);
+
+    // set at negative index (-1 = last, -5 = first)
+    int first = 1, last = 100;
+    BTR_BAList_set(&list, &last, -1);
+    BTR_BAList_set(&list, &first, -5);
+    assert(getInt(BTR_unwrap(BTR_BAList_get(&list, -1))) == 100);
+    assert(getInt(BTR_unwrap(BTR_BAList_get(&list, -5))) == 1);
+
+    // set at index 0
+    int zero = 0;
+    BTR_BAList_set(&list, &zero, 0);
+    assert(getInt(BTR_unwrap(BTR_BAList_get(&list, 0))) == 0);
+
+    BTR_BAList_free(&list);
+}
+
 int main(void) {
     test1();
     test2();
@@ -304,6 +339,7 @@ int main(void) {
     test6();
     test7();
     test8();
+    test9();
     printf("SUCCESS\n");
     return 0;
 }

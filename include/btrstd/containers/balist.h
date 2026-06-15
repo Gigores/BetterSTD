@@ -51,6 +51,10 @@ btr_container_ptr_result_t BTR_BAList_pop(btr_balist_t *, long index);
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
 btr_container_ptr_result_t BTR_BAList_get(const btr_balist_t *, long index);
+// Sets the item at the given index to a given value in the borrowing array list.
+// Can accept negative indexes.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
+void BTR_BAList_set(btr_balist_t *, void *data, long index);
 // Returns the first item of the borrowing array list.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
 btr_container_ptr_result_t BTR_BAList_first(const btr_balist_t *);

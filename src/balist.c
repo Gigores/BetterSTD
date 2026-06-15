@@ -112,6 +112,13 @@ btr_container_ptr_result_t BTR_BAList_get(const btr_balist_t *this, long index)
         BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
     BTR_Ok(btr_container_ptr_result_t, this->data[index]);
 }
+void BTR_BAList_set(btr_balist_t *this, void *data, long index)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    if (index < 0) index = this->count + index;
+    BTR_panicIf(index < 0 || (size_t)index >= this->count, "index out of bounds");
+    this->data[index] = data;
+}
 btr_container_ptr_result_t BTR_BAList_first(const btr_balist_t *this)
 {
     BTR_panicIf(!this, "`this` is invalid");

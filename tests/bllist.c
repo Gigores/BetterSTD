@@ -300,6 +300,40 @@ static void test8(void)
     BTR_BLList_free(&list);
 }
 
+// test `set`
+static void test9(void)
+{
+    printf("> test9\n");
+
+    int values[] = {10, 20, 30, 40, 50};
+    size_t n = sizeof(values) / sizeof(values[0]);
+
+    btr_bllist_t list = BTR_BLList_make(NULL);
+    for (size_t i = 0; i < n; i++)
+        BTR_BLList_append(&list, (void *)&values[i]);
+
+    // set at positive index
+    int newVal = 99;
+    BTR_BLList_set(&list, &newVal, 2);
+    assert(getInt(BTR_unwrap(BTR_BLList_get(&list, 2))) == 99);
+    assert(getInt(BTR_unwrap(BTR_BLList_get(&list, 0))) == 10);
+    assert(getInt(BTR_unwrap(BTR_BLList_get(&list, 4))) == 50);
+
+    // set at negative index
+    int first = 1, last = 100;
+    BTR_BLList_set(&list, &last, -1);
+    BTR_BLList_set(&list, &first, -5);
+    assert(getInt(BTR_unwrap(BTR_BLList_get(&list, -1))) == 100);
+    assert(getInt(BTR_unwrap(BTR_BLList_get(&list, -5))) == 1);
+
+    // set at index 0
+    int zero = 0;
+    BTR_BLList_set(&list, &zero, 0);
+    assert(getInt(BTR_unwrap(BTR_BLList_get(&list, 0))) == 0);
+
+    BTR_BLList_free(&list);
+}
+
 int main(void) {
     test1();
     test2();
@@ -309,6 +343,7 @@ int main(void) {
     test6();
     test7();
     test8();
+    test9();
     printf("SUCCESS\n");
 
     return 0;
