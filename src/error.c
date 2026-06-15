@@ -10,8 +10,13 @@
 #define COLOR_FATAL "\e[38;5;196m"
 #define COLOR_NUMBER "\e[38;5;39m"
 
-void BTR_panicImpl(const char *file, int line, const char *func, const char *format, ...)
-{
+void BTR_panicImpl(
+    const char *file,
+    int line,
+    const char *func,
+    const char *format,
+    ...
+) {
     va_list args;
     va_start(args, format);
     BTR_vlogImpl(file, line, func, LOG_FATAL, format, args);
@@ -19,8 +24,14 @@ void BTR_panicImpl(const char *file, int line, const char *func, const char *for
     fflush(NULL);
     abort();
 }
-void BTR_panicImplIf(const char *file, int line, const char *func, bool condition, const char *format, ...)
-{
+void BTR_panicImplIf(
+    const char *file,
+    int line,
+    const char *func,
+    bool condition,
+    const char *format,
+    ...
+) {
     if (!condition) return;
     va_list args;
     va_start(args, format);

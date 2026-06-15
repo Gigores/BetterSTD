@@ -1,4 +1,5 @@
 #include "btrstd/logger.h"
+#include "btrstd/error.h"
 #include "stdarg.h"
 #include "stdio.h"
 #include "time.h"
@@ -76,8 +77,14 @@ static void doLogFile(btr_logger_t *logger, const char *file, int line, const ch
     if (logger->logLine) fprintf(logger->file, ":%d", line);
     fprintf(logger->file, "] ");
 }
-void BTR_vlogImpl(const char *file, int line, const char *func, btr_log_level_t logLevel, const char *formatString, va_list args)
-{
+void BTR_vlogImpl(
+    const char *file,
+    int line,
+    const char *func,
+    btr_log_level_t logLevel,
+    const char *formatString,
+    va_list args
+) {
     btr_logger_t *logger = &BTR_g_logger;
 
     if (logLevel < logger->minLogLevel) return;
@@ -96,8 +103,14 @@ void BTR_vlogImpl(const char *file, int line, const char *func, btr_log_level_t 
     if (logger->file) fprintf(logger->file, "\n");
 }
 
-void BTR_logImpl(const char *file, int line, const char *func, btr_log_level_t logLevel, const char *formatString, ...)
-{
+void BTR_logImpl(
+    const char *file,
+    int line,
+    const char *func,
+    btr_log_level_t logLevel,
+    const char *formatString,
+    ...
+) {
     va_list args;
     va_start(args, formatString);
     BTR_vlogImpl(file, line, func, logLevel, formatString, args);

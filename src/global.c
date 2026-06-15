@@ -19,16 +19,23 @@ void BTR_deallocate(void *pointer)
 {
     free(pointer);
 }
-btr_alloc_result_t BTR_allocatec(__attribute__((unused)) void *context, size_t size)
-{
+btr_alloc_result_t BTR_allocatec(
+    __attribute__((unused)) void *context,
+    size_t size
+) {
     return BTR_allocate(size);
 }
-btr_alloc_result_t BTR_reallocatec(__attribute__((unused)) void *context, void *pointer, size_t newSize)
-{
+btr_alloc_result_t BTR_reallocatec(
+    __attribute__((unused)) void *context,
+    void *pointer,
+    size_t newSize
+) {
     return BTR_reallocate(pointer, newSize);
 }
-void BTR_deallocatec(__attribute__((unused)) void *context, void *pointer)
-{
+void BTR_deallocatec(
+    __attribute__((unused)) void *context,
+    void *pointer
+){
     BTR_deallocate(pointer);
 }
 

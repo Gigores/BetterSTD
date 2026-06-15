@@ -63,7 +63,8 @@ btr_container_ptr_result_t BTR_BAList_first(const btr_balist_t *);
 btr_container_ptr_result_t BTR_BAList_last(const btr_balist_t *);
 // Returns the index of the first occurrence of the item.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_NOT_FOUND` if the item wasn't found.
-btr_container_idx_result_t BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
+btr_container_idx_result_t BTR_BAList_indexOf
+    (btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing array list.
 size_t BTR_BAList_len(const btr_balist_t *);
 // Tells if the borrowing array list is empty.

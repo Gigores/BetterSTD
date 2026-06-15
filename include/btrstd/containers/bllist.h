@@ -75,7 +75,8 @@ btr_container_ptr_result_t BTR_BLList_first(const btr_bllist_t *);
 btr_container_ptr_result_t BTR_BLList_last(const btr_bllist_t *);
 // Returns the index of the first occurrence of the item.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_NOT_FOUND` if the item wasn't found.
-btr_container_idx_result_t BTR_BLList_indexOf(btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
+btr_container_idx_result_t BTR_BLList_indexOf
+    (btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing linked list.
 size_t BTR_BLList_len(const btr_bllist_t *);
 // Tells if the borrowing linked list is empty.

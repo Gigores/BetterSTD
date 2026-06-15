@@ -36,10 +36,12 @@ void BTR_StringView_cropLeft(btr_string_view_t *, unsigned int charCount);
 // Crops the given count of characters from the right of the string view.
 // "გვიპყრობდა" -> crop 3 -> "გვიპყრო"
 void BTR_StringView_cropRight(btr_string_view_t *, unsigned int charCount);
-// Reverts the given count of characters from the left of the string view, that were previously cropped.
+// Reverts the given count of characters from the left of the string view, that were
+// previously cropped.
 // "გვიპყრობდა" -> crop 3 -> "პყრობდა" -> revert 2 "ვიპყრობდა"
 void BTR_StringView_revertLeft(btr_string_view_t *, unsigned int charCount);
-// Reverts the given count of characters from the right of the string view, that were previously cropped.
+// Reverts the given count of characters from the right of the string view, that were
+// previously cropped.
 // "გვიპყრობდა" -> crop 3 -> "გვიპყრო" -> revert 2 -> "გვიპყრობდ"
 void BTR_StringView_revertRight(btr_string_view_t *, unsigned int charCount);
 // Returns the size of a view IN BYTES.
@@ -66,7 +68,8 @@ btr_string_view_t BTR_StringView_findView(btr_string_view_t *, btr_string_view_t
 // Returns zero-initialised view if didn't find the substring.
 btr_string_view_t BTR_StringView_findCString(btr_string_view_t *, const char *substring);
 // Returns a substring with the given start and length.
-btr_string_view_t BTR_StringView_substring(btr_string_view_t *, unsigned int start, unsigned int count);
+btr_string_view_t BTR_StringView_substring
+    (btr_string_view_t *, unsigned int start, unsigned int count);
 // Trims whitespaces from the left of the view.
 void BTR_StringView_trimLeft(btr_string_view_t *);
 // Trims whitespaces from the right of the view.

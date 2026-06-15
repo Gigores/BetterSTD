@@ -36,7 +36,10 @@ void BTR_BLList_append(btr_bllist_t *this, void *data)
     btr_bllist_node_t **currNode = &this->head;
     while (*currNode)
         currNode = &(*currNode)->next;
-    *currNode = BTR_expect(BTR_Allocator_allocate(this->allocator, sizeof(btr_bllist_node_t)), "Allocation failed");
+    *currNode = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, sizeof(btr_bllist_node_t)),
+        "Allocation failed"
+    );
     (*currNode)->payload = data;
     (*currNode)->next = NULL;
     this->size++;
@@ -45,7 +48,10 @@ void BTR_BLList_prepend(btr_bllist_t *this, void *data)
 {
     BTR_panicIf(!this, "`this` is null");
     btr_bllist_node_t *oldFirst = this->head;
-    btr_bllist_node_t *newFirst = BTR_expect(BTR_Allocator_allocate(this->allocator, sizeof(btr_bllist_node_t)), "Allocation failed");
+    btr_bllist_node_t *newFirst = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, sizeof(btr_bllist_node_t)),
+        "Allocation failed"
+    );
     newFirst->payload = data;
     newFirst->next = oldFirst;
     this->head = newFirst;
@@ -64,7 +70,10 @@ void BTR_BLList_insert(btr_bllist_t *this, void *data, long index)
     for (size_t i = 0; i < (size_t) index - 1; i++)
         currNode = currNode->next;
     BTR_panicIf(!currNode, "unexpected null node");
-    btr_bllist_node_t *newNode = BTR_expect(BTR_Allocator_allocate(this->allocator, sizeof(btr_bllist_node_t)), "Allocation failed");
+    btr_bllist_node_t *newNode = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, sizeof(btr_bllist_node_t)),
+        "Allocation failed"
+    );
     newNode->next = currNode->next;
     newNode->payload = data;
     currNode->next = newNode;
@@ -136,8 +145,11 @@ btr_container_ptr_result_t BTR_BLList_last(const btr_bllist_t *this)
         currNode = currNode->next;
     BTR_Ok(btr_container_ptr_result_t, currNode->payload);
 }
-btr_container_idx_result_t BTR_BLList_indexOf(btr_bllist_t *this, void *value, bool (*cmp)(const void *, const void *))
-{
+btr_container_idx_result_t BTR_BLList_indexOf(
+    btr_bllist_t *this,
+    void *value,
+    bool (*cmp)(const void *, const void *)
+) {
     BTR_panicIf(!this, "`this` is null");
     BTR_BLLIST_ENUMERATE(this, i, n)
         if(cmp(i, value))

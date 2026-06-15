@@ -2,7 +2,8 @@
 
 #include "btrstd/allocator.h"
 
-// __Arena__ is a linear allocator. That means, that it is __fast__, but cannot free or deallocate individual pointers.
+// Arena is a linear allocator. That means, that it is fast, but
+// cannot free or deallocate individual pointers.
 
 // Allocator capabilities:
 // - allocate:   OK/BTR_ALLOC_ERR_OUT_OF_MEMORY
@@ -20,7 +21,8 @@ typedef struct {
 } btr_arena_t;
 
 // Creates an empty Arena.
-// The `parentAllocator` parameter can be set as `NULL`, in this case it will use the global allocator.
+// The `parentAllocator` parameter can be set as `NULL`, in this case it will use
+// the global allocator.
 btr_arena_t BTR_Arena_make(size_t capacity, btr_allocator_t *parentAllocator);
 // Allocates a given amount of bytes in the Arena.
 // Can return BTR_ALLOC_ERR_OUT_OF_MEMORY.

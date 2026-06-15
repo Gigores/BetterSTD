@@ -32,10 +32,8 @@ typedef struct {
 void BTR_setLogger(btr_logger_t);
 btr_logger_t *BTR_getLogger(void);
 
-void BTR_logImpl(const char *file, int line, const char *func, btr_log_level_t logLevel, const char *formatString, ...);
-void BTR_vlogImpl(const char *file, int line, const char *func, btr_log_level_t logLevel, const char *formatString, va_list args);
-
-#define BTR_log(logLevel, formatString, ...) BTR_logImpl(__FILE__, __LINE__, __FUNCTION__, logLevel, formatString __VA_OPT__(,) __VA_ARGS__)
+#define BTR_log(logLevel, formatString, ...) \
+    BTR_logImpl(__FILE__, __LINE__, __FUNCTION__, logLevel, formatString __VA_OPT__(,) __VA_ARGS__)
 
 // int
 #define BTR_debugInt(variable) BTR_log(LOG_DEBUG, #variable " = %d", variable)
@@ -61,6 +59,24 @@ void BTR_vlogImpl(const char *file, int line, const char *func, btr_log_level_t 
 #define BTR_debugSize(variable) BTR_log(LOG_DEBUG, #variable " = %zu", variable)
 // bool
 #define BTR_debugBool(variable) BTR_log(LOG_DEBUG, #variable " = %s", variable ? "true" : "false")
+
+void BTR_logImpl(
+    const char *file,
+    int line,
+    const char *func,
+    btr_log_level_t logLevel,
+    const char *formatString,
+    ...
+);
+void BTR_vlogImpl(
+    const char *file,
+    int line,
+    const char *func,
+    btr_log_level_t logLevel,
+    const char *formatString,
+    va_list args
+);
+
 
 #ifdef BTR_NO_PREFIX
 

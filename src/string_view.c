@@ -48,7 +48,8 @@ void BTR_StringView_cropRight(btr_string_view_t *string, unsigned int charCount)
         size_t offset = 0;
         while (isUtf8Continuation(*(string->data + string->start + string->length - offset - 1)))
             offset++;
-        size_t curCharSize = utf8CharLen(*(string->data + string->start + string->length - offset - 1));
+        size_t curCharSize =
+            utf8CharLen(*(string->data + string->start + string->length - offset - 1));
         string->length -= curCharSize;
     }
 }
@@ -124,8 +125,11 @@ bool BTR_StringView_endsWithView(btr_string_view_t *string, btr_string_view_t *p
     size_t len = BTR_StringView_byteCount(string);
     size_t lenPostfix = BTR_StringView_byteCount(postfix);
     size_t counter = 0;
-    while (*(string->data + string->start + len - counter) == *(postfix->data + postfix->start + lenPostfix - counter) && counter < lenPostfix)
-        counter++;
+    while (
+        *(string->data + string->start + len - counter) ==
+        *(postfix->data + postfix->start + lenPostfix - counter) &&
+        counter < lenPostfix
+    ) counter++;
     if (counter < lenPostfix)
         return false;
     return true;
@@ -135,8 +139,11 @@ bool BTR_StringView_startsWithView(btr_string_view_t *string, btr_string_view_t 
     BTR_panicIf(!string || !prefix, "`string` or `prefix` is NULL");
     size_t counter = 0;
     size_t byteCount = BTR_StringView_byteCount(prefix);
-    while (*(string->data + string->start + counter) == *(prefix->data + prefix->start + counter) && counter < byteCount)
-        counter++;
+    while (
+        *(string->data + string->start + counter) ==
+        *(prefix->data + prefix->start + counter) &&
+        counter < byteCount
+    ) counter++;
     if (counter < byteCount)
         return false;
     return true;
@@ -179,14 +186,19 @@ btr_string_view_t BTR_StringView_findCString(btr_string_view_t *string, const ch
     btr_string_view_t view = BTR_StringView_fromCString(substring);
     return BTR_StringView_findView(string, &view);
 }
-btr_string_view_t BTR_StringView_substring(btr_string_view_t *string, unsigned int start, unsigned int count)
-{
+btr_string_view_t BTR_StringView_substring(
+    btr_string_view_t *string,
+    unsigned int start,
+    unsigned int count
+) {
     BTR_panicIf(!string, "`string` is NULL");
     size_t byteStart = 0, byteCount = 0;
     size_t counter = 0;
     size_t byteOffset = 0;
-    while (string->data + string->start + byteOffset < string->data + string->start + string->length)
-    {
+    while (
+        string->data + string->start + byteOffset <
+        string->data + string->start + string->length
+    ) {
         if (counter == start) byteStart = byteOffset;
         if (counter == start + count) byteCount = byteOffset - byteStart;
         byteOffset += utf8CharLen(*(string->data + string->start + byteOffset));

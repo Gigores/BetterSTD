@@ -11,7 +11,10 @@ static void checkSizeToGrow(btr_balist_t *this)
     {
         size_t newCapacity = this->capacity ? this->capacity * 3 / 2 : 8;
 
-        void **newData = BTR_expect(BTR_Allocator_allocate(this->allocator, newCapacity * sizeof(void *)), "Reallocation failed");
+        void **newData = BTR_expect(
+            BTR_Allocator_allocate(this->allocator, newCapacity * sizeof(void *)),
+            "Reallocation failed"
+        );
         memcpy(newData, this->data, this->count * sizeof(void *));
         BTR_Allocator_deallocate(this->allocator, this->data);
         this->data = newData;
@@ -28,7 +31,10 @@ static void checkSizeToShrink(btr_balist_t *this)
             this->data = NULL;
             this->capacity = 0;
         } else {
-            void **newData = BTR_expect(BTR_Allocator_allocate(this->allocator, newCapacity * sizeof(void *)), "Reallocation failed");
+            void **newData = BTR_expect(
+                BTR_Allocator_allocate(this->allocator, newCapacity * sizeof(void *)),
+                "Reallocation failed"
+            );
             memcpy(newData, this->data, this->count * sizeof(void *));
             BTR_Allocator_deallocate(this->allocator, this->data);
             this->data = newData;
@@ -40,7 +46,10 @@ static void checkSizeToShrink(btr_balist_t *this)
 btr_balist_t BTR_BAList_makeFrom(void *items[], size_t itemCount, btr_allocator_t *allocator)
 {
     BTR_panicIf(!items && itemCount > 0, "`items` is NULL with non-zero itemCount");
-    void **newData = BTR_expect(BTR_Allocator_allocate(getAllocator(allocator), itemCount * sizeof(void *)), "Allocation failed");
+    void **newData = BTR_expect(
+        BTR_Allocator_allocate(getAllocator(allocator), itemCount * sizeof(void *)),
+        "Allocation failed"
+    );
     memcpy(newData, items, itemCount * sizeof(void *));
     return (btr_balist_t) {
         .data = newData,
@@ -51,7 +60,13 @@ btr_balist_t BTR_BAList_makeFrom(void *items[], size_t itemCount, btr_allocator_
 }
 btr_balist_t BTR_BAList_make(size_t capacity, btr_allocator_t *allocator)
 {
-    void **data = BTR_expect(BTR_Allocator_allocate(getAllocator(allocator), ( capacity ? capacity : 8 ) * sizeof(void *)), "Allocation failed");
+    void **data = BTR_expect(
+        BTR_Allocator_allocate(
+            getAllocator(allocator),
+            ( capacity ? capacity : 8 ) * sizeof(void *)
+        ),
+        "Allocation failed"
+    );
     return (btr_balist_t) {
         .data = data,
         .capacity = capacity ? capacity : 8,
@@ -62,7 +77,10 @@ btr_balist_t BTR_BAList_make(size_t capacity, btr_allocator_t *allocator)
 btr_balist_t BTR_BAList_clone(const btr_balist_t *list, btr_allocator_t *allocator)
 {
     BTR_panicIf(!list, "`list` is invalid");
-    void **data = BTR_expect(BTR_Allocator_allocate(getAllocator(allocator), list->capacity * sizeof(void *)), "Allocation failed");
+    void **data = BTR_expect(
+        BTR_Allocator_allocate(getAllocator(allocator), list->capacity * sizeof(void *)),
+        "Allocation failed"
+    );
     memcpy(data, list->data, list->capacity * sizeof(void *));
     return (btr_balist_t) {
         .data = data,
@@ -133,8 +151,11 @@ btr_container_ptr_result_t BTR_BAList_last(const btr_balist_t *this)
         BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
     BTR_Ok(btr_container_ptr_result_t, this->data[this->count - 1]);
 }
-btr_container_idx_result_t BTR_BAList_indexOf(btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *))
-{
+btr_container_idx_result_t BTR_BAList_indexOf(
+    btr_balist_t *list,
+    void *value,
+    bool (*cmp)(const void *, const void *)
+) {
     BTR_panicIf(!list, "`list` is invalid");
     BTR_BALIST_ENUMERATE(list, i, n)
         if (cmp(i, value))
@@ -154,7 +175,10 @@ bool BTR_BAList_isEmpty(const btr_balist_t *this)
 void BTR_BAList_reverse(btr_balist_t *this)
 {
     BTR_panicIf(!this, "`this` is invalid");
-    void **newData = BTR_expect(BTR_Allocator_allocate(this->allocator, this->capacity * sizeof(void *)), "Allocation failed");
+    void **newData = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, this->capacity * sizeof(void *)),
+        "Allocation failed"
+    );
     BTR_BALIST_ENUMERATE(this, i, n)
         newData[this->count - n - 1] = i;
     BTR_Allocator_deallocate(this->allocator, this->data);
