@@ -2,7 +2,9 @@
 
 #include "btrstd/allocator.h"
 
-// A wrapper around the global stdlib allocator.
+// Global Allocator
+
+// A wrapper around the stdlib global allocator.
 
 // Allocator capabilities:
 // - allocate:   OK/BTR_ALLOC_ERR_OUT_OF_MEMORY

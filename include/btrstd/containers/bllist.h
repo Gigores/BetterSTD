@@ -20,7 +20,7 @@
 //                                    NULL
 
 // Allocator required capabilities:
-//   allocate, deallocate
+//   allocate sizeof(btr_bllist_node_t), deallocate
 
 typedef struct BLListNode {
     void *payload;

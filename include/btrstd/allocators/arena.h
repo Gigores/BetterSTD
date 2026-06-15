@@ -2,8 +2,13 @@
 
 #include "btrstd/allocator.h"
 
+// Arena Allocator
+
 // Arena is a linear allocator. That means, that it is fast, but
 // cannot free or deallocate individual pointers.
+
+// Pros: Extremely fast and can allocate differently sized memory chunks.
+// Cons: Can't deallocate.
 
 // Allocator capabilities:
 // - allocate:   OK/BTR_ALLOC_ERR_OUT_OF_MEMORY
@@ -11,7 +16,7 @@
 // - deallocate: OK (no-op)
 
 // Parent allocator required capabilities:
-//   allocate, deallocate
+//   allocate variadic_size, deallocate
 
 typedef struct {
     void *data;
@@ -31,7 +36,7 @@ btr_alloc_result_t BTR_Arena_allocate(btr_arena_t *, size_t size);
 void BTR_Arena_destroy(btr_arena_t *);
 // Deallocates the entire Arena and allocates again with the new capacity.
 void BTR_Arena_reset(btr_arena_t *, size_t newCapacity);
-// Returns a `btr_allocator_t` wrapper for the specified Arena.
+// Returns a `btr_allocator_t` interface wrapper for the specified Arena.
 btr_allocator_t BTR_Arena_getWrapper(btr_arena_t *);
 
 #ifdef BTR_NO_PREFIX
