@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "time.h"
 
+
 #define COL_RESET "\e[0m"
 #define COL_INTER "\e[38;5;246m"
 

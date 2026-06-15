@@ -2,6 +2,7 @@
 
 #include "stdlib.h"
 
+
 btr_alloc_result_t BTR_allocate(size_t size)
 {
     void *pointer = calloc(size, 1);

@@ -1,8 +1,8 @@
 #include "btrstd/containers/bllist.h"
+#include "_util.h"
 
 #include "stdlib.h"
 
-static btr_allocator_t *getAllocator(btr_allocator_t *allocator);
 
 btr_bllist_t BTR_BLList_makeFrom(void *items[], size_t itemCount, btr_allocator_t *allocator)
 {

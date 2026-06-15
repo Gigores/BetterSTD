@@ -2,6 +2,7 @@
 
 #include "_util.h"
 
+
 btr_arena_t BTR_Arena_make(size_t capacity, btr_allocator_t *parentAllocator)
 {
     btr_allocator_t *theAllocator = getAllocator(parentAllocator);

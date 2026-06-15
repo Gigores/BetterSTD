@@ -1,9 +1,11 @@
 #include "btrstd/string_view.h"
+#include "btrstd/error.h"
 #include "string.h"
 #include "stdlib.h"
 #include "ctype.h"
 
 #include "stdio.h"
+
 
 static size_t utf8CharLen(unsigned char c)
 {

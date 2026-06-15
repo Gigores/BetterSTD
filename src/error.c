@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include <stdlib.h>
 
+
 #define COLOR_RESET "\e[0m"
 #define COLOR_INTER "\e[38;5;246m"
 #define COLOR_FATAL "\e[38;5;196m"

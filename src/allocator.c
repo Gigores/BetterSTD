@@ -1,5 +1,6 @@
 #include "btrstd/allocator.h"
 
+
 btr_alloc_result_t BTR_Allocator_allocate(btr_allocator_t *this, size_t size)
 {
     BTR_panicIf(!this, "`this` allocator is NULL");
