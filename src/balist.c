@@ -22,7 +22,7 @@ static void checkSizeToShrink(btr_balist_t *this)
 {
     if (this->count <= this->capacity / 4)
     {
-        size_t newCapacity = this->capacity / 4;
+        size_t newCapacity = this->capacity / 2;
         if (newCapacity == 0) {
             BTR_Allocator_deallocate(this->allocator, this->data);
             this->data = NULL;
@@ -88,8 +88,7 @@ void BTR_BAList_insert(btr_balist_t *this, void *data, long index)
     if (index < 0) index = this->count + index;
     BTR_panicIf(index < 0 || (size_t)index > this->count, "index out of bounds");
     checkSizeToGrow(this);
-    for (size_t i = this->count; i > (size_t)index; i--)
-        this->data[i] = this->data[i - 1];
+    memmove(this->data + index + 1, this->data + index, (this->count - index) * sizeof(void *));
     this->count++;
     this->data[index] = data;
 }
@@ -100,8 +99,7 @@ btr_container_ptr_result_t BTR_BAList_pop(btr_balist_t *this, long index)
     if (index < 0 || (size_t)index >= this->count)
         BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
     void *toReturn = this->data[index];
-    for (size_t i = index; i < this->count - 1; i++)
-        this->data[i] = this->data[i + 1];
+    memmove(this->data + index, this->data + index + 1, (this->count - index) * sizeof(void *));
     this->count--;
     checkSizeToShrink(this);
     BTR_Ok(btr_container_ptr_result_t, toReturn);
