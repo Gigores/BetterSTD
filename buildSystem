@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
-from typing import Final, List
+from typing import Final, List, Optional
+from enum import StrEnum
 import subprocess
 import argparse
 import shutil
@@ -14,6 +15,12 @@ OBJ_FILE       : Final[str] = "_btrstd.o"
 LIB_FILE       : Final[str] = "libbtrstd.a"
 COMPILE_THIS   : Final[str] = os.path.join("src", "_btrstd.c")
 TESTS_BUILD_DIR: Final[str] = os.path.join(BUILD_DIR, "tests")
+
+
+class Commands(StrEnum):
+    BUILD = "build"
+    CLEAN = "clean"
+    TEST  = "test"
 
 
 def load_args() -> List[str]:
@@ -54,7 +61,29 @@ def task_build() -> None:
         print(f"Archiving failed with return code of {res.returncode}")
         return
 
-def task_test() -> None:
+def task_test(test: Optional[str]) -> None:
+
+    def perform_test(file: str):
+        test_name: str = os.path.basename(file).split(".")[0]
+        buildResult: subprocess.CompletedProcess[bytes] = subprocess.run([
+            "gcc",
+            *build_args,
+            "-fsanitize=address",
+            os.path.join(TESTS_DIR, file),
+            "-Lbuild",
+            "-lbtrstd",
+            "-o",
+            os.path.join("build", test_name)
+        ])
+        if buildResult.returncode != 0:
+            print(f"Build of {os.path.basename(file)} failed with return code of {buildResult.returncode}")
+            return
+        print(f">>> Testing {os.path.basename(file)}")
+        testResult: subprocess.CompletedProcess[bytes] = subprocess.run([
+            os.path.join("build", test_name)
+        ])
+        if testResult.returncode != 0:
+            print(f"Test {os.path.basename(file)} failed with return code of {buildResult.returncode}")
 
     task_build()
 
@@ -62,27 +91,11 @@ def task_test() -> None:
         os.mkdir(TESTS_BUILD_DIR)
 
     build_args: Final[List[str]] = load_args()
+    if test:
+        perform_test(test + ".c")
+        return
     for test in os.listdir(TESTS_DIR):
-        test_name: str = os.path.basename(test).split(".")[0]
-        buildResult: subprocess.CompletedProcess[bytes] = subprocess.run([
-            "gcc",
-            *build_args,
-            "-fsanitize=address",
-            os.path.join(TESTS_DIR, test),
-            "-Lbuild",
-            "-lbtrstd",
-            "-o",
-            os.path.join("build", test_name)
-        ])
-        if buildResult.returncode != 0:
-            print(f"Build of {os.path.basename(test)} failed with return code of {buildResult.returncode}")
-            continue
-        print(f">>> Testing {os.path.basename(test)}")
-        testResult: subprocess.CompletedProcess[bytes] = subprocess.run([
-            os.path.join("build", test_name)
-        ])
-        if testResult.returncode != 0:
-            print(f"Test {os.path.basename(test)} failed with return code of {buildResult.returncode}")
+        perform_test(test)
 
 def task_clean() -> None:
 
@@ -92,13 +105,32 @@ def task_clean() -> None:
 
 if __name__ == "__main__":
 
-    parser: Final[argparse.ArgumentParser] = argparse.ArgumentParser(prog="BetterSTD build script")
-    parser.add_argument("action")
+    parser: Final[argparse.ArgumentParser] = argparse.ArgumentParser(
+        prog="buildSystem",
+        description="BetterSTD build system"
+    )
+    subparsers: argparse._SubParsersAction[argparse.ArgumentParser] = \
+        parser.add_subparsers(dest="action", required=True)
 
-    action: str = parser.parse_args().action
+    test_parser: argparse.ArgumentParser = subparsers.add_parser("test")
+    test_parser.add_argument("test_name", nargs="?")
+    test_parser.add_argument("--list", action="store_true")
 
-    if   action == "build": task_build()
-    elif action == "test":  task_test()
-    elif action == "clean": task_clean()
-    else: print(f"Invalid action \"{action}\"")
+    subparsers.add_parser("build")
+    subparsers.add_parser("clean")
+
+    args: argparse.Namespace = parser.parse_args()
+
+    if   args.action == "build":
+        task_build()
+    elif args.action == "test":
+        if args.list:
+            print("Available tests:")
+            for test in os.listdir(TESTS_DIR):
+                print("    " + test.split(".")[0])
+            if not args.test_name:
+                exit()
+        task_test(args.test_name)
+    elif args.action == "clean":
+        task_clean()
 
