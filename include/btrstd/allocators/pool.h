@@ -18,3 +18,4 @@ btr_alloc_result_t BTR_Pool_allocate(btr_pool_t *);
 void BTR_Pool_deallocate(btr_pool_t *, void *pointer);
 void BTR_Pool_destroy(btr_pool_t *);
 void BTR_Pool_reset(btr_pool_t *, size_t newItemCount);
+btr_allocator_t BTR_Pool_getWrapper(btr_pool_t *);

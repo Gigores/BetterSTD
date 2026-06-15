@@ -1,4 +1,5 @@
 #include "btrstd/allocators/pool.h"
+#include "btrstd/containers/bllist.h"
 
 #include "stdio.h"
 #include "assert.h"
@@ -177,6 +178,32 @@ static void test9(void)
     BTR_Pool_destroy(&pool);
 }
 
+static void test10(void)
+{
+    printf("> test10\n");
+
+    const int VALUES[] = {
+        0, 10, 20, 30, 40, 50, 60, 70, 80, 90
+    };
+
+    btr_pool_t pool = BTR_Pool_make(sizeof(btr_bllist_node_t), 64, NULL);
+    btr_allocator_t allocator = BTR_Pool_getWrapper(&pool);
+    btr_bllist_t list = BTR_BLList_make(&allocator);
+
+    for (size_t i = 0; i < 64; i++)
+        BTR_BLList_append(&list, (void *)&VALUES[i % 10]);
+
+    assert(BTR_isErr(BTR_Pool_allocate(&pool)));
+
+    for (size_t i = 0; i < 64; i++)
+        BTR_BLList_pop(&list, -1);
+
+    assert(BTR_isOk(BTR_Pool_allocate(&pool)));
+
+    BTR_BLList_free(&list);
+    BTR_Pool_destroy(&pool);
+}
+
 
 int main(void)
 {
@@ -189,6 +216,7 @@ int main(void)
     test7();
     test8();
     test9();
+    test10();
     printf("SUCCESS\n");
     return 0;
 }

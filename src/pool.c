@@ -2,6 +2,7 @@
 #include "_util.h"
 
 #include "string.h"
+#include "btrstd/logger.h"
 
 
 btr_pool_t BTR_Pool_make(size_t itemSize, size_t itemCount, btr_allocator_t *parentAllocator)
@@ -21,6 +22,7 @@ btr_pool_t BTR_Pool_make(size_t itemSize, size_t itemCount, btr_allocator_t *par
 }
 btr_alloc_result_t BTR_Pool_allocate(btr_pool_t *this)
 {
+    // BTR_log(LOG_DEBUG, "Allocated");
     long index = -1;
     BTR_BITSET_ENUMERATE(&this->mask, i, n)
         if (!i)
@@ -66,4 +68,31 @@ void BTR_Pool_reset(btr_pool_t *this, size_t newItemCount)
     this->data = newData;
     this->itemCount = newItemCount;
     this->mask = BTR_BitSet_make(newItemCount, this->allocator);
+}
+btr_alloc_result_t BTR_Pool_allocatec(void *context, size_t size)
+{
+    BTR_panicIf(!context, "NULL allocator context");
+    if (size != ((btr_pool_t *)context)->itemSize)
+        BTR_Err(btr_alloc_result_t, BTR_ALLOC_ERR_INVALID_SIZE);
+    return BTR_Pool_allocate(context);
+}
+btr_alloc_result_t BTR_Pool_reallocatec(
+    __attribute__((unused)) void *context,
+    __attribute__((unused)) void* pointer,
+    __attribute__((unused)) size_t size
+) {
+    BTR_Err(btr_alloc_result_t, BTR_ALLOC_ERR_UNSUPPORTED_OPERATION);
+}
+void BTR_Pool_deallocatec(void *context, void *pointer)
+{
+    BTR_Pool_deallocate(context, pointer);
+}
+btr_allocator_t BTR_Pool_getWrapper(btr_pool_t *this)
+{
+    return (btr_allocator_t) {
+        .context = this,
+        .allocate = BTR_Pool_allocatec,
+        .reallocate = BTR_Pool_reallocatec,
+        .deallocate = BTR_Pool_deallocatec,
+    };
 }
