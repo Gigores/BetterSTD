@@ -32,7 +32,7 @@ btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list, btr_allocator_t *allocat
 }
 void BTR_BLList_append(btr_bllist_t *this, void *data)
 {
-    BTR_panicIf(!this || !data, "`this` is null");
+    BTR_panicIf(!this, "`this` is null");
     btr_bllist_node_t **currNode = &this->head;
     while (*currNode)
         currNode = &(*currNode)->next;
@@ -43,7 +43,7 @@ void BTR_BLList_append(btr_bllist_t *this, void *data)
 }
 void BTR_BLList_prepend(btr_bllist_t *this, void *data)
 {
-    BTR_panicIf(!this || !data, "`this` is null");
+    BTR_panicIf(!this, "`this` is null");
     btr_bllist_node_t *oldFirst = this->head;
     btr_bllist_node_t *newFirst = BTR_expect(BTR_Allocator_allocate(this->allocator, sizeof(btr_bllist_node_t)), "Allocation failed");
     newFirst->payload = data;
@@ -53,7 +53,7 @@ void BTR_BLList_prepend(btr_bllist_t *this, void *data)
 }
 void BTR_BLList_insert(btr_bllist_t *this, void *data, long index)
 {
-    BTR_panicIf(!this || !data, "`this` is null");
+    BTR_panicIf(!this, "`this` is null");
     if (index < 0) index = (long)this->size + index;
     BTR_panicIf(index < 0 || (size_t)index > this->size, "index out of bounds");
     if (index == 0) {
