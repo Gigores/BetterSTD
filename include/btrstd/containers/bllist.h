@@ -138,6 +138,7 @@ typedef btr_bllist_t bllist_t;
 #define BLList_append   BTR_BLList_append
 #define BLList_prepend  BTR_BLList_prepend
 #define BLList_insert   BTR_BLList_insert
+#define BLList_set      BTR_BLList_set
 #define BLList_pop      BTR_BLList_pop
 #define BLList_get      BTR_BLList_get
 #define BLList_first    BTR_BLList_first

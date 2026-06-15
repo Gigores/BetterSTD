@@ -118,6 +118,7 @@ typedef btr_balist_t balist_t;
 #define BAList_append    BTR_BAList_append
 #define BAList_prepend   BTR_BAList_prepend
 #define BAList_insert    BTR_BAList_insert
+#define BAList_set       BTR_BAList_set
 #define BAList_pop       BTR_BAList_pop
 #define BAList_get       BTR_BAList_get
 #define BAList_first     BTR_BAList_first
