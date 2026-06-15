@@ -58,11 +58,11 @@ void BTR_BitSet_free(btr_bit_set_t *);
 
 #define BTR_BITSET_FOREACH(BITSET, i) \
     bool i; \
-    for (size_t _i = 0; _i < (BITSET)->bitCount && ((i = BTR_BitSet_get(BITSET)), 1); _i++)
+    for (size_t _i = 0; _i < (BITSET)->bitCount && ((i = BTR_unwrap(BTR_BitSet_get(BITSET, _i))), 1); _i++)
 
 #define BTR_BITSET_ENUMERATE(BITSET, i, n) \
     bool i; \
-    for (size_t n = 0; n < (BITSET)->bitCount && ((i = BTR_BitSet_get(BITSET)), 1); n++)
+    for (size_t n = 0; n < (BITSET)->bitCount && ((i = BTR_unwrap(BTR_BitSet_get(BITSET, n))), 1); n++)
 
 #ifdef BTR_NO_PREFIX
 
