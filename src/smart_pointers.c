@@ -3,9 +3,11 @@
 
 void BTR_autoFileCleanup(FILE **file)
 {
-    fclose(*file);
+    if (*file)
+        fclose(*file);
 }
 void BTR_autoHeapCleanup(void *p)
 {
-    BTR_deallocate(*(void **)p);
+    if (p)
+        BTR_deallocate(*(void **)p);
 }
