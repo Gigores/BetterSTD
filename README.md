@@ -65,7 +65,7 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
 - [ ] Allocators
   - [x] [Global](./include/btrstd/allocators/global.h)
   - [x] [Arena](./include/btrstd/allocators/arena.h)
-  - [ ] Pool
+  - [x] [Pool](./include/btrstd/allocators/pool.h)
   - [ ] Heap
   - [ ] Stack
 - [ ] Containers
