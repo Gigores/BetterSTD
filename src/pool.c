@@ -31,13 +31,13 @@ btr_alloc_result_t BTR_Pool_allocate(btr_pool_t *this)
     if (index < 0)
         BTR_Err(btr_alloc_result_t, BTR_ALLOC_ERR_OUT_OF_MEMORY);
     BTR_BitSet_set(&this->mask, index);
-    char *data = this->data + index * this->itemSize;
-    memset(this->data, 0, this->itemSize);
+    uint8_t *data = this->data + index * this->itemSize;
+    memset(this->data + index * this->itemSize, 0, this->itemSize);
     BTR_Ok(btr_alloc_result_t, data);
 }
 void BTR_Pool_deallocate(btr_pool_t *this, void *pointer)
 {
-    ptrdiff_t offset = (char *)pointer - this->data;
+    ptrdiff_t offset = (uint8_t *)pointer - this->data;
     size_t index = offset / this->itemSize;
     BTR_panicIf(
         offset < 0 ||
@@ -65,4 +65,5 @@ void BTR_Pool_reset(btr_pool_t *this, size_t newItemCount)
     );
     this->data = newData;
     this->itemCount = newItemCount;
+    this->mask = BTR_BitSet_make(newItemCount, this->allocator);
 }
