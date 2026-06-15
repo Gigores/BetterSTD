@@ -68,3 +68,16 @@ void BTR_Pool_destroy(btr_pool_t *);
 void BTR_Pool_reset(btr_pool_t *, size_t newItemCount);
 // Returns a `btr_allocator_t` interface wrapper for the specified Pool.
 btr_allocator_t BTR_Pool_getWrapper(btr_pool_t *);
+
+#ifdef BTR_NO_PREFIX
+
+typedef btr_pool_t pool_t;
+
+#define Pool_make           BTR_Pool_make
+#define Pool_allocate       BTR_Pool_allocate
+#define Pool_deallocate     BTR_Pool_deallocate
+#define Pool_destroy        BTR_Pool_destroy
+#define Pool_reset          BTR_Pool_reset
+#define BTR_Pool_getWrapper Pool_getWrapper
+
+#endif // BTR_NO_PREFIX

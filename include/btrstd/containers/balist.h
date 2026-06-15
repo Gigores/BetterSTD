@@ -12,7 +12,7 @@
 // when needed.
 
 // Allocator required capabilities:
-//   allocate, deallocate
+//   allocate variadic_size, deallocate
 
 typedef struct {
     void **data;
