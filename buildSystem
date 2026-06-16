@@ -5,6 +5,7 @@ from enum import StrEnum
 import subprocess
 import argparse
 import shutil
+import time
 import os
 
 
@@ -79,10 +80,14 @@ def task_test(test: Optional[str]) -> None:
             print(f"Build of {os.path.basename(file)} failed with return code of {buildResult.returncode}")
             return
         print(f">>> Testing {os.path.basename(file)}")
+        start: float = time.perf_counter()
         testResult: subprocess.CompletedProcess[bytes] = subprocess.run([
             os.path.join("build", test_name)
         ])
-        if testResult.returncode != 0:
+        elapsed: float = time.perf_counter() - start
+        if testResult.returncode == 0:
+            print(f"Test {os.path.basename(file)} passed in {elapsed:.3f}s")
+        else:
             print(f"Test {os.path.basename(file)} failed with return code of {buildResult.returncode}")
 
     task_build()
