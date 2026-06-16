@@ -2,12 +2,19 @@
 #include "_util.h"
 
 #include "btrstd/error.h"
-#include "btrstd/logger.h"
 #include "string.h"
 #include <stdio.h>
+#include "stdint.h"
 
 const int DEFAULT_BUCKETS = 16;
 
+static double calculateLoadFactor(btr_bhtable_t *this)
+{
+    size_t count = 0;
+    for (size_t i = 0; i < this->capacity; i++)
+        count += BTR_BLList_len(&this->data[i]);
+    return (double)count / this->capacity;
+}
 static btr_bllist_t *initData(size_t capacity, btr_allocator_t *allocator)
 {
     btr_bllist_t *data = BTR_expect(
@@ -17,6 +24,29 @@ static btr_bllist_t *initData(size_t capacity, btr_allocator_t *allocator)
     for (size_t i = 0; i < capacity; i++)
         data[i] = BTR_BLList_make(allocator);
     return data;
+}
+static void freeBucketArray(btr_bllist_t *buckets, size_t bucketsCount, btr_allocator_t *allocator)
+{
+    for (size_t i = 0; i < bucketsCount; i++)
+    {
+        BTR_BLLIST_FOREACH(&buckets[i], j)
+            BTR_Allocator_deallocate(allocator, j);
+        BTR_BLList_free(&buckets[i]);
+    }
+    BTR_Allocator_deallocate(allocator, buckets);
+}
+static void rehashUp(btr_bhtable_t *this)
+{
+    size_t newCapacity = this->capacity * 2;
+    btr_bllist_t *oldData = this->data;
+    size_t oldCapacity = this->capacity;
+    this->data = initData(newCapacity, this->allocator);
+    this->capacity *= 2;
+    for (size_t i = 0; i < oldCapacity; i++) {
+        BTR_BLLIST_FOREACH(&oldData[i], j)
+            BTR_BHTable_put(this, ((btr_key_value_t *)j)->key, ((btr_key_value_t *)j)->value);
+    }
+    freeBucketArray(oldData, oldCapacity, this->allocator);
 }
 static size_t getBucketIndex(btr_bhtable_t *this, const void *key)
 {
@@ -38,6 +68,23 @@ bool BTR_compareCString(const void *a, const void *b)
 {
     printf("%s - %s\n", (const char *)a, (const char *)b);
     return !strcmp((const char *)a, (const char *)b);
+}
+
+btr_hash_t BTR_hashInt32(const void *ptr)
+{
+    uint64_t x = *(const uint32_t *)ptr;
+
+    x ^= x >> 33;
+    x *= 0xff51afd7ed558ccdULL;
+    x ^= x >> 33;
+    x *= 0xc4ceb9fe1a85ec53ULL;
+    x ^= x >> 33;
+
+    return (btr_hash_t)x;
+}
+bool BTR_compareInt32(const void *a, const void *b)
+{
+    return *(int *)a == *(int *)b;
 }
 
 btr_bhtable_t BTR_BHTable_make(
@@ -64,6 +111,8 @@ void BTR_BHTable_put(btr_bhtable_t *this, const void *key, const void *value)
     pair->key   = (void *)key;
     pair->value = (void *)value;
     BTR_BLList_append(&this->data[getBucketIndex(this, key)], (void *)pair);
+    if (calculateLoadFactor(this) > 1.5)
+        rehashUp(this);
 }
 btr_container_ptr_result_t BTR_BHTable_get(btr_bhtable_t *this, const void *key)
 {
@@ -74,11 +123,5 @@ btr_container_ptr_result_t BTR_BHTable_get(btr_bhtable_t *this, const void *key)
 }
 void BTR_BHTable_free(btr_bhtable_t *this)
 {
-    for (size_t i = 0; i < this->capacity; i++)
-    {
-        BTR_BLLIST_FOREACH(&this->data[i], j)
-            BTR_Allocator_deallocate(this->allocator, j);
-        BTR_BLList_free(&this->data[i]);
-    }
-    BTR_Allocator_deallocate(this->allocator, this->data);
+    freeBucketArray(this->data, this->capacity, this->allocator);
 }

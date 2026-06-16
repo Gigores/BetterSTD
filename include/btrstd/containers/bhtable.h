@@ -9,6 +9,9 @@ typedef unsigned long long btr_hash_t;
 btr_hash_t BTR_hashCString(const void *);
 bool BTR_compareCString(const void *, const void *);
 
+btr_hash_t BTR_hashInt32(const void *);
+bool BTR_compareInt32(const void *, const void *);
+
 typedef struct {
     void *key, *value;
 } btr_key_value_t;
