@@ -59,3 +59,28 @@ btr_bllist_t BTR_BHTable_keys(const btr_bhtable_t *);
 void BTR_BHTable_free(btr_bhtable_t *);
 // Deallocates the entire borrowing hash table, but reinitializes it to be empty.
 void BTR_BHTable_clear(btr_bhtable_t *);
+
+#ifdef BTR_NO_PREFIX
+
+typedef btr_hash_t hash_t;
+
+#define hashCString BTR_hashCString
+#define compareCString BTR_compareCString
+
+#define hashInt32 BTR_hashInt32
+#define compareInt32 BTR_compareInt32
+
+typedef btr_key_value_t key_value_t;
+typedef btr_bhtable_t bhtable_t
+
+#define BHTable_make BTR_BHTable_make
+#define BHTable_put BTR_BHTable_put
+#define BHTable_get BTR_BHTable_get
+#define BHTable_pop BTR_BHTable_pop
+#define BHTable_contains BTR_BHTable_contains
+#define BHTable_len BTR_BHTable_len
+#define BHTable_keys BTR_BHTable_keys
+#define BHTable_free BTR_BHTable_free
+#define BHTable_clear BTR_BHTable_clear
+
+#endif  // BTR_NO_PREFIX
