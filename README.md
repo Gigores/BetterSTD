@@ -1,8 +1,13 @@
 # BetterSTD
 
-BetterSTD is a bloated library for C, that was made to "extend" C's standard library with features like different kinds of containers (list, dynamic array, ...) and utilities like logging system, string views and clunky error handling.
+BetterSTD is a bloated library for C, that was made to "extend" C's standard library with features
+like different kinds of containers (list, dynamic array, ...) and utilities like logging system,
+string views and clunky error handling.
 
-This library is opinionated, container implementations are slow and the build system is in python wtf. It was designed by me, for me. Just so that I don't have to reimplement stuff I already implemented and rely on other people's code as much. But if you still want to use this library, you can follow the tutorial below.
+This library is opinionated, container implementations are slow and the build system is in python
+like wtf. It was designed by me, for me. Just so that I don't have to reimplement stuff I already
+implemented and rely on other people's code as much. But if you still want to use this library,
+you can follow the tutorial below.
 
 ## Using
 
@@ -20,8 +25,8 @@ gcc main.c -I/path/to/include -L/path/to/library -lbtrstd -o program
 Then you just include headers and use the library:
 
 ```c
-// #include "btrstd/btrstd.h"  // You can use this header to include the entire library
-// #define BTR_NO_PREFIX       // You can also define this macro to get aliases without prefixes
+// #include "btrstd/btrstd.h" // You can use this header to include the entire library
+// #define BTR_NO_PREFIX      // You can also define this macro to get aliases without prefixes
 #include "btrstd/smart_pointers.h"
 #include "btrstd/logger.h"
 
