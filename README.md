@@ -2,7 +2,7 @@
 
 BetterSTD is a bloated library for C, that was made to "extend" C's standard library with features like different kinds of containers (list, dynamic array, ...) and utilities like logging system, string views and clunky error handling.
 
-This library is quite opinionated. It was designed by me, for me. Just so that I don't have to reimplement stuff I already implemented in every project I work on. But if you still want to use this library, you can follow the tutorial below.
+This library is opinionated, container implementations are slow and the build system is in python wtf. It was designed by me, for me. Just so that I don't have to reimplement stuff I already implemented and rely on other people's code as much. But if you still want to use this library, you can follow the tutorial below.
 
 ## Using
 
@@ -66,8 +66,9 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
   - [x] [Global](./include/btrstd/allocators/global.h)
   - [x] [Arena](./include/btrstd/allocators/arena.h)
   - [x] [Pool](./include/btrstd/allocators/pool.h)
-  - [ ] Heap
+  - [ ] Tracking
   - [ ] Stack
+  - [ ] Heap
 - [ ] Containers
   - [x] [Borrowing Array List](./include/btrstd/containers/balist.h)
   - [x] [Borrowing Linked List](./include/btrstd/containers/bllist.h)
