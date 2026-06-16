@@ -96,7 +96,7 @@ def task_test(test: Optional[str], performance: bool) -> None:
                     print(f"Test {os.path.basename(file)} failed with return code of {buildResult.returncode}")
                     return
                 elapseds.append(just_elapsed)
-            print(f"Test {os.path.basename(file)} passed in {sum(elapseds) / len(elapseds):.3f}s on average")
+            print(f"Test {os.path.basename(file)} passed in {sum(elapseds) / len(elapseds):.3f}s on average and in {sum(elapseds):.3f} in total")
         else:
             elapsed, testResult = launch_test(test_name)
             if testResult.returncode == 0:

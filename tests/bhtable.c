@@ -42,11 +42,8 @@ static void test3(void)
         *key = i;
         BTR_BLList_append(&keys, key);
         BTR_BHTable_put(&table, key, key);
-        BTR_debugSize(table.capacity);
     }
     assert(BTR_BHTable_len(&table) == 4096);
-    BTR_BLLIST_FOREACH(&keys, i)
-        BTR_debugInt(*(int *)BTR_unwrap(BTR_BHTable_get(&table, i)));
     BTR_BLList_free(&keys);
     BTR_Arena_destroy(&arena);
     BTR_BHTable_free(&table);
