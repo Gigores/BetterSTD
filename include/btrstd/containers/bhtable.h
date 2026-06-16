@@ -19,6 +19,7 @@ typedef struct {
 typedef struct {
     btr_bllist_t *data;
     size_t capacity;
+    size_t count;
 
     btr_hash_t (*hash)(const void *);
     bool (*compare)(const void *, const void *);
@@ -32,5 +33,10 @@ btr_bhtable_t BTR_BHTable_make(
     btr_allocator_t *allocator
 );
 void BTR_BHTable_put(btr_bhtable_t *, const void *key, const void *value);
-btr_container_ptr_result_t BTR_BHTable_get(btr_bhtable_t *, const void *key);
+btr_container_ptr_result_t BTR_BHTable_get(const btr_bhtable_t *, const void *key);
+btr_container_ptr_result_t BTR_BHTable_pop(btr_bhtable_t *, const void *key);
+bool BTR_BHTable_contains(const btr_bhtable_t *, const void *key);
+size_t BTR_BHTable_len(const btr_bhtable_t *);
+void BTR_BHTable_clear(btr_bhtable_t *);
+btr_bllist_t BTR_BHTable_keys(const btr_bhtable_t *);
 void BTR_BHTable_free(btr_bhtable_t *);
