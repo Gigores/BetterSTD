@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-from typing import Final, List, Optional
+from typing import Final, List, Tuple, Optional
 from enum import StrEnum
 import subprocess
 import argparse
@@ -62,9 +62,17 @@ def task_build() -> None:
         print(f"Archiving failed with return code of {res.returncode}")
         return
 
-def task_test(test: Optional[str]) -> None:
+def task_test(test: Optional[str], performance: bool) -> None:
 
-    def perform_test(file: str):
+    def perform_test(file: str) -> None:
+
+        def launch_test(test_name: str) -> Tuple[float, subprocess.CompletedProcess[bytes]]:
+            start: float = time.perf_counter()
+            testResult: subprocess.CompletedProcess[bytes] = subprocess.run([
+                os.path.join("build", test_name)
+            ])
+            return time.perf_counter() - start, testResult
+
         test_name: str = os.path.basename(file).split(".")[0]
         buildResult: subprocess.CompletedProcess[bytes] = subprocess.run([
             "gcc",
@@ -80,15 +88,21 @@ def task_test(test: Optional[str]) -> None:
             print(f"Build of {os.path.basename(file)} failed with return code of {buildResult.returncode}")
             return
         print(f">>> Testing {os.path.basename(file)}")
-        start: float = time.perf_counter()
-        testResult: subprocess.CompletedProcess[bytes] = subprocess.run([
-            os.path.join("build", test_name)
-        ])
-        elapsed: float = time.perf_counter() - start
-        if testResult.returncode == 0:
-            print(f"Test {os.path.basename(file)} passed in {elapsed:.3f}s")
+        if performance:
+            elapseds: List[float] = []
+            for _ in range(100):
+                just_elapsed, testResult = launch_test(test_name)
+                if testResult.returncode != 0:
+                    print(f"Test {os.path.basename(file)} failed with return code of {buildResult.returncode}")
+                    return
+                elapseds.append(just_elapsed)
+            print(f"Test {os.path.basename(file)} passed in {sum(elapseds) / len(elapseds):.3f}s on average")
         else:
-            print(f"Test {os.path.basename(file)} failed with return code of {buildResult.returncode}")
+            elapsed, testResult = launch_test(test_name)
+            if testResult.returncode == 0:
+                print(f"Test {os.path.basename(file)} passed in {elapsed:.3f}s")
+            else:
+                print(f"Test {os.path.basename(file)} failed with return code of {buildResult.returncode}")
 
     task_build()
 
@@ -120,13 +134,14 @@ if __name__ == "__main__":
     test_parser: argparse.ArgumentParser = subparsers.add_parser("test")
     test_parser.add_argument("test_name", nargs="?")
     test_parser.add_argument("--list", action="store_true")
+    test_parser.add_argument("--performance", action="store_true")
 
     subparsers.add_parser("build")
     subparsers.add_parser("clean")
 
     args: argparse.Namespace = parser.parse_args()
 
-    if   args.action == "build":
+    if args.action == "build":
         task_build()
     elif args.action == "test":
         if args.list:
@@ -135,7 +150,7 @@ if __name__ == "__main__":
                 print("    " + test.split(".")[0])
             if not args.test_name:
                 exit()
-        task_test(args.test_name)
+        task_test(args.test_name, args.performance)
     elif args.action == "clean":
         task_clean()
 
