@@ -18,12 +18,13 @@ bool BTR_compareCString(const void *, const void *);
 btr_hash_t BTR_hashInt32(const void *);
 bool BTR_compareInt32(const void *, const void *);
 
-typedef struct {
+typedef struct BTR_TableEntry{
     void *key, *value;
-} btr_key_value_t;
+    struct BTR_TableEntry *next;
+} btr_table_entry_t;
 
 typedef struct {
-    btr_bllist_t *data;
+    btr_table_entry_t **data;
     size_t capacity;
     size_t count;
 

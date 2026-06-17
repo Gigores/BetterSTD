@@ -1,6 +1,5 @@
 #include "btrstd/containers/bhtable.h"
 #include "btrstd/allocators/arena.h"
-#include "btrstd/logger.h"
 #include "assert.h"
 #include "stdio.h"
 
@@ -48,7 +47,6 @@ static void test3(void)
     BTR_Arena_destroy(&arena);
     BTR_BHTable_free(&table);
 }
-
 // test pop
 static void test4(void)
 {

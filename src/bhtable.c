@@ -10,43 +10,41 @@ const int DEFAULT_BUCKETS = 16;
 
 static double calculateLoadFactor(btr_bhtable_t *this)
 {
-    size_t count = 0;
-    for (size_t i = 0; i < this->capacity; i++)
-        count += BTR_BLList_len(&this->data[i]);
-    return (double)count / this->capacity;
+    return (double)this->count / this->capacity;
 }
-static btr_bllist_t *initData(size_t capacity, btr_allocator_t *allocator)
+static btr_table_entry_t **initData(size_t capacity, btr_allocator_t *allocator)
 {
-    btr_bllist_t *data = BTR_expect(
-        BTR_Allocator_allocate(allocator, sizeof(btr_bllist_t) * capacity),
+    btr_table_entry_t **data = BTR_expect(
+        BTR_Allocator_allocate(allocator, sizeof(btr_table_entry_t) * capacity),
         "Allocation failed"
     );
-    for (size_t i = 0; i < capacity; i++)
-        data[i] = BTR_BLList_make(allocator);
     return data;
 }
-static void freeBucketArray(btr_bllist_t *buckets, size_t bucketsCount, btr_allocator_t *allocator)
+static void freeBucketArray(btr_table_entry_t **buckets, size_t bucketsCount, btr_allocator_t *allocator)
 {
     for (size_t i = 0; i < bucketsCount; i++)
     {
-        BTR_BLLIST_FOREACH(&buckets[i], j)
-            BTR_Allocator_deallocate(allocator, j);
-        BTR_BLList_free(&buckets[i]);
+        btr_table_entry_t *current = buckets[i];
+        while (current)
+        {
+            btr_table_entry_t *next = current->next;
+            BTR_Allocator_deallocate(allocator, current);
+            current = next;
+        }
     }
     BTR_Allocator_deallocate(allocator, buckets);
 }
 static void rehashUp(btr_bhtable_t *this)
 {
     size_t newCapacity = this->capacity * 2;
-    btr_bllist_t *oldData = this->data;
+    btr_table_entry_t **oldData = this->data;
     size_t oldCapacity = this->capacity;
     this->data = initData(newCapacity, this->allocator);
     this->capacity *= 2;
     this->count = 0;
-    for (size_t i = 0; i < oldCapacity; i++) {
-        BTR_BLLIST_FOREACH(&oldData[i], j)
-            BTR_BHTable_put(this, ((btr_key_value_t *)j)->key, ((btr_key_value_t *)j)->value);
-    }
+    for (size_t i = 0; i < oldCapacity; i++)
+        for (btr_table_entry_t *current = oldData[i]; current; current = current->next)
+            BTR_BHTable_put(this, current->key, current->value);
     freeBucketArray(oldData, oldCapacity, this->allocator);
 }
 static size_t getBucketIndex(const btr_bhtable_t *this, const void *key)
@@ -94,7 +92,7 @@ btr_bhtable_t BTR_BHTable_make(
     btr_allocator_t *allocator
 ) {
     btr_allocator_t *theAllocator = getAllocator(allocator);
-    btr_bllist_t *data = initData(DEFAULT_BUCKETS, theAllocator);
+    btr_table_entry_t **data = initData(DEFAULT_BUCKETS, theAllocator);
     return (btr_bhtable_t) {
         .data = data,
         .capacity = DEFAULT_BUCKETS,
@@ -105,51 +103,65 @@ btr_bhtable_t BTR_BHTable_make(
 }
 void BTR_BHTable_put(btr_bhtable_t *this, const void *key, const void *value)
 {
-    btr_bllist_t *bucket = &this->data[getBucketIndex(this, key)];
-    BTR_BLLIST_FOREACH(bucket, i)
-        if (this->compare(((btr_key_value_t *)i)->key, key)) {
-            ((btr_key_value_t *)i)->value = (void *)value;
+    btr_table_entry_t **first = &this->data[getBucketIndex(this, key)];
+    for (btr_table_entry_t *current = *first; current; current = current->next)
+        if (this->compare(current->key, key)) {
+            current->key = (void *)key;
             return;
         }
-    btr_key_value_t *pair = BTR_expect(
-        BTR_Allocator_allocate(this->allocator, sizeof(btr_key_value_t)),
+    btr_table_entry_t *pair = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, sizeof(btr_table_entry_t)),
         "Allocation failed"
     );
     pair->key   = (void *)key;
     pair->value = (void *)value;
-    BTR_BLList_append(bucket, (void *)pair);
+    pair->next  = *first;
+    *first = pair;
     this->count++;
     if (calculateLoadFactor(this) > 1.5)
         rehashUp(this);
 }
 btr_container_ptr_result_t BTR_BHTable_get(const btr_bhtable_t *this, const void *key)
 {
-    BTR_BLLIST_FOREACH(&this->data[getBucketIndex(this, key)], i)
-        if (this->compare(key, ((btr_key_value_t *)i)->key))
-            BTR_Ok(btr_container_ptr_result_t, ((btr_key_value_t *)i)->value);
+    for (
+        btr_table_entry_t *current = this->data[getBucketIndex(this, key)];
+        current;
+        current = current->next
+    ) if (this->compare(current->key, key))
+        BTR_Ok(btr_container_ptr_result_t, current->value);
     BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_NOT_FOUND);
 }
 btr_container_ptr_result_t BTR_BHTable_pop(btr_bhtable_t *this, const void *key)
 {
-    btr_bllist_t *list = &this->data[getBucketIndex(this, key)];
-    long index = -1;
-    BTR_BLLIST_ENUMERATE(list, i, n)
-        if (this->compare(key, ((btr_key_value_t *)i)->key)) {
-            index = n;
-            break;
+    size_t bucket = getBucketIndex(this, key);
+    btr_table_entry_t *current = this->data[bucket];
+    btr_table_entry_t *prev = NULL;
+    while (current)
+    {
+        if (this->compare(current->key, key))
+        {
+            if (prev)
+                prev->next = current->next;
+            else
+                this->data[bucket] = current->next;
+            void *result = current->value;
+            BTR_Allocator_deallocate(this->allocator, current);
+            this->count--;
+            BTR_Ok(btr_container_ptr_result_t, result);
         }
-    if (index == -1)
-        BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_NOT_FOUND);
-    btr_key_value_t *popped = BTR_unwrap(BTR_BLList_pop(list, (size_t)index));
-    void *result = popped->value;
-    BTR_Allocator_deallocate(this->allocator, popped);
-    this->count--;
-    BTR_Ok(btr_container_ptr_result_t, result);
+        prev = current;
+        current = current->next;
+    }
+    BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_NOT_FOUND);
 }
 bool BTR_BHTable_contains(const btr_bhtable_t *this, const void *key)
 {
-    BTR_BLLIST_FOREACH(&this->data[getBucketIndex(this, key)], i)
-        if (this->compare(key, ((btr_key_value_t *)i)->key))
+    for (
+        btr_table_entry_t *current = this->data[getBucketIndex(this, key)];
+        current;
+        current = current->next
+    ) if (this->compare(current->key, key))
+        if (this->compare(current->key, key))
             return true;
     return false;
 }
@@ -160,7 +172,7 @@ size_t BTR_BHTable_len(const btr_bhtable_t *this)
 void BTR_BHTable_clear(btr_bhtable_t *this)
 {
     BTR_BHTable_free(this);
-    btr_bllist_t *newData = initData(DEFAULT_BUCKETS, this->allocator);
+    btr_table_entry_t **newData = initData(DEFAULT_BUCKETS, this->allocator);
     this->data = newData;
     this->capacity = DEFAULT_BUCKETS;
     this->count = 0;
@@ -168,10 +180,12 @@ void BTR_BHTable_clear(btr_bhtable_t *this)
 btr_bllist_t BTR_BHTable_keys(const btr_bhtable_t *this)
 {
     btr_bllist_t keys = BTR_BLList_make(this->allocator);
-    for (size_t i = 0; i < this->capacity; i++) {
-        BTR_BLLIST_FOREACH(&this->data[i], j)
-            BTR_BLList_append(&keys, ((btr_key_value_t *)j)->key);
-    }
+    for (size_t i = 0; i < this->capacity; i++)
+        for (
+            btr_table_entry_t *current = this->data[i];
+            current;
+            current = current->next
+        ) BTR_BLList_append(&keys, current->key);
     return keys;
 }
 void BTR_BHTable_free(btr_bhtable_t *this)
