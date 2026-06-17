@@ -11,3 +11,4 @@
 #include "bit_set.c"
 #include "pool.c"
 #include "bhtable.c"
+#include "json.c"
