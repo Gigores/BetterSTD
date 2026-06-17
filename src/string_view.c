@@ -204,6 +204,8 @@ btr_string_view_t BTR_StringView_substring(
         byteOffset += utf8CharLen(*(string->data + string->start + byteOffset));
         counter++;
     }
+    if (byteCount == 0 && counter > start)
+        byteCount = string->length - byteStart;
     return (btr_string_view_t) {
         .data = string->data,
         .capacity = string->capacity,
