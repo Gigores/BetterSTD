@@ -4,6 +4,7 @@
 #include "btrstd/allocators/global.h"
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 
 typedef struct {
     btr_string_view_t text;
@@ -49,7 +50,7 @@ typedef struct {
 static char *tokenizer_next(token_state_t *state)
 {
     state->curCharIndex++;
-    state->curChar = BTR_StringView_charAt(&state->text, state->curCharIndex);
+    state->curChar = (char *) BTR_StringView_charAt(&state->text, state->curCharIndex);
     return state->curChar;
 }
 static bool tokenizer_canAdvance(token_state_t *state)
@@ -196,20 +197,168 @@ static btr_bllist_t tokenize(const char *string, btr_allocator_t *allocator)
         }
     return state.tokens;
 }
+typedef struct {
+    btr_bllist_t *tokens;
+    size_t curTokenIndex;
+    btr_allocator_t *allocator;
+} parse_state_t;
+
+static bool parser_canAdvance(parse_state_t *state)
+{
+    return state->curTokenIndex < BTR_BLList_len(state->tokens);
+}
+static token_t *parser_advance(parse_state_t *state)
+{
+    state->curTokenIndex++;
+    return (token_t *)BTR_unwrap(BTR_BLList_get(state->tokens, state->curTokenIndex));
+}
+static token_t *parser_getNext(parse_state_t *state)
+{
+    return (token_t *)BTR_unwrap(BTR_BLList_get(state->tokens, state->curTokenIndex + 1));
+}
+static btr_json_value_t parse(parse_state_t *state)
+{
+    token_t *firstToken = (token_t *)BTR_unwrap(
+        BTR_BLList_get(state->tokens, state->curTokenIndex)
+    );
+    if (firstToken->type == TOKEN_NUMBER)
+        return (btr_json_value_t) {
+            .type = BTR_JSON_NUMBER,
+            .number = BTR_StringView_parseDouble(&firstToken->content),
+            .allocator = state->allocator,
+        };
+    if (firstToken->type == TOKEN_STRING)
+        return (btr_json_value_t) {
+            .type = BTR_JSON_STRING,
+            .string = firstToken->content,
+            .allocator = state->allocator,
+        };
+    if (firstToken->type == TOKEN_TRUE)
+        return (btr_json_value_t) {
+            .type = BTR_JSON_BOOL,
+            .boolean = true,
+            .allocator = state->allocator,
+        };
+    if (firstToken->type == TOKEN_FALSE)
+        return (btr_json_value_t) {
+            .type = BTR_JSON_BOOL,
+            .boolean = false,
+            .allocator = state->allocator,
+        };
+    if (firstToken->type == TOKEN_NULL)
+        return (btr_json_value_t) {
+            .type = BTR_JSON_NULL,
+            .allocator = state->allocator,
+        };
+    if (firstToken->type == TOKEN_LBRACKET)
+    {
+        token_t *next = parser_advance(state);
+        btr_bllist_t values = BTR_BLList_make(NULL);
+        while (next->type != TOKEN_RBRACKET)
+        {
+            btr_json_value_t *value = BTR_expect(
+                BTR_Allocator_allocate(state->allocator, sizeof(btr_json_value_t)),
+                "Allocation failed"
+            );
+            *value = parse(state);
+            BTR_BLList_append(&values, value);
+            next = parser_advance(state);
+            if (next->type == TOKEN_RBRACKET)
+                break;
+            if (next->type != TOKEN_COMMA)
+                BTR_panic("Invalid syntax");
+            next = parser_advance(state);
+        }
+        return (btr_json_value_t) {
+            .type = BTR_JSON_ARRAY,
+            .array = values,
+            .allocator = state->allocator,
+        };
+    }
+    if (firstToken->type == TOKEN_LBRACE)
+    {
+        token_t *next = parser_advance(state);
+        btr_bhtable_t values =
+            BTR_BHTable_make(BTR_hashCString, BTR_compareCString, state->allocator);
+        while (next->type != TOKEN_RBRACE)
+        {
+            if (next->type != TOKEN_STRING)
+                BTR_panic("Invalid key. Expected String, got %s", TokenType_toString(next->type));
+            char *key = BTR_expect(
+                BTR_Allocator_allocate(state->allocator, next->content.length + 1),
+                "Allocation failed",
+            );
+            memcpy(key, next->content.data + next->content.start, next->content.length);
+            key[next->content.length] = '\0';
+
+            next = parser_advance(state);
+            if (next->type != TOKEN_COLON)
+                BTR_panic("Invalid syntax");
+
+            next = parser_advance(state);
+            btr_json_value_t *value = BTR_expect(
+                BTR_Allocator_allocate(state->allocator, sizeof(btr_json_value_t)),
+                "Allocation failed"
+            );
+            *value = parse(state);
+            BTR_BHTable_put(&values, key, value);
+            next = parser_advance(state);
+            if (next->type == TOKEN_RBRACE)
+                break;
+            if (next->type != TOKEN_COMMA)
+                BTR_panic("Invalid syntax");
+            next = parser_advance(state);
+        }
+        return (btr_json_value_t) {
+            .type = BTR_JSON_OBJECT,
+            .object = values,
+            .allocator = state->allocator,
+        };
+    }
+    BTR_panic("Invalid token: %s", TokenType_toString(firstToken->type));
+}
 
 btr_json_value_t BTR_jsonDeserialize(const char *string)
 {
     btr_allocator_t *theAllocator = (btr_allocator_t *)BTR_getGlobalAllocator();
     btr_bllist_t tokens = tokenize(string, theAllocator);
-    BTR_BLLIST_FOREACH(&tokens, i)
-    {
-        fprintf(stderr, "%s: "BTR_STRING_FORMAT"\n",
-            TokenType_toString(((token_t *)i)->type),
-            BTR_STRING_ARGS(((token_t *)i)->content));
-        BTR_Allocator_deallocate(theAllocator, i);
-    }
+    parse_state_t state = {
+        .tokens = &tokens,
+        .allocator = theAllocator,
+    };
+    // BTR_BLLIST_FOREACH(&tokens, i)
+    //     printf("%s: |"BTR_STRING_FORMAT"|\n",
+    //         TokenType_toString(((token_t *)i)->type),
+    //         BTR_STRING_ARGS(((token_t *)i)->content));
+    btr_json_value_t parsed = parse(&state);
+    BTR_BLLIST_FOREACH(&tokens, i2)
+        BTR_Allocator_deallocate(theAllocator, i2);
     BTR_BLList_free(&tokens);
-    return (btr_json_value_t) {0};
+    return parsed;
 }
 
-void BTR_JsonValue_free(btr_json_value_t *);
+void BTR_JsonValue_free(btr_json_value_t *value)
+{
+    if (value->type == BTR_JSON_ARRAY)
+    {
+        BTR_BLLIST_FOREACH(&value->array, i)
+        {
+            BTR_JsonValue_free(i);
+            BTR_Allocator_deallocate(value->allocator, i);
+        }
+        BTR_BLList_free(&value->array);
+    }
+    else if (value->type == BTR_JSON_OBJECT)
+    {
+        btr_bllist_t keys = BTR_BHTable_keys(&value->object);
+        BTR_BLLIST_FOREACH(&keys, key)
+        {
+            btr_json_value_t *theValue = BTR_unwrap(BTR_BHTable_get(&value->object, key));
+            BTR_JsonValue_free(theValue);
+            BTR_Allocator_deallocate(value->allocator, theValue);
+            BTR_Allocator_deallocate(value->allocator, key);
+        }
+        BTR_BLList_free(&keys);
+        BTR_BHTable_free(&value->object);
+    }
+}

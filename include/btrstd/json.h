@@ -2,14 +2,15 @@
 
 #include "btrstd/containers/bhtable.h"
 #include "btrstd/containers/bllist.h"
+#include "btrstd/string_view.h"
 
 
-typedef btr_bhtable_t btr_json_object_t;
-typedef btr_bllist_t  btr_json_array_t;
-typedef char *        btr_json_string_t;
-typedef double        btr_json_number_t;
-typedef bool          btr_json_bool_t;
-typedef char          btr_json_null_t;
+typedef btr_bhtable_t     btr_json_object_t;
+typedef btr_bllist_t      btr_json_array_t;
+typedef btr_string_view_t btr_json_string_t;
+typedef double            btr_json_number_t;
+typedef bool              btr_json_bool_t;
+typedef char              btr_json_null_t;
 
 typedef struct {
     enum {
@@ -28,6 +29,7 @@ typedef struct {
         btr_json_bool_t   boolean;
         btr_json_null_t   null;
     };
+    btr_allocator_t *allocator;
 } btr_json_value_t;
 
 btr_json_value_t BTR_jsonDeserialize(const char *);
