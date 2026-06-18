@@ -244,3 +244,19 @@ int BTR_StringView_compare(btr_string_view_t *a, btr_string_view_t *b)
         return 1;
     return 0;
 }
+double BTR_StringView_parseDouble(btr_string_view_t *sv)
+{
+    char buffer[1024];
+    BTR_panicIf(sv->length > sizeof(buffer), "String view too large");
+    memcpy(buffer, sv->data + sv->start, sv->length);
+    buffer[sv->length] = '\0';
+    return strtod(buffer, NULL);
+}
+long BTR_StringView_parseLong(btr_string_view_t *sv, int base)
+{
+    char buffer[1024];
+    BTR_panicIf(sv->length > sizeof(buffer), "String view too large");
+    memcpy(buffer, sv->data + sv->start, sv->length);
+    buffer[sv->length] = '\0';
+    return strtol(buffer, NULL, base);
+}
