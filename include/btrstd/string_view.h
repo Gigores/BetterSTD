@@ -79,6 +79,10 @@ void BTR_StringView_trim(btr_string_view_t *);
 // Compares the two given string views.
 // Returns 0 if they are equal.
 int BTR_StringView_compare(btr_string_view_t *, btr_string_view_t *);
+// Converts the given string view to double.
+double BTR_StringView_parseDouble(btr_string_view_t *sv);
+// Converts the given string view to long.
+long BTR_StringView_parseLong(btr_string_view_t *sv, int base);
 
 // These two macros help with printing these strings out with printf.
 // Example usage:
