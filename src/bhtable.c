@@ -65,7 +65,6 @@ btr_hash_t BTR_hashCString(const void *string)
 }
 bool BTR_compareCString(const void *a, const void *b)
 {
-    printf("%s - %s\n", (const char *)a, (const char *)b);
     return !strcmp((const char *)a, (const char *)b);
 }
 
