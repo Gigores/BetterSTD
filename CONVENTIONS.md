@@ -7,7 +7,7 @@ Its better to use UPPER_SNAKE_CASE by default:
 ```c
 #define BTR_NO_PREFIX
 ```
-The exception is macros that expand into a function or a type without a library prefix:
+The exception is macros that expand into a function or a type without a namespace prefix:
 ```c
 #define BAList BTR_BAList
 
