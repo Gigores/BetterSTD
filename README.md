@@ -1,6 +1,6 @@
 # BetterSTD
 
-BetterSTD is a bloated general-purpose utility library for modern GNU C, that was made to
+BetterSTD is a bloated general-purpose utility library for modern ***GNU C***, that was made to
 "extend" C's standard library with features like different kinds of containers (list, dynamic
 array, ...) and utilities like logging system, string views and clunky error handling.
 
@@ -59,7 +59,7 @@ To build this library you can use the following command:
 python buildScript build
 ```
 
-The `libbtrstd.a` file will be available inside of `build/` directory.
+The resulting `libbtrstd.a` static library will be placed inside the `build/` directory.
 
 ## Current and planned
 
