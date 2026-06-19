@@ -164,3 +164,8 @@ if (condition)
     // ...
 }
 ```
+- All functions, structs, unions, enums and types can be prefixed with:
+  - A namespace
+  - A type/struct/union/enum, it is associated with
+There can be multiple such prefixes at a time, but more than namespace + type is
+not recommended. Prefixes should be separated with an underscore.
