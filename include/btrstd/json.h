@@ -7,9 +7,9 @@
 #include "btrstd/string_view.h"
 
 
-typedef btr_bhtable_t     btr_json_object_t;
-typedef btr_bllist_t      btr_json_array_t;
-typedef btr_string_view_t btr_json_string_t;
+typedef btr_bhtable_s     btr_json_object_t;
+typedef btr_bllist_s      btr_json_array_t;
+typedef btr_string_view_s btr_json_string_t;
 typedef double            btr_json_number_t;
 typedef bool              btr_json_bool_t;
 typedef char              btr_json_null_t;
@@ -31,11 +31,11 @@ typedef struct {
         btr_json_bool_t   boolean;
         btr_json_null_t   null;
     };
-    btr_allocator_t *allocator;
-} btr_json_value_t;
+    btr_allocator_s *allocator;
+} btr_json_value_s;
 
-btr_json_value_t BTR_jsonDeserialize(const char *);
+btr_json_value_s BTR_jsonDeserialize(const char *);
 
-void BTR_JsonValue_free(btr_json_value_t *);
+void BTR_JsonValue_free(btr_json_value_s *);
 
 #endif  // BTR_INCLUDE_ALL

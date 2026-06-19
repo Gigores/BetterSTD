@@ -8,46 +8,46 @@
 
 const int DEFAULT_BUCKETS = 16;
 
-static double calculateLoadFactor(btr_bhtable_t *this)
+static double calculateLoadFactor(btr_bhtable_s *this)
 {
     return (double)this->count / this->capacity;
 }
-static btr_table_entry_t **initData(size_t capacity, btr_allocator_t *allocator)
+static btr_table_entry_s **initData(size_t capacity, btr_allocator_s *allocator)
 {
-    btr_table_entry_t **data = BTR_expect(
-        BTR_Allocator_allocate(allocator, sizeof(btr_table_entry_t) * capacity),
+    btr_table_entry_s **data = BTR_expect(
+        BTR_Allocator_allocate(allocator, sizeof(btr_table_entry_s) * capacity),
         "Allocation failed"
     );
     return data;
 }
-static void freeBucketArray(btr_table_entry_t **buckets, size_t bucketsCount, btr_allocator_t *allocator)
+static void freeBucketArray(btr_table_entry_s **buckets, size_t bucketsCount, btr_allocator_s *allocator)
 {
     for (size_t i = 0; i < bucketsCount; i++)
     {
-        btr_table_entry_t *current = buckets[i];
+        btr_table_entry_s *current = buckets[i];
         while (current)
         {
-            btr_table_entry_t *next = current->next;
+            btr_table_entry_s *next = current->next;
             BTR_Allocator_deallocate(allocator, current);
             current = next;
         }
     }
     BTR_Allocator_deallocate(allocator, buckets);
 }
-static void rehashUp(btr_bhtable_t *this)
+static void rehashUp(btr_bhtable_s *this)
 {
     size_t newCapacity = this->capacity * 2;
-    btr_table_entry_t **oldData = this->data;
+    btr_table_entry_s **oldData = this->data;
     size_t oldCapacity = this->capacity;
     this->data = initData(newCapacity, this->allocator);
     this->capacity *= 2;
     this->count = 0;
     for (size_t i = 0; i < oldCapacity; i++)
-        for (btr_table_entry_t *current = oldData[i]; current; current = current->next)
+        for (btr_table_entry_s *current = oldData[i]; current; current = current->next)
             BTR_BHTable_put(this, current->key, current->value);
     freeBucketArray(oldData, oldCapacity, this->allocator);
 }
-static size_t getBucketIndex(const btr_bhtable_t *this, const void *key)
+static size_t getBucketIndex(const btr_bhtable_s *this, const void *key)
 {
     btr_hash_t hash = this->hash(key);
     return hash % this->capacity;
@@ -85,14 +85,14 @@ bool BTR_compareInt32(const void *a, const void *b)
     return *(int *)a == *(int *)b;
 }
 
-btr_bhtable_t BTR_BHTable_make(
+btr_bhtable_s BTR_BHTable_make(
     btr_hash_t (*hash)(const void *),
     bool (*compare)(const void *, const void *),
-    btr_allocator_t *allocator
+    btr_allocator_s *allocator
 ) {
-    btr_allocator_t *theAllocator = getAllocator(allocator);
-    btr_table_entry_t **data = initData(DEFAULT_BUCKETS, theAllocator);
-    return (btr_bhtable_t) {
+    btr_allocator_s *theAllocator = getAllocator(allocator);
+    btr_table_entry_s **data = initData(DEFAULT_BUCKETS, theAllocator);
+    return (btr_bhtable_s) {
         .data = data,
         .capacity = DEFAULT_BUCKETS,
         .hash = hash,
@@ -100,16 +100,16 @@ btr_bhtable_t BTR_BHTable_make(
         .allocator = theAllocator,
     };
 }
-void BTR_BHTable_put(btr_bhtable_t *this, const void *key, const void *value)
+void BTR_BHTable_put(btr_bhtable_s *this, const void *key, const void *value)
 {
-    btr_table_entry_t **first = &this->data[getBucketIndex(this, key)];
-    for (btr_table_entry_t *current = *first; current; current = current->next)
+    btr_table_entry_s **first = &this->data[getBucketIndex(this, key)];
+    for (btr_table_entry_s *current = *first; current; current = current->next)
         if (this->compare(current->key, key)) {
             current->key = (void *)key;
             return;
         }
-    btr_table_entry_t *pair = BTR_expect(
-        BTR_Allocator_allocate(this->allocator, sizeof(btr_table_entry_t)),
+    btr_table_entry_s *pair = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, sizeof(btr_table_entry_s)),
         "Allocation failed"
     );
     pair->key   = (void *)key;
@@ -120,21 +120,21 @@ void BTR_BHTable_put(btr_bhtable_t *this, const void *key, const void *value)
     if (calculateLoadFactor(this) > 1.5)
         rehashUp(this);
 }
-btr_container_ptr_result_t BTR_BHTable_get(const btr_bhtable_t *this, const void *key)
+btr_container_ptr_r BTR_BHTable_get(const btr_bhtable_s *this, const void *key)
 {
     for (
-        btr_table_entry_t *current = this->data[getBucketIndex(this, key)];
+        btr_table_entry_s *current = this->data[getBucketIndex(this, key)];
         current;
         current = current->next
     ) if (this->compare(current->key, key))
-        BTR_Ok(btr_container_ptr_result_t, current->value);
-    BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_NOT_FOUND);
+        BTR_Ok(btr_container_ptr_r, current->value);
+    BTR_Err(btr_container_ptr_r, BTR_CONTAINER_ERR_NOT_FOUND);
 }
-btr_container_ptr_result_t BTR_BHTable_pop(btr_bhtable_t *this, const void *key)
+btr_container_ptr_r BTR_BHTable_pop(btr_bhtable_s *this, const void *key)
 {
     size_t bucket = getBucketIndex(this, key);
-    btr_table_entry_t *current = this->data[bucket];
-    btr_table_entry_t *prev = NULL;
+    btr_table_entry_s *current = this->data[bucket];
+    btr_table_entry_s *prev = NULL;
     while (current)
     {
         if (this->compare(current->key, key))
@@ -146,17 +146,17 @@ btr_container_ptr_result_t BTR_BHTable_pop(btr_bhtable_t *this, const void *key)
             void *result = current->value;
             BTR_Allocator_deallocate(this->allocator, current);
             this->count--;
-            BTR_Ok(btr_container_ptr_result_t, result);
+            BTR_Ok(btr_container_ptr_r, result);
         }
         prev = current;
         current = current->next;
     }
-    BTR_Err(btr_container_ptr_result_t, BTR_CONTAINER_ERR_NOT_FOUND);
+    BTR_Err(btr_container_ptr_r, BTR_CONTAINER_ERR_NOT_FOUND);
 }
-bool BTR_BHTable_contains(const btr_bhtable_t *this, const void *key)
+bool BTR_BHTable_contains(const btr_bhtable_s *this, const void *key)
 {
     for (
-        btr_table_entry_t *current = this->data[getBucketIndex(this, key)];
+        btr_table_entry_s *current = this->data[getBucketIndex(this, key)];
         current;
         current = current->next
     ) if (this->compare(current->key, key))
@@ -164,30 +164,30 @@ bool BTR_BHTable_contains(const btr_bhtable_t *this, const void *key)
             return true;
     return false;
 }
-size_t BTR_BHTable_len(const btr_bhtable_t *this)
+size_t BTR_BHTable_len(const btr_bhtable_s *this)
 {
     return this->count;
 }
-void BTR_BHTable_clear(btr_bhtable_t *this)
+void BTR_BHTable_clear(btr_bhtable_s *this)
 {
     BTR_BHTable_free(this);
-    btr_table_entry_t **newData = initData(DEFAULT_BUCKETS, this->allocator);
+    btr_table_entry_s **newData = initData(DEFAULT_BUCKETS, this->allocator);
     this->data = newData;
     this->capacity = DEFAULT_BUCKETS;
     this->count = 0;
 }
-btr_bllist_t BTR_BHTable_keys(const btr_bhtable_t *this)
+btr_bllist_s BTR_BHTable_keys(const btr_bhtable_s *this)
 {
-    btr_bllist_t keys = BTR_BLList_make(this->allocator);
+    btr_bllist_s keys = BTR_BLList_make(this->allocator);
     for (size_t i = 0; i < this->capacity; i++)
         for (
-            btr_table_entry_t *current = this->data[i];
+            btr_table_entry_s *current = this->data[i];
             current;
             current = current->next
         ) BTR_BLList_append(&keys, current->key);
     return keys;
 }
-void BTR_BHTable_free(btr_bhtable_t *this)
+void BTR_BHTable_free(btr_bhtable_s *this)
 {
     freeBucketArray(this->data, this->capacity, this->allocator);
 }

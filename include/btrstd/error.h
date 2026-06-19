@@ -5,7 +5,7 @@
 typedef enum {
     BTR_OK,
     BTR_ERR,
-} btr_result_status_t;
+} btr_result_status_e;
 
 // Defines a generic Result type.
 // Usage example:
@@ -13,7 +13,7 @@ typedef enum {
 // typedef BTR_Result(void *, alloc_error_t) alloc_result_t;
 // ```
 #define BTR_Result(V, E) struct { \
-    btr_result_status_t status;   \
+    btr_result_status_e status;   \
     union {                       \
         V value;                  \
         E error;                  \
@@ -120,7 +120,7 @@ void BTR_panicImplIf
 
 #ifdef BTR_NO_PREFIX
 
-typedef btr_result_status_t result_status_t;
+typedef btr_result_status_e result_status_e;
 #define Result BTR_Result
 
 #define panic   BTR_panic

@@ -10,12 +10,12 @@ static void test1(void)
 
     const char *TEXT = "AЖ你😀";
 
-    btr_string_view_t view = BTR_StringView_fromCString(TEXT);
+    btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
     BTR_StringView_cropLeft(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "Ж你😀",
             .length = strlen("Ж你😀")
         }
@@ -24,7 +24,7 @@ static void test1(void)
     BTR_StringView_cropLeft(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "你😀",
             .length = strlen("你😀")
         }
@@ -33,7 +33,7 @@ static void test1(void)
     BTR_StringView_cropLeft(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "😀",
             .length = strlen("😀")
         }
@@ -50,12 +50,12 @@ static void test3(void)
 
     const char *TEXT = "😀你ЖA";
 
-    btr_string_view_t view = BTR_StringView_fromCString(TEXT);
+    btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
     BTR_StringView_cropRight(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "😀你Ж",
             .length = strlen("😀你Ж")
         }
@@ -64,7 +64,7 @@ static void test3(void)
     BTR_StringView_cropRight(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "😀你",
             .length = strlen("😀你")
         }
@@ -73,7 +73,7 @@ static void test3(void)
     BTR_StringView_cropRight(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "😀",
             .length = strlen("😀")
         }
@@ -89,12 +89,12 @@ static void test5(void)
 
     const char *TEXT = "AЖ你😀BŁ文🚀";
 
-    btr_string_view_t view = BTR_StringView_fromCString(TEXT);
+    btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
     BTR_StringView_cropRight(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "AЖ你😀BŁ文",
             .length = strlen("AЖ你😀BŁ文")
         }
@@ -103,7 +103,7 @@ static void test5(void)
     BTR_StringView_cropLeft(&view, 2);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "你😀BŁ文",
             .length = strlen("你😀BŁ文")
         }
@@ -112,7 +112,7 @@ static void test5(void)
     BTR_StringView_cropRight(&view, 2);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "你😀B",
             .length = strlen("你😀B")
         }
@@ -121,7 +121,7 @@ static void test5(void)
     BTR_StringView_cropLeft(&view, 2);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "B",
             .length = strlen("B")
         }
@@ -137,12 +137,12 @@ static void test7(void)
 
     const char *TEXT = "AЖ你😀BŁ文🚀";
 
-    btr_string_view_t view = BTR_StringView_fromCString(TEXT);
+    btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
     BTR_StringView_cropRight(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "AЖ你😀BŁ文",
             .length = strlen("AЖ你😀BŁ文")
         }
@@ -151,7 +151,7 @@ static void test7(void)
     BTR_StringView_revertRight(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "AЖ你😀BŁ文🚀",
             .length = strlen("AЖ你😀BŁ文🚀")
         }
@@ -160,7 +160,7 @@ static void test7(void)
     BTR_StringView_cropLeft(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "Ж你😀BŁ文🚀",
             .length = strlen("Ж你😀BŁ文🚀")
         }
@@ -169,7 +169,7 @@ static void test7(void)
     BTR_StringView_revertLeft(&view, 1);
     assert(BTR_StringView_compare(
         &view,
-        &(btr_string_view_t) {
+        &(btr_string_view_s) {
             .data = "AЖ你😀BŁ文🚀",
             .length = strlen("AЖ你😀BŁ文🚀")
         }
@@ -182,7 +182,7 @@ static void test8(void)
 
     const char *TEXT = "Ξεσκεπάζωτηνψυχοφθόραβδελυγμία";
 
-    btr_string_view_t view = BTR_StringView_fromCString(TEXT);
+    btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
     assert(BTR_StringView_byteCount(&view) == strlen(TEXT));
     assert(BTR_StringView_len(&view) == strlen(TEXT) / 2);
@@ -201,10 +201,10 @@ static void test8(void)
     for (size_t i = 1; i < BTR_StringView_len(&view); i++)
         assert(*BTR_StringView_charAt(&view, -i) == TEXT[len - i * 2]);
 
-    btr_string_view_t prefix1 = BTR_StringView_fromCString("σκεπ");
+    btr_string_view_s prefix1 = BTR_StringView_fromCString("σκεπ");
     assert(BTR_StringView_startsWith(&view, &prefix1));
 
-    btr_string_view_t prefix2 = BTR_StringView_fromCString("οφθό");
+    btr_string_view_s prefix2 = BTR_StringView_fromCString("οφθό");
     assert(!BTR_StringView_startsWith(&view, &prefix2));
 
     assert(BTR_StringView_endsWith(&view, "γμία"));
@@ -215,8 +215,8 @@ static void test8(void)
 
     assert(!BTR_StringView_find(&view, "hello, great sir!").data);
 
-    btr_string_view_t sub = BTR_StringView_substring(&view, 2, 8);
-    btr_string_view_t testView = BTR_StringView_fromCString("επάζωτην");
+    btr_string_view_s sub = BTR_StringView_substring(&view, 2, 8);
+    btr_string_view_s testView = BTR_StringView_fromCString("επάζωτην");
     assert(!BTR_StringView_compare(&sub, &testView));
 }
 // test `trim`
@@ -226,10 +226,10 @@ static void test9(void)
 
     const char *TEXT = "   я не знаю что значит этот текст      ";
 
-    btr_string_view_t view = BTR_StringView_fromCString(TEXT);
+    btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
     BTR_StringView_trim(&view);
-    btr_string_view_t testView = BTR_StringView_fromCString("я не знаю что значит этот текст");
+    btr_string_view_s testView = BTR_StringView_fromCString("я не знаю что значит этот текст");
     assert(!BTR_StringView_compare(&view, &testView));
 }
 

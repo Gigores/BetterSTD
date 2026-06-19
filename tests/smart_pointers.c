@@ -6,7 +6,7 @@
 int main(void)
 {
     BTR_autoFile file = fopen("log.log", "w+");
-    BTR_setLogger((btr_logger_t) {
+    BTR_setLogger((btr_logger_s) {
         .file = file,
     });
     BTR_log(LOG_INFO, "We are logging!");

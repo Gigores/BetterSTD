@@ -19,17 +19,17 @@ static bool isUtf8Continuation(unsigned char c)
 {
     return (c & 0xC0) == 0x80;
 }
-btr_string_view_t BTR_StringView_fromCString(const char *chars)
+btr_string_view_s BTR_StringView_fromCString(const char *chars)
 {
     BTR_panicIf(!chars, "`chars` is NULL");
-    return (btr_string_view_t) {
+    return (btr_string_view_s) {
         .data     = (char *) chars,
         .start    = 0,
         .length   = strlen(chars),
         .capacity = strlen(chars),
     };
 }
-void BTR_StringView_cropLeft(btr_string_view_t *string, unsigned int charCount)
+void BTR_StringView_cropLeft(btr_string_view_s *string, unsigned int charCount)
 {
     BTR_panicIf(!string, "`string` is NULL");
     for (unsigned int i = 0; i < charCount; i++)
@@ -40,7 +40,7 @@ void BTR_StringView_cropLeft(btr_string_view_t *string, unsigned int charCount)
         string->length -= curCharSize;
     }
 }
-void BTR_StringView_cropRight(btr_string_view_t *string, unsigned int charCount)
+void BTR_StringView_cropRight(btr_string_view_s *string, unsigned int charCount)
 {
     BTR_panicIf(!string, "`string` is NULL");
     for (unsigned int i = 0; i < charCount; i++)
@@ -53,7 +53,7 @@ void BTR_StringView_cropRight(btr_string_view_t *string, unsigned int charCount)
         string->length -= curCharSize;
     }
 }
-void BTR_StringView_revertLeft(btr_string_view_t *string, unsigned int charCount)
+void BTR_StringView_revertLeft(btr_string_view_s *string, unsigned int charCount)
 {
     BTR_panicIf(!string, "`string` is NULL");
     for (unsigned int i = 0; i < charCount; i++)
@@ -69,7 +69,7 @@ void BTR_StringView_revertLeft(btr_string_view_t *string, unsigned int charCount
         string->length += charSize;
     }
 }
-void BTR_StringView_revertRight(btr_string_view_t *string, unsigned int charCount)
+void BTR_StringView_revertRight(btr_string_view_s *string, unsigned int charCount)
 {
     BTR_panicIf(!string, "`string` is NULL");
     for (unsigned int i = 0; i < charCount; i++)
@@ -81,12 +81,12 @@ void BTR_StringView_revertRight(btr_string_view_t *string, unsigned int charCoun
         string->length += charSize;
     }
 }
-size_t BTR_StringView_byteCount(btr_string_view_t *string)
+size_t BTR_StringView_byteCount(btr_string_view_s *string)
 {
     BTR_panicIf(!string, "`string` is NULL");
     return string->length;
 }
-size_t BTR_StringView_len(btr_string_view_t *string)
+size_t BTR_StringView_len(btr_string_view_s *string)
 {
     BTR_panicIf(!string, "`string` is NULL");
     size_t count = 0;
@@ -98,12 +98,12 @@ size_t BTR_StringView_len(btr_string_view_t *string)
     }
     return count;
 }
-bool BTR_StringView_isEmpty(btr_string_view_t *string)
+bool BTR_StringView_isEmpty(btr_string_view_s *string)
 {
     BTR_panicIf(!string, "`string` is NULL");
     return !BTR_StringView_len(string);
 }
-const char *BTR_StringView_charAt(btr_string_view_t *string, int index)
+const char *BTR_StringView_charAt(btr_string_view_s *string, int index)
 {
     BTR_panicIf(!string, "`string` is NULL");
     size_t len = BTR_StringView_len(string);
@@ -119,7 +119,7 @@ const char *BTR_StringView_charAt(btr_string_view_t *string, int index)
             pointer += utf8CharLen((unsigned char)*pointer);
     return pointer;
 }
-bool BTR_StringView_endsWithView(btr_string_view_t *string, btr_string_view_t *postfix)
+bool BTR_StringView_endsWithView(btr_string_view_s *string, btr_string_view_s *postfix)
 {
     BTR_panicIf(!string || !postfix, "`string` or `postfix` is NULL");
     size_t len = BTR_StringView_byteCount(string);
@@ -134,7 +134,7 @@ bool BTR_StringView_endsWithView(btr_string_view_t *string, btr_string_view_t *p
         return false;
     return true;
 }
-bool BTR_StringView_startsWithView(btr_string_view_t *string, btr_string_view_t *prefix)
+bool BTR_StringView_startsWithView(btr_string_view_s *string, btr_string_view_s *prefix)
 {
     BTR_panicIf(!string || !prefix, "`string` or `prefix` is NULL");
     size_t counter = 0;
@@ -148,19 +148,19 @@ bool BTR_StringView_startsWithView(btr_string_view_t *string, btr_string_view_t 
         return false;
     return true;
 }
-bool BTR_StringView_endsWithCString(btr_string_view_t *string, const char *postfix)
+bool BTR_StringView_endsWithCString(btr_string_view_s *string, const char *postfix)
 {
     BTR_panicIf(!string || !postfix, "`string` or `postfix` is NULL");
-    btr_string_view_t view = BTR_StringView_fromCString(postfix);
+    btr_string_view_s view = BTR_StringView_fromCString(postfix);
     return BTR_StringView_endsWithView(string, &view);
 }
-bool BTR_StringView_startsWithCString(btr_string_view_t *string, const char *prefix)
+bool BTR_StringView_startsWithCString(btr_string_view_s *string, const char *prefix)
 {
     BTR_panicIf(!string || !prefix, "`string` or `prefix` is NULL");
-    btr_string_view_t view = BTR_StringView_fromCString(prefix);
+    btr_string_view_s view = BTR_StringView_fromCString(prefix);
     return BTR_StringView_startsWithView(string, &view);
 }
-btr_string_view_t BTR_StringView_findView(btr_string_view_t *string, btr_string_view_t *substring)
+btr_string_view_s BTR_StringView_findView(btr_string_view_s *string, btr_string_view_s *substring)
 {
     BTR_panicIf(!string || !substring, "`string` or `substring` is NULL");
     size_t substringSize = BTR_StringView_byteCount(substring);
@@ -171,23 +171,23 @@ btr_string_view_t BTR_StringView_findView(btr_string_view_t *string, btr_string_
             string->data + string->start + count,
             substring->data + substring->start,
             substringSize
-        )) return (btr_string_view_t) {
+        )) return (btr_string_view_s) {
             .data = string->data,
             .start = string->start + count,
             .length = substringSize,
             .capacity = string->capacity,
         };
     }
-    return (btr_string_view_t) {0};
+    return (btr_string_view_s) {0};
 }
-btr_string_view_t BTR_StringView_findCString(btr_string_view_t *string, const char *substring)
+btr_string_view_s BTR_StringView_findCString(btr_string_view_s *string, const char *substring)
 {
     BTR_panicIf(!string || !substring, "`string` or `substring` is NULL");
-    btr_string_view_t view = BTR_StringView_fromCString(substring);
+    btr_string_view_s view = BTR_StringView_fromCString(substring);
     return BTR_StringView_findView(string, &view);
 }
-btr_string_view_t BTR_StringView_substring(
-    btr_string_view_t *string,
+btr_string_view_s BTR_StringView_substring(
+    btr_string_view_s *string,
     unsigned int start,
     unsigned int count
 ) {
@@ -206,32 +206,32 @@ btr_string_view_t BTR_StringView_substring(
     }
     if (byteCount == 0 && counter > start)
         byteCount = string->length - byteStart;
-    return (btr_string_view_t) {
+    return (btr_string_view_s) {
         .data = string->data,
         .capacity = string->capacity,
         .start = string->start + byteStart,
         .length = byteCount,
     };
 }
-void BTR_StringView_trimLeft(btr_string_view_t *string)
+void BTR_StringView_trimLeft(btr_string_view_s *string)
 {
     BTR_panicIf(!string, "`string` is NULL");
     while (isspace(*(string->data + string->start)))
         BTR_StringView_cropLeft(string, 1);
 }
-void BTR_StringView_trimRight(btr_string_view_t *string)
+void BTR_StringView_trimRight(btr_string_view_s *string)
 {
     BTR_panicIf(!string, "`string` is NULL");
     while (isspace(*(string->data + string->start + string->length - 1)))
         BTR_StringView_cropRight(string, 1);
 }
-void BTR_StringView_trim(btr_string_view_t *string)
+void BTR_StringView_trim(btr_string_view_s *string)
 {
     BTR_panicIf(!string, "`string` is NULL");
     BTR_StringView_trimLeft(string);
     BTR_StringView_trimRight(string);
 }
-int BTR_StringView_compare(btr_string_view_t *a, btr_string_view_t *b)
+int BTR_StringView_compare(btr_string_view_s *a, btr_string_view_s *b)
 {
     BTR_panicIf(!a || !b, "`a` or `b` is NULL");
     size_t minLen = a->length < b->length ? a->length : b->length;
@@ -244,7 +244,7 @@ int BTR_StringView_compare(btr_string_view_t *a, btr_string_view_t *b)
         return 1;
     return 0;
 }
-double BTR_StringView_parseDouble(btr_string_view_t *sv)
+double BTR_StringView_parseDouble(btr_string_view_s *sv)
 {
     char buffer[1024];
     BTR_panicIf(sv->length > sizeof(buffer), "String view too large");
@@ -252,7 +252,7 @@ double BTR_StringView_parseDouble(btr_string_view_t *sv)
     buffer[sv->length] = '\0';
     return strtod(buffer, NULL);
 }
-long BTR_StringView_parseLong(btr_string_view_t *sv, int base)
+long BTR_StringView_parseLong(btr_string_view_s *sv, int base)
 {
     char buffer[1024];
     BTR_panicIf(sv->length > sizeof(buffer), "String view too large");

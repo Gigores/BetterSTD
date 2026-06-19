@@ -6,7 +6,7 @@ static void test1(void)
 {
     printf("> test1\n");
 
-    btr_bit_set_t bs = BTR_BitSet_make(0, NULL);
+    btr_bit_set_s bs = BTR_BitSet_make(0, NULL);
     BTR_BitSet_free(&bs);
 
     bs = BTR_BitSet_make(1, NULL);
@@ -23,7 +23,7 @@ static void test2(void)
 {
     printf("> test2\n");
 
-    btr_bit_set_t bs = BTR_BitSet_make(16, NULL);
+    btr_bit_set_s bs = BTR_BitSet_make(16, NULL);
 
     // all bits should start as 0
     for (long i = 0; i < 16; i++)
@@ -44,7 +44,7 @@ static void test3(void)
 {
     printf("> test3\n");
 
-    btr_bit_set_t bs = BTR_BitSet_make(8, NULL);
+    btr_bit_set_s bs = BTR_BitSet_make(8, NULL);
 
     BTR_BitSet_set(&bs, 0);
     BTR_BitSet_set(&bs, 1);
@@ -70,12 +70,12 @@ static void test4(void)
 {
     printf("> test4\n");
 
-    btr_bit_set_t bs = BTR_BitSet_make(8, NULL);
+    btr_bit_set_s bs = BTR_BitSet_make(8, NULL);
 
     // flip even bits
     for (long i = 0; i < 8; i += 2)
     {
-        btr_bit_result_t r = BTR_BitSet_flip(&bs, i);
+        btr_bit_r r = BTR_BitSet_flip(&bs, i);
         assert(r.status == BTR_OK);
         assert(r.value == 1);
     }
@@ -86,7 +86,7 @@ static void test4(void)
     // flip them back
     for (long i = 0; i < 8; i += 2)
     {
-        btr_bit_result_t r = BTR_BitSet_flip(&bs, i);
+        btr_bit_r r = BTR_BitSet_flip(&bs, i);
         assert(r.status == BTR_OK);
         assert(r.value == 0);
     }
@@ -101,7 +101,7 @@ static void test5(void)
 {
     printf("> test5\n");
 
-    btr_bit_set_t bs = BTR_BitSet_make(8, NULL);
+    btr_bit_set_s bs = BTR_BitSet_make(8, NULL);
 
     // -1 is last bit (index 7), -8 is first bit (index 0)
     BTR_BitSet_set(&bs, -1);
@@ -115,7 +115,7 @@ static void test5(void)
     BTR_BitSet_unset(&bs, -1);
     assert(BTR_unwrap(BTR_BitSet_get(&bs, -1)) == 0);
 
-    btr_bit_result_t r = BTR_BitSet_flip(&bs, -5);
+    btr_bit_r r = BTR_BitSet_flip(&bs, -5);
     assert(r.status == BTR_OK);
     assert(r.value == 1);
     assert(BTR_unwrap(BTR_BitSet_get(&bs, 3)) == 1);
@@ -127,10 +127,10 @@ static void test6(void)
 {
     printf("> test6\n");
 
-    btr_bit_set_t bs = BTR_BitSet_make(4, NULL);
+    btr_bit_set_s bs = BTR_BitSet_make(4, NULL);
 
     // get out of bounds
-    btr_bit_result_t r = BTR_BitSet_get(&bs, 4);
+    btr_bit_r r = BTR_BitSet_get(&bs, 4);
     assert(r.status == BTR_ERR);
     assert(r.error == BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
 
@@ -154,7 +154,7 @@ static void test7(void)
 {
     printf("> test7\n");
 
-    btr_bit_set_t bs = BTR_BitSet_make(16, NULL);
+    btr_bit_set_s bs = BTR_BitSet_make(16, NULL);
 
     // set all 8 bits in the first byte
     for (long i = 0; i < 8; i++)
@@ -188,7 +188,7 @@ static void test8(void)
     printf("> test8\n");
 
     size_t nBits = 128;
-    btr_bit_set_t bs = BTR_BitSet_make(nBits, NULL);
+    btr_bit_set_s bs = BTR_BitSet_make(nBits, NULL);
 
     // set all bits
     for (size_t i = 0; i < nBits; i++)
@@ -212,7 +212,7 @@ static void test9(void)
     printf("> test9\n");
 
     // test with sizes that aren't multiples of 8
-    btr_bit_set_t bs = BTR_BitSet_make(11, NULL);
+    btr_bit_set_s bs = BTR_BitSet_make(11, NULL);
 
     for (long i = 0; i < 11; i++)
     {
@@ -232,8 +232,8 @@ static void test10(void)
     printf("> test10\n");
 
     // clone an empty bitset
-    btr_bit_set_t empty = BTR_BitSet_make(8, NULL);
-    btr_bit_set_t c = BTR_BitSet_clone(&empty, NULL);
+    btr_bit_set_s empty = BTR_BitSet_make(8, NULL);
+    btr_bit_set_s c = BTR_BitSet_clone(&empty, NULL);
     assert(c.bitCount == empty.bitCount);
     for (long i = 0; i < 8; i++)
         assert(BTR_unwrap(BTR_BitSet_get(&c, i)) == 0);
@@ -241,11 +241,11 @@ static void test10(void)
     BTR_BitSet_free(&empty);
 
     // clone a bitset with bits set
-    btr_bit_set_t orig = BTR_BitSet_make(16, NULL);
+    btr_bit_set_s orig = BTR_BitSet_make(16, NULL);
     for (long i = 0; i < 16; i += 3)
         BTR_BitSet_set(&orig, i);
 
-    btr_bit_set_t clone = BTR_BitSet_clone(&orig, NULL);
+    btr_bit_set_s clone = BTR_BitSet_clone(&orig, NULL);
     assert(clone.bitCount == orig.bitCount);
 
     for (long i = 0; i < 16; i++)

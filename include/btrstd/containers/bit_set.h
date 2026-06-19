@@ -29,32 +29,32 @@
 typedef struct {
     char *data;
     size_t bitCount;
-    btr_allocator_t *allocator;
-} btr_bit_set_t;
+    btr_allocator_s *allocator;
+} btr_bit_set_s;
 
-typedef BTR_Result(bool, btr_container_error_t) btr_bit_result_t;
+typedef BTR_Result(bool, btr_container_error_e) btr_bit_r;
 
 // Creates a new bit set with a given capacity in bits.
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
-btr_bit_set_t BTR_BitSet_make(size_t capacity, btr_allocator_t *allocator);
+btr_bit_set_s BTR_BitSet_make(size_t capacity, btr_allocator_s *allocator);
 // Creates a new bit set from another bit set with the same data.
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
-btr_bit_set_t BTR_BitSet_clone(const btr_bit_set_t *bitSet, btr_allocator_t *allocator);
+btr_bit_set_s BTR_BitSet_clone(const btr_bit_set_s *bitSet, btr_allocator_s *allocator);
 // Returns the data of the specified index of the bit set.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
-btr_bit_result_t BTR_BitSet_get(const btr_bit_set_t *, long index);
+btr_bit_r BTR_BitSet_get(const btr_bit_set_s *, long index);
 // Sets the value at the given index to `true`.
 // Can accept negative indexes.
-void BTR_BitSet_set(btr_bit_set_t *, long index);
+void BTR_BitSet_set(btr_bit_set_s *, long index);
 // Sets the value at the given index to `false`.
 // Can accept negative indexes.
-void BTR_BitSet_unset(btr_bit_set_t *, long index);
+void BTR_BitSet_unset(btr_bit_set_s *, long index);
 // Flips the value at the given index.
 // Can accept negative indexes.
-btr_bit_result_t BTR_BitSet_flip(btr_bit_set_t *, long index);
+btr_bit_r BTR_BitSet_flip(btr_bit_set_s *, long index);
 // Deallocates the bit set.
-void BTR_BitSet_free(btr_bit_set_t *);
+void BTR_BitSet_free(btr_bit_set_s *);
 
 #define BTR_BITSET_FOREACH(BITSET, i) \
     bool i; \
@@ -66,8 +66,8 @@ void BTR_BitSet_free(btr_bit_set_t *);
 
 #ifdef BTR_NO_PREFIX
 
-typedef btr_bit_set_t    bit_set_t;
-typedef btr_bit_result_t bit_result_t;
+typedef btr_bit_set_s bit_set_s;
+typedef btr_bit_r     bit_r;
 
 #define BitSet_make  BTR_BitSet_make
 #define BitSet_clone BTR_BitSet_clone

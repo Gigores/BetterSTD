@@ -18,8 +18,8 @@ typedef struct {
     void **data;
     size_t count;
     size_t capacity;
-    btr_allocator_t *allocator;
-} btr_balist_t;
+    btr_allocator_s *allocator;
+} btr_balist_s;
 
 // Creates a new borrowing array list from an array of given values.
 // Example:
@@ -30,51 +30,51 @@ typedef struct {
 // btr_balist_t list = BTR_BAList_make({&a, &b, &c}, 3);
 // ```
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
-btr_balist_t BTR_BAList_makeFrom(void *items[], size_t itemCount, btr_allocator_t *allocator);
+btr_balist_s BTR_BAList_makeFrom(void *items[], size_t itemCount, btr_allocator_s *allocator);
 // Creates a new empty Borrowing Array List.
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
-btr_balist_t BTR_BAList_make(size_t capacity, btr_allocator_t *allocator);
+btr_balist_s BTR_BAList_make(size_t capacity, btr_allocator_s *allocator);
 // Creates a new borrowing array list from another borrowing array list with the same data.
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
-btr_balist_t BTR_BAList_clone(const btr_balist_t *list, btr_allocator_t *allocator);
+btr_balist_s BTR_BAList_clone(const btr_balist_s *list, btr_allocator_s *allocator);
 // Appends the data to the end of the borrowing array list.
-void BTR_BAList_append(btr_balist_t *, void *data);
+void BTR_BAList_append(btr_balist_s *, void *data);
 // Prepends the data to the beginning of the borrowing array list.
-void BTR_BAList_prepend(btr_balist_t *, void *data);
+void BTR_BAList_prepend(btr_balist_s *, void *data);
 // Inserts an item into the borrowing array list so that its index is the specified one.
-void BTR_BAList_insert(btr_balist_t *, void *data, long index);
+void BTR_BAList_insert(btr_balist_s *, void *data, long index);
 // Pops the data of the specified index from a borrowing array list.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
-btr_container_ptr_result_t BTR_BAList_pop(btr_balist_t *, long index);
+btr_container_ptr_r BTR_BAList_pop(btr_balist_s *, long index);
 // Returns the data of the specified index of the borrowing array list.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
-btr_container_ptr_result_t BTR_BAList_get(const btr_balist_t *, long index);
+btr_container_ptr_r BTR_BAList_get(const btr_balist_s *, long index);
 // Sets the item at the given index to a given value in the borrowing array list.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
-void BTR_BAList_set(btr_balist_t *, void *data, long index);
+void BTR_BAList_set(btr_balist_s *, void *data, long index);
 // Returns the first item of the borrowing array list.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
-btr_container_ptr_result_t BTR_BAList_first(const btr_balist_t *);
+btr_container_ptr_r BTR_BAList_first(const btr_balist_s *);
 // Returns the last item of the borrowing array list.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
-btr_container_ptr_result_t BTR_BAList_last(const btr_balist_t *);
+btr_container_ptr_r BTR_BAList_last(const btr_balist_s *);
 // Returns the index of the first occurrence of the item.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_NOT_FOUND` if the item wasn't found.
-btr_container_idx_result_t BTR_BAList_indexOf
-    (btr_balist_t *list, void *value, bool (*cmp)(const void *, const void *));
+btr_container_idx_r BTR_BAList_indexOf
+    (btr_balist_s *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing array list.
-size_t BTR_BAList_len(const btr_balist_t *);
+size_t BTR_BAList_len(const btr_balist_s *);
 // Tells if the borrowing array list is empty.
-bool BTR_BAList_isEmpty(const btr_balist_t *);
+bool BTR_BAList_isEmpty(const btr_balist_s *);
 // Reverses the order of items in the borrowing array list.
-void BTR_BAList_reverse(btr_balist_t *);
+void BTR_BAList_reverse(btr_balist_s *);
 // Deallocates the borrowing array list.
-void BTR_BAList_free(btr_balist_t *);
+void BTR_BAList_free(btr_balist_s *);
 // Exactly the same as `BAList_free`
-void BTR_BAList_clear(btr_balist_t *);
+void BTR_BAList_clear(btr_balist_s *);
 
 // Example usage:
 // ```c
@@ -110,7 +110,7 @@ void BTR_BAList_clear(btr_balist_t *);
 
 #ifdef BTR_NO_PREFIX
 
-typedef btr_balist_t balist_t;
+typedef btr_balist_s balist_s;
 
 #define BAList_make      BTR_BAList_make
 #define BAList_makeFrom  BTR_BAList_makeFrom

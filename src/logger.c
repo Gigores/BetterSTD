@@ -8,7 +8,7 @@
 #define COL_RESET "\e[0m"
 #define COL_INTER "\e[38;5;246m"
 
-static btr_logger_t BTR_g_logger = {
+static btr_logger_s BTR_g_logger = {
     .minLogLevel = LOG_DEBUG,
     .file = NULL,
     .logFile = true,
@@ -17,16 +17,16 @@ static btr_logger_t BTR_g_logger = {
     .logLine = true,
 };
 
-void BTR_setLogger(btr_logger_t logger)
+void BTR_setLogger(btr_logger_s logger)
 {
     BTR_g_logger = logger;
 }
-btr_logger_t *BTR_getLogger(void)
+btr_logger_s *BTR_getLogger(void)
 {
     return &BTR_g_logger;
 }
 
-const char *BTR_LogLevel_toString(btr_log_level_t level)
+const char *BTR_LogLevel_toString(btr_log_level_e level)
 {
     switch (level) {
 #define X(LEVEL, COLOR) case (LOG_##LEVEL): return #LEVEL;
@@ -35,7 +35,7 @@ const char *BTR_LogLevel_toString(btr_log_level_t level)
         default: BTR_panic("invalid log level %d", level);
     }
 }
-const char *BTR_LogLevel_getColor(btr_log_level_t level)
+const char *BTR_LogLevel_getColor(btr_log_level_e level)
 {
     switch (level) {
 #define X(LEVEL, COLOR) case (LOG_##LEVEL): return COLOR;
@@ -44,7 +44,7 @@ const char *BTR_LogLevel_getColor(btr_log_level_t level)
         default: BTR_panic("invalid log level %d", level);
     }
 }
-static void doLogTime(btr_logger_t *logger)
+static void doLogTime(btr_logger_s *logger)
 {
     time_t currentTime = time(NULL);
     struct tm *t = localtime(&currentTime);
@@ -57,7 +57,7 @@ static void doLogTime(btr_logger_t *logger)
     printf(COL_INTER"["COL_RESET"%s.%03ld"COL_INTER"] ", buffer, millis);
     if (logger->file) fprintf(logger->file, "[%s.%03ld] ", buffer, millis);
 }
-static void doLogLevel(btr_logger_t *logger, btr_log_level_t logLevel)
+static void doLogLevel(btr_logger_s *logger, btr_log_level_e logLevel)
 {
     const char *logLevelString = BTR_LogLevel_toString(logLevel);
     const char *logLevelColor = BTR_LogLevel_getColor(logLevel);
@@ -65,7 +65,7 @@ static void doLogLevel(btr_logger_t *logger, btr_log_level_t logLevel)
     printf(COL_INTER"[%s%s"COL_INTER"] ", logLevelColor, logLevelString);
     if (logger->file) fprintf(logger->file, "[%s] ", logLevelString);
 }
-static void doLogFile(btr_logger_t *logger, const char *file, int line, const char *func)
+static void doLogFile(btr_logger_s *logger, const char *file, int line, const char *func)
 {
     printf(COL_INTER"["COL_RESET"%s", file);
     if (logger->logFunc) printf(COL_INTER"@"COL_RESET"%s", func);
@@ -81,11 +81,11 @@ void BTR_vlogImpl(
     const char *file,
     int line,
     const char *func,
-    btr_log_level_t logLevel,
+    btr_log_level_e logLevel,
     const char *formatString,
     va_list args
 ) {
-    btr_logger_t *logger = &BTR_g_logger;
+    btr_logger_s *logger = &BTR_g_logger;
 
     if (logLevel < logger->minLogLevel) return;
 
@@ -107,7 +107,7 @@ void BTR_logImpl(
     const char *file,
     int line,
     const char *func,
-    btr_log_level_t logLevel,
+    btr_log_level_e logLevel,
     const char *formatString,
     ...
 ) {

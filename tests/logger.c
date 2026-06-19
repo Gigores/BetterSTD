@@ -2,7 +2,7 @@
 
 int main(void)
 {
-    BTR_setLogger((btr_logger_t) {
+    BTR_setLogger((btr_logger_s) {
         .file = fopen("log.log", "w+"),
         .logTime = true,
         .logFile = true,

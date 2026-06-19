@@ -7,7 +7,7 @@
 static void test1(void)
 {
     printf("> test1\n");
-    btr_bhtable_t table = BTR_BHTable_make(NULL, NULL, NULL);
+    btr_bhtable_s table = BTR_BHTable_make(NULL, NULL, NULL);
     assert(BTR_BHTable_len(&table) == 0);
     BTR_BHTable_free(&table);
 }
@@ -18,7 +18,7 @@ static void test2(void)
     const int VALUES[] = {
         0, 10, 20, 30, 40, 50, 60, 70, 80, 90
     };
-    btr_bhtable_t table = BTR_BHTable_make(BTR_hashCString, BTR_compareCString, NULL);
+    btr_bhtable_s table = BTR_BHTable_make(BTR_hashCString, BTR_compareCString, NULL);
     BTR_BHTable_put(&table, "key1", &VALUES[1]);
     BTR_BHTable_put(&table, "key2", &VALUES[2]);
     BTR_BHTable_put(&table, "key3", &VALUES[3]);
@@ -32,9 +32,9 @@ static void test2(void)
 static void test3(void)
 {
     printf("> test3\n");
-    btr_arena_t arena = BTR_Arena_make(1024 * 1024, NULL);
-    btr_bhtable_t table = BTR_BHTable_make(BTR_hashInt32, BTR_compareInt32, NULL);
-    btr_bllist_t keys = BTR_BLList_make(NULL);
+    btr_arena_s arena = BTR_Arena_make(1024 * 1024, NULL);
+    btr_bhtable_s table = BTR_BHTable_make(BTR_hashInt32, BTR_compareInt32, NULL);
+    btr_bllist_s keys = BTR_BLList_make(NULL);
     for (size_t i = 0; i < 4096; i++)
     {
         int *key = BTR_unwrap(BTR_Arena_allocate(&arena, sizeof(int)));
@@ -52,14 +52,14 @@ static void test4(void)
 {
     printf("> test4\n");
     const int VALUES[] = {100, 200, 300};
-    btr_bhtable_t table = BTR_BHTable_make(BTR_hashCString, BTR_compareCString, NULL);
+    btr_bhtable_s table = BTR_BHTable_make(BTR_hashCString, BTR_compareCString, NULL);
 
     BTR_BHTable_put(&table, "key1", &VALUES[0]);
     BTR_BHTable_put(&table, "key2", &VALUES[1]);
     BTR_BHTable_put(&table, "key3", &VALUES[2]);
     assert(BTR_BHTable_len(&table) == 3);
 
-    btr_container_ptr_result_t result = BTR_BHTable_pop(&table, "key2");
+    btr_container_ptr_r result = BTR_BHTable_pop(&table, "key2");
     assert(result.status == BTR_OK);
     assert(*(int *)result.value == VALUES[1]);
 
@@ -81,8 +81,8 @@ static void test4(void)
 static void test5(void)
 {
     printf("> test5\n");
-    btr_arena_t arena = BTR_Arena_make(1024 * 1024, NULL);
-    btr_bhtable_t table = BTR_BHTable_make(BTR_hashInt32, BTR_compareInt32, NULL);
+    btr_arena_s arena = BTR_Arena_make(1024 * 1024, NULL);
+    btr_bhtable_s table = BTR_BHTable_make(BTR_hashInt32, BTR_compareInt32, NULL);
 
     for (size_t i = 0; i < 1024; i++)
     {
@@ -96,7 +96,7 @@ static void test5(void)
     assert(BTR_BHTable_len(&table) == 1024);
     for (size_t i = 128; i < 256; i++)
     {
-        btr_container_ptr_result_t result = BTR_BHTable_pop(&table, &i);
+        btr_container_ptr_r result = BTR_BHTable_pop(&table, &i);
         assert(result.status == BTR_OK);
         assert(*(int *)result.value == (int)i * 10);
     }
@@ -104,14 +104,14 @@ static void test5(void)
 
     for (size_t i = 0; i < 128; i++)
     {
-        btr_container_ptr_result_t result = BTR_BHTable_get(&table, &i);
+        btr_container_ptr_r result = BTR_BHTable_get(&table, &i);
         assert(result.status == BTR_OK);
         assert(*(int *)result.value == (int)i * 10);
     }
 
     for (size_t i = 128; i < 256; i++)
     {
-        btr_container_ptr_result_t result = BTR_BHTable_get(&table, &i);
+        btr_container_ptr_r result = BTR_BHTable_get(&table, &i);
         assert(result.status == BTR_ERR);
     }
 
@@ -123,7 +123,7 @@ static void test5(void)
 static void test6(void)
 {
     printf("> test6\n");
-    btr_bhtable_t table = BTR_BHTable_make(BTR_hashCString, BTR_compareCString, NULL);
+    btr_bhtable_s table = BTR_BHTable_make(BTR_hashCString, BTR_compareCString, NULL);
     const int VALUES[] = {0, 10, 20, 30};
 
     assert(!BTR_BHTable_contains(&table, "key1"));
@@ -153,8 +153,8 @@ static void test6(void)
 static void test7(void)
 {
     printf("> test7\n");
-    btr_bhtable_t table = BTR_BHTable_make(BTR_hashInt32, BTR_compareInt32, NULL);
-    btr_arena_t arena = BTR_Arena_make(1024 * 1024, NULL);
+    btr_bhtable_s table = BTR_BHTable_make(BTR_hashInt32, BTR_compareInt32, NULL);
+    btr_arena_s arena = BTR_Arena_make(1024 * 1024, NULL);
 
     for (int i = 0; i < 256; i++)
     {
@@ -179,7 +179,7 @@ static void test8(void)
 {
     printf("> test8\n");
     const int VALUES[] = {10, 20, 30};
-    btr_bhtable_t table = BTR_BHTable_make(BTR_hashCString, BTR_compareCString, NULL);
+    btr_bhtable_s table = BTR_BHTable_make(BTR_hashCString, BTR_compareCString, NULL);
 
     BTR_BHTable_put(&table, "a", &VALUES[0]);
     BTR_BHTable_put(&table, "b", &VALUES[1]);
@@ -206,10 +206,10 @@ static void test8(void)
 static void test9(void)
 {
     printf("> test9\n");
-    btr_bhtable_t table = BTR_BHTable_make(BTR_hashCString, BTR_compareCString, NULL);
+    btr_bhtable_s table = BTR_BHTable_make(BTR_hashCString, BTR_compareCString, NULL);
     const int VALUES[] = {100, 200, 300};
 
-    btr_bllist_t keys = BTR_BHTable_keys(&table);
+    btr_bllist_s keys = BTR_BHTable_keys(&table);
     assert(BTR_BLList_len(&keys) == 0);
     BTR_BLList_free(&keys);
 

@@ -7,7 +7,7 @@ static int getInt(void *p)
 {
     return *(int *)p;
 }
-static void checkList(btr_balist_t *list, int expected[], size_t n)
+static void checkList(btr_balist_s *list, int expected[], size_t n)
 {
     for(size_t i = 0; i < n; i++)
         assert(getInt(BTR_unwrap(BTR_BAList_get(list, i))) == expected[i]);
@@ -27,7 +27,7 @@ static void test1(void)
     };
     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
 
-    btr_balist_t list = BTR_BALIST(
+    btr_balist_s list = BTR_BALIST(
         (void *)&VALUES[0],
         (void *)&VALUES[1],
         (void *)&VALUES[2],
@@ -67,7 +67,7 @@ static void test2(void)
         654, 7465
     };
 
-    btr_balist_t list = BTR_BAList_make(8, NULL);
+    btr_balist_s list = BTR_BAList_make(8, NULL);
     size_t n = sizeof(INPUT)/sizeof(INPUT[0]);
     for (size_t i = 0; i < n; i++)
         BTR_BAList_append(&list, (void *)&INPUT[i]);
@@ -90,7 +90,7 @@ static void test3(void)
 
     const int VALUES[] = {0,10,20,30,40,50,60,70,80,90};
     const size_t N = sizeof(VALUES)/sizeof(VALUES[0]);
-    btr_balist_t list = BTR_BALIST(
+    btr_balist_s list = BTR_BALIST(
         (void *)&VALUES[0],
         (void *)&VALUES[1],
         (void *)&VALUES[2],
@@ -102,7 +102,7 @@ static void test3(void)
         (void *)&VALUES[8],
         (void *)&VALUES[9]
     );
-    btr_balist_t clone = BTR_BAList_clone(&list, NULL);
+    btr_balist_s clone = BTR_BAList_clone(&list, NULL);
     assert(clone.count == list.count);
     for (size_t i = 0; i < N; i++)
     {
@@ -122,7 +122,7 @@ static void test4(void)
         0, 10, 20, 30, 40, 50, 60, 70, 80, 90
     };
     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
-    btr_balist_t list = BTR_BAList_make(8, NULL);
+    btr_balist_s list = BTR_BAList_make(8, NULL);
     for (size_t i = 0; i < N; i++)
         BTR_BAList_prepend(&list, (void *)&VALUES[i]);
     size_t i = 0;
@@ -141,7 +141,7 @@ static void test5(void)
 {
     printf("> test5\n");
 
-    btr_balist_t list = BTR_BAList_make(8, NULL);
+    btr_balist_s list = BTR_BAList_make(8, NULL);
 
     int a = 1, b = 2, c = 3, d = 4;
 
@@ -190,7 +190,7 @@ static void test6(void)
     const int VALUES[] = {10, 20, 30, 40, 50};
     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
 
-    btr_balist_t list = BTR_BAList_make(8, NULL);
+    btr_balist_s list = BTR_BAList_make(8, NULL);
 
     // build list
     for (size_t i = 0; i < N; i++)
@@ -233,7 +233,7 @@ static void test7(void)
     };
     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
 
-    btr_balist_t list = BTR_BAList_make(8, NULL);
+    btr_balist_s list = BTR_BAList_make(8, NULL);
 
     // build list
     for (size_t i = 0; i < N; i++)
@@ -248,7 +248,7 @@ static void test7(void)
 
     // non-existing value
     int missing = 999;
-    btr_container_idx_result_t not_found = BTR_BAList_indexOf(&list, &missing, cmp_int);
+    btr_container_idx_r not_found = BTR_BAList_indexOf(&list, &missing, cmp_int);
 
     assert(not_found.status == BTR_ERR);
     assert(not_found.error == BTR_CONTAINER_ERR_NOT_FOUND);
@@ -272,7 +272,7 @@ static void test8(void)
         10, 20, 30, 40, 50
     };
     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
-    btr_balist_t list = BTR_BAList_make(8, NULL);
+    btr_balist_s list = BTR_BAList_make(8, NULL);
 
     for (size_t i = 0; i < N; i++)
         BTR_BAList_append(&list, (void *)&VALUES[i]);
@@ -303,7 +303,7 @@ static void test9(void)
     int values[] = {10, 20, 30, 40, 50};
     size_t n = sizeof(values) / sizeof(values[0]);
 
-    btr_balist_t list = BTR_BAList_make(8, NULL);
+    btr_balist_s list = BTR_BAList_make(8, NULL);
     for (size_t i = 0; i < n; i++)
         BTR_BAList_append(&list, (void *)&values[i]);
 

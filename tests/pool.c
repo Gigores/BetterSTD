@@ -9,7 +9,7 @@
 static void test1(void)
 {
     printf("> test1\n");
-    btr_pool_t pool = BTR_Pool_make(sizeof(int), 256, NULL);
+    btr_pool_s pool = BTR_Pool_make(sizeof(int), 256, NULL);
     BTR_Pool_destroy(&pool);
 }
 
@@ -17,7 +17,7 @@ static void test2(void)
 {
     printf("> test2\n");
 
-    btr_pool_t pool = BTR_Pool_make(sizeof(int), 8, NULL);
+    btr_pool_s pool = BTR_Pool_make(sizeof(int), 8, NULL);
 
     int *p = BTR_unwrap(BTR_Pool_allocate(&pool));
     assert(p != NULL);
@@ -31,7 +31,7 @@ static void test3(void)
 {
     printf("> test3\n");
 
-    btr_pool_t pool = BTR_Pool_make(sizeof(int), 8, NULL);
+    btr_pool_s pool = BTR_Pool_make(sizeof(int), 8, NULL);
 
     void *ptrs[8];
     for (int i = 0; i < 8; i++)
@@ -52,17 +52,17 @@ static void test4(void)
 {
     printf("> test4\n");
 
-    btr_pool_t pool = BTR_Pool_make(sizeof(int), 4, NULL);
+    btr_pool_s pool = BTR_Pool_make(sizeof(int), 4, NULL);
 
     for (int i = 0; i < 4; i++)
     {
-        btr_alloc_result_t r = BTR_Pool_allocate(&pool);
+        btr_alloc_r r = BTR_Pool_allocate(&pool);
         assert(r.status == BTR_OK);
         assert(r.value != NULL);
     }
 
     // next allocation should fail
-    btr_alloc_result_t r = BTR_Pool_allocate(&pool);
+    btr_alloc_r r = BTR_Pool_allocate(&pool);
     assert(r.status == BTR_ERR);
     assert(r.error == BTR_ALLOC_ERR_OUT_OF_MEMORY);
 
@@ -73,7 +73,7 @@ static void test5(void)
 {
     printf("> test5\n");
 
-    btr_pool_t pool = BTR_Pool_make(sizeof(int), 4, NULL);
+    btr_pool_s pool = BTR_Pool_make(sizeof(int), 4, NULL);
 
     int *a = BTR_unwrap(BTR_Pool_allocate(&pool));
     int *b = BTR_unwrap(BTR_Pool_allocate(&pool));
@@ -93,7 +93,7 @@ static void test6(void)
 {
     printf("> test6\n");
 
-    btr_pool_t pool = BTR_Pool_make(sizeof(int), 4, NULL);
+    btr_pool_s pool = BTR_Pool_make(sizeof(int), 4, NULL);
 
     int *p = BTR_unwrap(BTR_Pool_allocate(&pool));
     assert(*p == 0);
@@ -105,7 +105,7 @@ static void test7(void)
 {
     printf("> test7\n");
 
-    btr_pool_t pool = BTR_Pool_make(sizeof(int), 4, NULL);
+    btr_pool_s pool = BTR_Pool_make(sizeof(int), 4, NULL);
 
     int *a = BTR_unwrap(BTR_Pool_allocate(&pool));
     int *b = BTR_unwrap(BTR_Pool_allocate(&pool));
@@ -130,13 +130,13 @@ static void test8(void)
 {
     printf("> test8\n");
 
-    btr_pool_t pool = BTR_Pool_make(sizeof(int), 4, NULL);
+    btr_pool_s pool = BTR_Pool_make(sizeof(int), 4, NULL);
 
     // exhaust the pool
     for (int i = 0; i < 4; i++)
         BTR_unwrap(BTR_Pool_allocate(&pool));
 
-    btr_alloc_result_t r = BTR_Pool_allocate(&pool);
+    btr_alloc_r r = BTR_Pool_allocate(&pool);
     assert(r.status == BTR_ERR);
 
     // reset with larger count
@@ -159,7 +159,7 @@ static void test9(void)
 {
     printf("> test9\n");
 
-    btr_pool_t pool = BTR_Pool_make(sizeof(double) * 4, 3, NULL);
+    btr_pool_s pool = BTR_Pool_make(sizeof(double) * 4, 3, NULL);
 
     double (*a)[4] = BTR_unwrap(BTR_Pool_allocate(&pool));
     double (*b)[4] = BTR_unwrap(BTR_Pool_allocate(&pool));
@@ -186,9 +186,9 @@ static void test10(void)
         0, 10, 20, 30, 40, 50, 60, 70, 80, 90
     };
 
-    btr_pool_t pool = BTR_Pool_make(sizeof(btr_bllist_node_t), 64, NULL);
-    btr_allocator_t allocator = BTR_Pool_getWrapper(&pool);
-    btr_bllist_t list = BTR_BLList_make(&allocator);
+    btr_pool_s pool = BTR_Pool_make(sizeof(btr_bllist_node_s), 64, NULL);
+    btr_allocator_s allocator = BTR_Pool_getWrapper(&pool);
+    btr_bllist_s list = BTR_BLList_make(&allocator);
 
     for (size_t i = 0; i < 64; i++)
         BTR_BLList_append(&list, (void *)&VALUES[i % 10]);

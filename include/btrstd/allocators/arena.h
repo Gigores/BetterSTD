@@ -22,26 +22,26 @@ typedef struct {
     void *data;
     size_t capacity;
     size_t next;
-    btr_allocator_t *allocator;
-} btr_arena_t;
+    btr_allocator_s *allocator;
+} btr_arena_s;
 
 // Creates an empty Arena.
 // The `parentAllocator` parameter can be set as `NULL`, in this case it will use
 // the global allocator.
-btr_arena_t BTR_Arena_make(size_t capacity, btr_allocator_t *parentAllocator);
+btr_arena_s BTR_Arena_make(size_t capacity, btr_allocator_s *parentAllocator);
 // Allocates a given amount of bytes in the Arena.
 // Can return BTR_ALLOC_ERR_OUT_OF_MEMORY.
-btr_alloc_result_t BTR_Arena_allocate(btr_arena_t *, size_t size);
+btr_alloc_r BTR_Arena_allocate(btr_arena_s *, size_t size);
 // Deallocates the entire Arena.
-void BTR_Arena_destroy(btr_arena_t *);
+void BTR_Arena_destroy(btr_arena_s *);
 // Deallocates the entire Arena and allocates again with the new capacity.
-void BTR_Arena_reset(btr_arena_t *, size_t newCapacity);
+void BTR_Arena_reset(btr_arena_s *, size_t newCapacity);
 // Returns a `btr_allocator_t` interface wrapper for the specified Arena.
-btr_allocator_t BTR_Arena_getWrapper(btr_arena_t *);
+btr_allocator_s BTR_Arena_getWrapper(btr_arena_s *);
 
 #ifdef BTR_NO_PREFIX
 
-typedef btr_arena_t arena_t;
+typedef btr_arena_s arena_s;
 
 #define Arena_make       BTR_Arena_make
 #define Arena_allocate   BTR_Arena_allocate

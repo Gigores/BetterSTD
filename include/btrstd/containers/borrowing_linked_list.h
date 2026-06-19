@@ -25,13 +25,13 @@
 typedef struct BLListNode {
     void *payload;
     struct BLListNode *next;
-} btr_bllist_node_t;
+} btr_bllist_node_s;
 
 typedef struct {
-    btr_bllist_node_t *head;
-    btr_allocator_t *allocator;
+    btr_bllist_node_s *head;
+    btr_allocator_s *allocator;
     size_t size;
-} btr_bllist_t;
+} btr_bllist_s;
 
 // Creates a new borrowing linked list from an array of given values.
 // Example:
@@ -42,51 +42,51 @@ typedef struct {
 // btr_bllist_t list = BTR_BLList_make({&a, &b, &c}, 3);
 // ```
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
-btr_bllist_t BTR_BLList_makeFrom(void *items[], size_t itemCount, btr_allocator_t *allocator);
+btr_bllist_s BTR_BLList_makeFrom(void *items[], size_t itemCount, btr_allocator_s *allocator);
 // Creates an empty Borrowing Linked List.
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
-btr_bllist_t BTR_BLList_make(btr_allocator_t *allocator);
+btr_bllist_s BTR_BLList_make(btr_allocator_s *allocator);
 // Creates a new borrowing linked list from another borrowing linked list with the same data.
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
-btr_bllist_t BTR_BLList_clone(const btr_bllist_t *list, btr_allocator_t *allocator);
+btr_bllist_s BTR_BLList_clone(const btr_bllist_s *list, btr_allocator_s *allocator);
 // Appends the data to the end of the borrowing linked list.
-void BTR_BLList_append(btr_bllist_t *, void *data);
+void BTR_BLList_append(btr_bllist_s *, void *data);
 // Prepends the data to the beginning of the borrowing linked list.
-void BTR_BLList_prepend(btr_bllist_t *, void *data);
+void BTR_BLList_prepend(btr_bllist_s *, void *data);
 // Inserts an item so that its index is the specified one.
-void BTR_BLList_insert(btr_bllist_t *, void *data, long index);
+void BTR_BLList_insert(btr_bllist_s *, void *data, long index);
 // Pops the data of the specified index from a borrowing linked list.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
-btr_container_ptr_result_t BTR_BLList_pop(btr_bllist_t *, long index);
+btr_container_ptr_r BTR_BLList_pop(btr_bllist_s *, long index);
 // Returns the data of the specified index of the borrowing linked list.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
-btr_container_ptr_result_t BTR_BLList_get(const btr_bllist_t *, long index);
+btr_container_ptr_r BTR_BLList_get(const btr_bllist_s *, long index);
 // Sets the item at the given index to a given value in the borrowing linked list.
 // Can accept negative indexes.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
-void BTR_BLList_set(btr_bllist_t *, void *data, long index);
+void BTR_BLList_set(btr_bllist_s *, void *data, long index);
 // Returns the first item of the borrowing linked list.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
-btr_container_ptr_result_t BTR_BLList_first(const btr_bllist_t *);
+btr_container_ptr_r BTR_BLList_first(const btr_bllist_s *);
 // Returns the last item of the borrowing linked list.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
-btr_container_ptr_result_t BTR_BLList_last(const btr_bllist_t *);
+btr_container_ptr_r BTR_BLList_last(const btr_bllist_s *);
 // Returns the index of the first occurrence of the item.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_NOT_FOUND` if the item wasn't found.
-btr_container_idx_result_t BTR_BLList_indexOf
-    (btr_bllist_t *list, void *value, bool (*cmp)(const void *, const void *));
+btr_container_idx_r BTR_BLList_indexOf
+    (btr_bllist_s *list, void *value, bool (*cmp)(const void *, const void *));
 // Returns the amount of items in the borrowing linked list.
-size_t BTR_BLList_len(const btr_bllist_t *);
+size_t BTR_BLList_len(const btr_bllist_s *);
 // Tells if the borrowing linked list is empty.
-bool BTR_BLList_isEmpty(const btr_bllist_t *);
+bool BTR_BLList_isEmpty(const btr_bllist_s *);
 // Reverses the order of items in the borrowing linked list.
-void BTR_BLList_reverse(btr_bllist_t *);
+void BTR_BLList_reverse(btr_bllist_s *);
 // Deallocates the borrowing linked list.
-void BTR_BLList_free(btr_bllist_t *);
+void BTR_BLList_free(btr_bllist_s *);
 // Exactly the same as `BLList_free`
-void BTR_BLList_clear(btr_bllist_t *);
+void BTR_BLList_clear(btr_bllist_s *);
 // Example usage:
 // ```c
 // btr_bllist_t list = {...};  // a list of strings
@@ -96,7 +96,7 @@ void BTR_BLList_clear(btr_bllist_t *);
 #define BTR_BLLIST_FOREACH(LIST, i)           \
     void *i;                                  \
     for (                                     \
-        btr_bllist_node_t *_n = (LIST)->head; \
+        btr_bllist_node_s *_n = (LIST)->head; \
         _n != NULL && ((i = _n->payload), 1); \
         _n = _n->next                         \
     )
@@ -110,7 +110,7 @@ void BTR_BLList_clear(btr_bllist_t *);
     size_t n = 0;                             \
     void *i;                                  \
     for (                                     \
-        btr_bllist_node_t *_i = (LIST)->head; \
+        btr_bllist_node_s *_i = (LIST)->head; \
         _i != NULL && ((i = _i->payload), 1); \
         _i = _i->next, n++                    \
     )
@@ -129,8 +129,8 @@ void BTR_BLList_clear(btr_bllist_t *);
 
 #ifdef BTR_NO_PREFIX
 
-typedef btr_bllist_node_t bllist_node_t;
-typedef btr_bllist_t bllist_t;
+typedef btr_bllist_node_s bllist_node_s;
+typedef btr_bllist_s bllist_s;
 
 #define BLList_makeFrom BTR_BLList_makeFrom
 #define BLList_make     BTR_BLList_make

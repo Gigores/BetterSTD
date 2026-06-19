@@ -18,48 +18,48 @@ bool BTR_compareCString(const void *, const void *);
 btr_hash_t BTR_hashInt32(const void *);
 bool BTR_compareInt32(const void *, const void *);
 
-typedef struct BTR_TableEntry{
+typedef struct BTR_TableEntry {
     void *key, *value;
     struct BTR_TableEntry *next;
-} btr_table_entry_t;
+} btr_table_entry_s;
 
 typedef struct {
-    btr_table_entry_t **data;
+    btr_table_entry_s **data;
     size_t capacity;
     size_t count;
 
     btr_hash_t (*hash)(const void *);
     bool (*compare)(const void *, const void *);
 
-    btr_allocator_t *allocator;
-} btr_bhtable_t;
+    btr_allocator_s *allocator;
+} btr_bhtable_s;
 
 // Creates a new empty borrowing hash table. It requires to function pointers to properly
 // work with needed keys.
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
-btr_bhtable_t BTR_BHTable_make(
+btr_bhtable_s BTR_BHTable_make(
     btr_hash_t (*hash)(const void *),
     bool (*compare)(const void *, const void *),
-    btr_allocator_t *allocator
+    btr_allocator_s *allocator
 );
 // Sets a key to a value in the borrowing hash table.
-void BTR_BHTable_put(btr_bhtable_t *, const void *key, const void *value);
+void BTR_BHTable_put(btr_bhtable_s *, const void *key, const void *value);
 // Returns a value of the key in the borrowing hash table.
-btr_container_ptr_result_t BTR_BHTable_get(const btr_bhtable_t *, const void *key);
+btr_container_ptr_r BTR_BHTable_get(const btr_bhtable_s *, const void *key);
 // Returns a value of the key and removes it from the borrowing hash table.
-btr_container_ptr_result_t BTR_BHTable_pop(btr_bhtable_t *, const void *key);
+btr_container_ptr_r BTR_BHTable_pop(btr_bhtable_s *, const void *key);
 // Tells if the key has been set in the borrowing hash table.
-bool BTR_BHTable_contains(const btr_bhtable_t *, const void *key);
+bool BTR_BHTable_contains(const btr_bhtable_s *, const void *key);
 // Returns the amount of keys in the borrowing hash table.
-size_t BTR_BHTable_len(const btr_bhtable_t *);
+size_t BTR_BHTable_len(const btr_bhtable_s *);
 // Returns a borrowing linked list containing all the keys from the
 // borrowing hash table.
 // You will need to free this list yourself.
-btr_bllist_t BTR_BHTable_keys(const btr_bhtable_t *);
+btr_bllist_s BTR_BHTable_keys(const btr_bhtable_s *);
 // Deallocates the entire borrowing hash table, making it unusable afterwards.
-void BTR_BHTable_free(btr_bhtable_t *);
+void BTR_BHTable_free(btr_bhtable_s *);
 // Deallocates the entire borrowing hash table, but reinitializes it to be empty.
-void BTR_BHTable_clear(btr_bhtable_t *);
+void BTR_BHTable_clear(btr_bhtable_s *);
 
 #ifdef BTR_NO_PREFIX
 
@@ -71,8 +71,8 @@ typedef btr_hash_t hash_t;
 #define hashInt32 BTR_hashInt32
 #define compareInt32 BTR_compareInt32
 
-typedef btr_key_value_t key_value_t;
-typedef btr_bhtable_t bhtable_t
+typedef btr_key_value_s key_value_s;
+typedef btr_bhtable_s bhtable_s
 
 #define BHTable_make BTR_BHTable_make
 #define BHTable_put BTR_BHTable_put

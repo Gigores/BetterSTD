@@ -46,32 +46,32 @@
 //   allocate variadic_size, deallocate
 
 typedef struct {
-    btr_bit_set_t mask;
-    btr_allocator_t *allocator;
+    btr_bit_set_s mask;
+    btr_allocator_s *allocator;
     uint8_t *data;
     size_t itemSize;
     size_t itemCount;
-} btr_pool_t;
+} btr_pool_s;
 
 // Creates an empty Pool.
 // The `parentAllocator` parameter can be set as `NULL`, in this case it will use
 // the global allocator.
-btr_pool_t BTR_Pool_make(size_t itemSize, size_t itemCount, btr_allocator_t *parentAllocator);
+btr_pool_s BTR_Pool_make(size_t itemSize, size_t itemCount, btr_allocator_s *parentAllocator);
 // Allocates a block in the Pool.
 // Can return BTR_ALLOC_ERR_OUT_OF_MEMORY.
-btr_alloc_result_t BTR_Pool_allocate(btr_pool_t *);
+btr_alloc_r BTR_Pool_allocate(btr_pool_s *);
 // Deallocates a block in the Pool.
-void BTR_Pool_deallocate(btr_pool_t *, void *pointer);
+void BTR_Pool_deallocate(btr_pool_s *, void *pointer);
 // Deallocates the entire Pool.
-void BTR_Pool_destroy(btr_pool_t *);
+void BTR_Pool_destroy(btr_pool_s *);
 // Deallocates the entire Pool and allocates again with the new capacity.
-void BTR_Pool_reset(btr_pool_t *, size_t newItemCount);
+void BTR_Pool_reset(btr_pool_s *, size_t newItemCount);
 // Returns a `btr_allocator_t` interface wrapper for the specified Pool.
-btr_allocator_t BTR_Pool_getWrapper(btr_pool_t *);
+btr_allocator_s BTR_Pool_getWrapper(btr_pool_s *);
 
 #ifdef BTR_NO_PREFIX
 
-typedef btr_pool_t pool_t;
+typedef btr_pool_s pool_s;
 
 #define Pool_make       BTR_Pool_make
 #define Pool_allocate   BTR_Pool_allocate

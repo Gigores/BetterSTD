@@ -9,18 +9,18 @@ typedef enum {
     BTR_ALLOC_ERR_UNSUPPORTED_OPERATION,
     BTR_ALLOC_ERR_INVALID_POINTER,
     BTR_ALLOC_ERR_INVALID_SIZE,
-} btr_alloc_err_t;
+} btr_alloc_err_e;
 
-typedef BTR_Result(void *, btr_alloc_err_t) btr_alloc_result_t;
+typedef BTR_Result(void *, btr_alloc_err_e) btr_alloc_r;
 
 // Generic allocator wrapper
 typedef struct {
     void *context;
-    btr_alloc_result_t (*allocate)(
+    btr_alloc_r (*allocate)(
         void *context,
         size_t size
     );
-    btr_alloc_result_t (*reallocate)(
+    btr_alloc_r (*reallocate)(
         void *context,
         void *pointer,
         size_t newSize
@@ -29,17 +29,17 @@ typedef struct {
         void *context,
         void *pointer
     );
-} btr_allocator_t;
+} btr_allocator_s;
 
-btr_alloc_result_t BTR_Allocator_allocate(btr_allocator_t *, size_t size);
-btr_alloc_result_t BTR_Allocator_reallocate(btr_allocator_t *, void *pointer, size_t newSize);
-void BTR_Allocator_deallocate(btr_allocator_t *, void *pointer);
+btr_alloc_r BTR_Allocator_allocate(btr_allocator_s *, size_t size);
+btr_alloc_r BTR_Allocator_reallocate(btr_allocator_s *, void *pointer, size_t newSize);
+void BTR_Allocator_deallocate(btr_allocator_s *, void *pointer);
 
 #ifdef BTR_NO_PREFIX
 
-typedef btr_alloc_err_t    alloc_err_t;
-typedef btr_alloc_result_t alloc_result_t;
-typedef btr_allocator_t    allocator_t;
+typedef btr_alloc_err_e alloc_err_e;
+typedef btr_alloc_r     alloc_r;
+typedef btr_allocator_e allocator_e;
 
 #define ALLOC_ERR_OUT_OF_MEMORY         BTR_ALLOC_ERR_OUT_OF_MEMORY
 #define ALLOC_ERR_UNSUPPORTED_OPERATION BTR_ALLOC_ERR_UNSUPPORTED_OPERATION

@@ -15,22 +15,22 @@ typedef enum {
 #define X(LEVEL, COLOR) LOG_##LEVEL,
     BTR_LOG_LEVELS
 #undef X
-} btr_log_level_t;
+} btr_log_level_e;
 
-const char *BTR_LogLevel_toString(btr_log_level_t);
-const char *BTR_LogLevel_getColor(btr_log_level_t);
+const char *BTR_LogLevel_toString(btr_log_level_e);
+const char *BTR_LogLevel_getColor(btr_log_level_e);
 
 typedef struct {
-    btr_log_level_t minLogLevel;
+    btr_log_level_e minLogLevel;
     FILE *file;
     bool logTime;
     bool logFile;
     bool logFunc;
     bool logLine;
-} btr_logger_t;
+} btr_logger_s;
 
-void BTR_setLogger(btr_logger_t);
-btr_logger_t *BTR_getLogger(void);
+void BTR_setLogger(btr_logger_s);
+btr_logger_s *BTR_getLogger(void);
 
 #define BTR_log(logLevel, formatString, ...) \
     BTR_logImpl(__FILE__, __LINE__, __FUNCTION__, logLevel, formatString __VA_OPT__(,) __VA_ARGS__)
@@ -64,7 +64,7 @@ void BTR_logImpl(
     const char *file,
     int line,
     const char *func,
-    btr_log_level_t logLevel,
+    btr_log_level_e logLevel,
     const char *formatString,
     ...
 );
@@ -72,7 +72,7 @@ void BTR_vlogImpl(
     const char *file,
     int line,
     const char *func,
-    btr_log_level_t logLevel,
+    btr_log_level_e logLevel,
     const char *formatString,
     va_list args
 );
@@ -81,7 +81,7 @@ void BTR_vlogImpl(
 #ifdef BTR_NO_PREFIX
 
 #define LOG_LEVELS BTR_LOG_LEVELS
-typedef btr_log_level_t log_level_t;
+typedef btr_log_level_e log_level_e;
 
 #define setLogger BTR_setLogger
 #define getLogger BTR_getLogger
@@ -89,7 +89,7 @@ typedef btr_log_level_t log_level_t;
 #define LogLevel_toString BTR_LogLevel_toString
 #define LogLevel_getColor BTR_LogLevel_getColor
 
-typedef btr_logger_t logger_t;
+typedef btr_logger_s logger_s;
 #define log BTR_log
 #define vlogImpl BTR_vlogImpl
 
