@@ -1,8 +1,8 @@
 # BetterSTD
 
-BetterSTD is a bloated library for C, that was made to "extend" C's standard library with features
-like different kinds of containers (list, dynamic array, ...) and utilities like logging system,
-string views and clunky error handling.
+BetterSTD is a bloated general-purpose utility library for modern GNU C, that was made to
+"extend" C's standard library with features like different kinds of containers (list, dynamic
+array, ...) and utilities like logging system, string views and clunky error handling.
 
 This library is opinionated, container implementations are slow and the build system is in python
 like wtf. It was designed by me, for me. Just so that I don't have to reimplement stuff I already
@@ -75,10 +75,12 @@ The `libbtrstd.a` file will be available inside of `build/` directory.
   - [ ] Stack
   - [ ] Heap
 - [ ] Containers
-  - [x] [Borrowing Hash Map](./include/btrstd/containers/bhtable.h)
-  - [x] [Borrowing Array List](./include/btrstd/containers/balist.h)
-  - [x] [Borrowing Linked List](./include/btrstd/containers/bllist.h)
+  - [x] [Borrowing Hash Table](./include/btrstd/containers/borrowing_hash_table.h)
+  - [x] [Borrowing Array List](./include/btrstd/containers/borrowing_array_list.h)
+  - [x] [Borrowing Linked List](./include/btrstd/containers/borrowing_linked_list.h)
   - [x] [Bit Set](./include/btrstd/containers/bit_set.h)
+  - [ ] Owning Array List
+  - [ ] Owning Linked List
   - [ ] Hash Set
   - [ ] Dynamic String (Supports UTF-8)
 - [ ] Json
