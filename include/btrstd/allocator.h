@@ -42,7 +42,7 @@ void BTR_Allocator_deallocate(btr_allocator_s *, void *pointer);
 
 typedef btr_alloc_err_e alloc_err_e;
 typedef btr_alloc_r     alloc_r;
-typedef btr_allocator_e allocator_e;
+typedef btr_allocator_s allocator_s;
 
 #define ALLOC_ERR_OUT_OF_MEMORY         BTR_ALLOC_ERR_OUT_OF_MEMORY
 #define ALLOC_ERR_UNSUPPORTED_OPERATION BTR_ALLOC_ERR_UNSUPPORTED_OPERATION

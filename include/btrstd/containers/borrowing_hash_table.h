@@ -73,8 +73,8 @@ typedef btr_hash_t hash_t;
 #define hashInt32 BTR_hashInt32
 #define compareInt32 BTR_compareInt32
 
-typedef btr_key_value_s key_value_s;
-typedef btr_bhtable_s bhtable_s
+typedef btr_table_entry_s table_entry_s;
+typedef btr_bhtable_s bhtable_s;
 
 #define BHTable_make BTR_BHTable_make
 #define BHTable_put BTR_BHTable_put

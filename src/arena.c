@@ -49,14 +49,14 @@ btr_alloc_r BTR_Arena_allocatec(void *context, size_t size)
 }
 btr_alloc_r BTR_Arena_reallocatec(
     __attribute__((unused)) void *context,
-    __attribute__((unused)) void* pointer,
+    __attribute__((unused)) void *pointer,
     __attribute__((unused)) size_t size
 ) {
     BTR_Err(btr_alloc_r, BTR_ALLOC_ERR_UNSUPPORTED_OPERATION);
 }
 void BTR_Arena_deallocatec(
     __attribute__((unused)) void *context,
-    __attribute__((unused)) void* pointer
+    __attribute__((unused)) void *pointer
 ) {}
 
 btr_allocator_s BTR_Arena_getWrapper(btr_arena_s *this)

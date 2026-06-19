@@ -117,7 +117,7 @@ void BTR_BHTable_put(btr_bhtable_s *this, const void *key, const void *value)
     pair->next  = *first;
     *first = pair;
     this->count++;
-    if (calculateLoadFactor(this) > 1.5)
+    if (calculateLoadFactor(this) > 1.5f)
         rehashUp(this);
 }
 btr_container_ptr_r BTR_BHTable_get(const btr_bhtable_s *this, const void *key)

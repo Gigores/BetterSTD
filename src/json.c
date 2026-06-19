@@ -109,9 +109,9 @@ static void tokenizer_handleNumber(token_state_t *state)
 }
 static void tokenizer_handleKeyword(token_state_t *state)
 {
-    btr_string_view_s true_sv = BTR_StringView_fromCString("true");
-    btr_string_view_s false_sv = BTR_StringView_fromCString("false");
-    btr_string_view_s null_sv = BTR_StringView_fromCString("null");
+    btr_string_view_s trueSv = BTR_StringView_fromCString("true");
+    btr_string_view_s falseSv = BTR_StringView_fromCString("false");
+    btr_string_view_s nullSv = BTR_StringView_fromCString("null");
     size_t start = state->curCharIndex;
     size_t len = 0;
     while (tokenizer_canAdvance(state) && isalpha(*state->curChar))
@@ -120,19 +120,19 @@ static void tokenizer_handleKeyword(token_state_t *state)
         tokenizer_next(state);
     }
     btr_string_view_s sv = BTR_StringView_substring(&state->text, start, len);
-    if (!BTR_StringView_compare(&sv, &true_sv))
+    if (!BTR_StringView_compare(&sv, &trueSv))
         tokenizer_pushToken(
             state,
             TOKEN_TRUE,
             sv
         );
-    else if (!BTR_StringView_compare(&sv, &false_sv))
+    else if (!BTR_StringView_compare(&sv, &falseSv))
         tokenizer_pushToken(
             state,
             TOKEN_FALSE,
             sv
         );
-    else if (!BTR_StringView_compare(&sv, &null_sv))
+    else if (!BTR_StringView_compare(&sv, &nullSv))
         tokenizer_pushToken(
             state,
             TOKEN_NULL,
