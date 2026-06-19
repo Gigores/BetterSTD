@@ -30,7 +30,7 @@ def load_args() -> List[str]:
     return result.split()
 
 
-def task_build() -> None:
+def task_build(include_all: bool) -> None:
 
     if shutil.which("gcc") is None:
         print("GCC not found")
@@ -40,14 +40,19 @@ def task_build() -> None:
         return
     if not os.path.exists(BUILD_DIR):
         os.mkdir(BUILD_DIR)
-    res: subprocess.CompletedProcess[bytes] = subprocess.run([
+    args: List[str] = [
         "gcc",
         *load_args(),
+    ]
+    if include_all:
+        args.append("-DBTR_INCLUDE_ALL")
+    args += [
         "-c",
         COMPILE_THIS,
         "-o",
         os.path.join(BUILD_DIR, OBJ_FILE)
-    ])
+    ]
+    res: subprocess.CompletedProcess[bytes] = subprocess.run(args)
     if res.returncode != 0:
         print(f"Build failed with return code of {res.returncode}")
         return
@@ -78,6 +83,7 @@ def task_test(test: Optional[str], performance: bool) -> None:
             "gcc",
             *build_args,
             "-fsanitize=address",
+            "-DBTR_INCLUDE_ALL",
             os.path.join(TESTS_DIR, file),
             "-Lbuild",
             "-lbtrstd",
@@ -104,7 +110,7 @@ def task_test(test: Optional[str], performance: bool) -> None:
             else:
                 print(f"Test {os.path.basename(file)} failed with return code of {buildResult.returncode}")
 
-    task_build()
+    task_build(True)
 
     if not os.path.exists(TESTS_BUILD_DIR):
         os.mkdir(TESTS_BUILD_DIR)
@@ -142,7 +148,7 @@ if __name__ == "__main__":
     args: argparse.Namespace = parser.parse_args()
 
     if args.action == "build":
-        task_build()
+        task_build(False)
     elif args.action == "test":
         if args.list:
             print("Available tests:")

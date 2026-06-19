@@ -1,4 +1,4 @@
-#ifdef BTR_INCLUDE_JSON
+#ifdef BTR_INCLUDE_ALL
 
 #include "btrstd/json.h"
 
@@ -365,4 +365,4 @@ void BTR_JsonValue_free(btr_json_value_t *value)
     }
 }
 
-#endif  // BTR_INCLUDE_JSON
+#endif  // BTR_INCLUDE_ALL

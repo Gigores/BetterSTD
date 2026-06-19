@@ -1,4 +1,4 @@
-#include "btrstd/containers/bhtable.h"
+#include "btrstd/containers/borrowing_hash_table.h"
 #include "_util.h"
 
 #include "btrstd/error.h"

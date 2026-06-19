@@ -1,9 +1,9 @@
 #pragma once
 
-#ifdef BTR_INCLUDE_JSON
+#ifdef BTR_INCLUDE_ALL
 
-#include "btrstd/containers/bhtable.h"
-#include "btrstd/containers/bllist.h"
+#include "btrstd/containers/borrowing_hash_table.h"
+#include "btrstd/containers/borrowing_linked_list.h"
 #include "btrstd/string_view.h"
 
 
@@ -38,4 +38,4 @@ btr_json_value_t BTR_jsonDeserialize(const char *);
 
 void BTR_JsonValue_free(btr_json_value_t *);
 
-#endif  // BTR_INCLUDE_JSON
+#endif  // BTR_INCLUDE_ALL

@@ -2,7 +2,6 @@
 #include "_util.h"
 
 #include "string.h"
-#include "btrstd/logger.h"
 
 
 btr_pool_t BTR_Pool_make(size_t itemSize, size_t itemCount, btr_allocator_t *parentAllocator)
