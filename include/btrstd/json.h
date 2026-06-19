@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef BTR_INCLUDE_JSON
+
 #include "btrstd/containers/bhtable.h"
 #include "btrstd/containers/bllist.h"
 #include "btrstd/string_view.h"
@@ -35,3 +37,5 @@ typedef struct {
 btr_json_value_t BTR_jsonDeserialize(const char *);
 
 void BTR_JsonValue_free(btr_json_value_t *);
+
+#endif  // BTR_INCLUDE_JSON

@@ -1,3 +1,5 @@
+#ifdef BTR_INCLUDE_JSON
+
 #include "btrstd/json.h"
 
 #include "btrstd/string_view.h"
@@ -362,3 +364,5 @@ void BTR_JsonValue_free(btr_json_value_t *value)
         BTR_BHTable_free(&value->object);
     }
 }
+
+#endif  // BTR_INCLUDE_JSON
