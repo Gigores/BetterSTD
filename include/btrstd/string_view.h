@@ -20,7 +20,7 @@
 // This string view implementation fully supports UTF-8.
 // All operations are performed over UTF-8 characters, unless specified otherwise.
 
-typedef struct {
+typedef struct BTR_StringView {
     char *data;
     unsigned int start;
     unsigned int length;
@@ -111,6 +111,8 @@ long BTR_StringView_parseLong(btr_string_view_s *sv, int base);
 )(STRING, POSTFIX)
 
 #ifdef BTR_NO_PREFIX
+
+#define StringView BTR_StringView
 
 typedef btr_string_view_s string_view_s;
 

@@ -22,12 +22,12 @@
 // Allocator required capabilities:
 //   allocate sizeof(btr_bllist_node_t), deallocate
 
-typedef struct BLListNode {
+typedef struct BTR_BLListNode {
     void *payload;
-    struct BLListNode *next;
+    struct BTR_BLListNode *next;
 } btr_bllist_node_s;
 
-typedef struct {
+typedef struct BTR_BLList {
     btr_bllist_node_s *head;
     btr_allocator_s *allocator;
     size_t size;
@@ -128,6 +128,9 @@ void BTR_BLList_clear(btr_bllist_s *);
     )
 
 #ifdef BTR_NO_PREFIX
+
+#define BLListNode BTR_BLListNode
+#define BLList BTR_BLList
 
 typedef btr_bllist_node_s bllist_node_s;
 typedef btr_bllist_s bllist_s;

@@ -11,7 +11,7 @@
     X(ERROR, "\e[38;5;202m") \
     X(FATAL, "\e[38;5;196m")
 
-typedef enum {
+typedef enum BTR_LogLevel {
 #define X(LEVEL, COLOR) LOG_##LEVEL,
     BTR_LOG_LEVELS
 #undef X
@@ -20,7 +20,7 @@ typedef enum {
 const char *BTR_LogLevel_toString(btr_log_level_e);
 const char *BTR_LogLevel_getColor(btr_log_level_e);
 
-typedef struct {
+typedef struct BTR_Logger {
     btr_log_level_e minLogLevel;
     FILE *file;
     bool logTime;
@@ -79,6 +79,9 @@ void BTR_vlogImpl(
 
 
 #ifdef BTR_NO_PREFIX
+
+#define LogLevel BTR_LogLevel
+#define Logger BTR_Logger
 
 #define LOG_LEVELS BTR_LOG_LEVELS
 typedef btr_log_level_e log_level_e;

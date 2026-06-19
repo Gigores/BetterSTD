@@ -23,7 +23,7 @@ typedef struct BTR_TableEntry {
     struct BTR_TableEntry *next;
 } btr_table_entry_s;
 
-typedef struct {
+typedef struct BTR_BHTable {
     btr_table_entry_s **data;
     size_t capacity;
     size_t count;
@@ -62,6 +62,8 @@ void BTR_BHTable_free(btr_bhtable_s *);
 void BTR_BHTable_clear(btr_bhtable_s *);
 
 #ifdef BTR_NO_PREFIX
+
+#define BHTable BTR_BHTable
 
 typedef btr_hash_t hash_t;
 

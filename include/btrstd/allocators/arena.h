@@ -18,7 +18,7 @@
 // Parent allocator required capabilities:
 //   allocate variadic_size, deallocate
 
-typedef struct {
+typedef struct BTR_Arena {
     void *data;
     size_t capacity;
     size_t next;
@@ -40,6 +40,8 @@ void BTR_Arena_reset(btr_arena_s *, size_t newCapacity);
 btr_allocator_s BTR_Arena_getWrapper(btr_arena_s *);
 
 #ifdef BTR_NO_PREFIX
+
+#define Arena BTR_Arena
 
 typedef btr_arena_s arena_s;
 

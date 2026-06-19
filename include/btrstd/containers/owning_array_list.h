@@ -5,7 +5,7 @@
 #include "btrstd/containers/_generic_container_data.h"
 #include "btrstd/allocator.h"
 
-typedef struct {
+typedef struct BTR_OAList {
     void *data;
     size_t capacity;
     size_t count;

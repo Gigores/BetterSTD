@@ -2,7 +2,7 @@
 
 #include "stdbool.h"
 
-typedef enum {
+typedef enum BTR_ResultStatus {
     BTR_OK,
     BTR_ERR,
 } btr_result_status_e;
@@ -119,6 +119,8 @@ void BTR_panicImplIf
 #define BTR_deprecated(...) BTR_panic("Deprecated" __VA_OPT__(": " __VA_ARGS__) )
 
 #ifdef BTR_NO_PREFIX
+
+#define ResultStatus BTR_ResultStatus
 
 typedef btr_result_status_e result_status_e;
 #define Result BTR_Result

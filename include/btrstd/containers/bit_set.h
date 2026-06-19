@@ -26,7 +26,7 @@
 // Allocator required capabilities:
 //   allocate, deallocate
 
-typedef struct {
+typedef struct BTR_BitSet {
     char *data;
     size_t bitCount;
     btr_allocator_s *allocator;
@@ -65,6 +65,8 @@ void BTR_BitSet_free(btr_bit_set_s *);
     for (size_t n = 0; n < (BITSET)->bitCount && ((i = BTR_unwrap(BTR_BitSet_get(BITSET, n))), 1); n++)
 
 #ifdef BTR_NO_PREFIX
+
+#define BitSet BTR_BitSet
 
 typedef btr_bit_set_s bit_set_s;
 typedef btr_bit_r     bit_r;

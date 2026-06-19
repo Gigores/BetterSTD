@@ -4,7 +4,7 @@
 
 #include "stddef.h"
 
-typedef enum {
+typedef enum BTR_AllocErr {
     BTR_ALLOC_ERR_OUT_OF_MEMORY,
     BTR_ALLOC_ERR_UNSUPPORTED_OPERATION,
     BTR_ALLOC_ERR_INVALID_POINTER,
@@ -14,7 +14,7 @@ typedef enum {
 typedef BTR_Result(void *, btr_alloc_err_e) btr_alloc_r;
 
 // Generic allocator wrapper
-typedef struct {
+typedef struct BTR_Allocator {
     void *context;
     btr_alloc_r (*allocate)(
         void *context,
@@ -36,6 +36,9 @@ btr_alloc_r BTR_Allocator_reallocate(btr_allocator_s *, void *pointer, size_t ne
 void BTR_Allocator_deallocate(btr_allocator_s *, void *pointer);
 
 #ifdef BTR_NO_PREFIX
+
+#define AllocErr BTR_AllocErr
+#define BTR_Allocator Allocator
 
 typedef btr_alloc_err_e alloc_err_e;
 typedef btr_alloc_r     alloc_r;

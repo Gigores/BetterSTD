@@ -14,7 +14,7 @@
 // Allocator required capabilities:
 //   allocate variadic_size, deallocate
 
-typedef struct {
+typedef struct BTR_BAList {
     void **data;
     size_t count;
     size_t capacity;
@@ -109,6 +109,8 @@ void BTR_BAList_clear(btr_balist_s *);
     )
 
 #ifdef BTR_NO_PREFIX
+
+#define BAList BTR_BAList
 
 typedef btr_balist_s balist_s;
 

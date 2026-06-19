@@ -45,7 +45,7 @@
 // Parent allocator required capabilities:
 //   allocate variadic_size, deallocate
 
-typedef struct {
+typedef struct BTR_Pool {
     btr_bit_set_s mask;
     btr_allocator_s *allocator;
     uint8_t *data;
@@ -70,6 +70,8 @@ void BTR_Pool_reset(btr_pool_s *, size_t newItemCount);
 btr_allocator_s BTR_Pool_getWrapper(btr_pool_s *);
 
 #ifdef BTR_NO_PREFIX
+
+#define Pool BTR_Pool
 
 typedef btr_pool_s pool_s;
 

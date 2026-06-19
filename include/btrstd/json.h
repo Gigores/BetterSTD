@@ -14,7 +14,7 @@ typedef double            btr_json_number_t;
 typedef bool              btr_json_bool_t;
 typedef char              btr_json_null_t;
 
-typedef struct {
+typedef struct BTR_JsonValue {
     enum {
         BTR_JSON_OBJECT,
         BTR_JSON_ARRAY,
