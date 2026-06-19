@@ -3,7 +3,7 @@
 These are the code conventions used by BetterSTD.
 
 ### **Defines**: UPPER_SNAKE_CASE or camelCase
-You should use UPPER_SNAKE_CASE by default:
+Its better to use UPPER_SNAKE_CASE by default:
 ```c
 #define BTR_NO_PREFIX
 ```
@@ -17,7 +17,7 @@ The exception is macros that expand into a function or a type without a library 
 ```
 
 ### **Macros**: UPPER_SNAKE_CASE or camelCase
-If a macro tries to mimic a regular function in its behaviour, you should use camelCase:
+If a macro tries to mimic a regular function in its behaviour, better use camelCase:
 ```c
 #define BTR_try(result) ({     \
     __auto_type _r = (result); \
@@ -121,7 +121,7 @@ btr_bllist_s BTR_BLList_makeFrom(void *items[], size_t itemCount, btr_allocator_
 ```
 
 ### **Types**: snake_case + postfix
-You should generally use cnake_case, but I need to specify different kind of postfixes:
+Its better to generally use cnake_case, but I need to specify different kind of postfixes:
 - `_s` for structs:
 ```c
 typedef struct BTR_BitSet {
