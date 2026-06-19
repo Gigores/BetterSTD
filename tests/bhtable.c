@@ -60,18 +60,18 @@ static void test4(void)
     assert(BTR_BHTable_len(&table) == 3);
 
     btr_container_ptr_r result = BTR_BHTable_pop(&table, "key2");
-    assert(result.status == BTR_OK);
+    assert(result.status == BTR_STATUS_OK);
     assert(*(int *)result.value == VALUES[1]);
 
     result = BTR_BHTable_get(&table, "key2");
-    assert(result.status == BTR_ERR);
+    assert(result.status == BTR_STATUS_ERR);
 
     assert(*(int *)BTR_unwrap(BTR_BHTable_get(&table, "key1")) == VALUES[0]);
     assert(*(int *)BTR_unwrap(BTR_BHTable_get(&table, "key3")) == VALUES[2]);
     assert(BTR_BHTable_len(&table) == 2);
 
     result = BTR_BHTable_pop(&table, "nonexistent");
-    assert(result.status == BTR_ERR);
+    assert(result.status == BTR_STATUS_ERR);
     assert(BTR_BHTable_len(&table) == 2);
 
     BTR_BHTable_free(&table);
@@ -97,7 +97,7 @@ static void test5(void)
     for (size_t i = 128; i < 256; i++)
     {
         btr_container_ptr_r result = BTR_BHTable_pop(&table, &i);
-        assert(result.status == BTR_OK);
+        assert(result.status == BTR_STATUS_OK);
         assert(*(int *)result.value == (int)i * 10);
     }
     assert(BTR_BHTable_len(&table) == 896);
@@ -105,14 +105,14 @@ static void test5(void)
     for (size_t i = 0; i < 128; i++)
     {
         btr_container_ptr_r result = BTR_BHTable_get(&table, &i);
-        assert(result.status == BTR_OK);
+        assert(result.status == BTR_STATUS_OK);
         assert(*(int *)result.value == (int)i * 10);
     }
 
     for (size_t i = 128; i < 256; i++)
     {
         btr_container_ptr_r result = BTR_BHTable_get(&table, &i);
-        assert(result.status == BTR_ERR);
+        assert(result.status == BTR_STATUS_ERR);
     }
 
     BTR_BHTable_free(&table);

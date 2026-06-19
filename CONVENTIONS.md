@@ -145,7 +145,7 @@ typedef enum BTR_ResultStatus {
 ```
 - `_r` or `_result_s` for result types:
 ```c
-typedef BTR_Result(bool, btr_container_error_e) btr_bit_r;
+typedef BTR_RESULT(bool, btr_container_error_e) btr_bit_r;
 ```
 - `_t` for general types:
 ```c

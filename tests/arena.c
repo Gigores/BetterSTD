@@ -45,7 +45,7 @@ static void test2(void)
     assert(arena.next == 100);
 
     btr_alloc_r r = BTR_Arena_allocate(&arena, 1);
-    assert(r.status == BTR_ERR);
+    assert(r.status == BTR_STATUS_ERR);
     assert(r.error == BTR_ALLOC_ERR_OUT_OF_MEMORY);
 
     BTR_Arena_destroy(&arena);
@@ -62,7 +62,7 @@ static void test3(void)
     assert(arena.next == 64);
 
     btr_alloc_r r = BTR_Arena_allocate(&arena, 1);
-    assert(r.status == BTR_ERR);
+    assert(r.status == BTR_STATUS_ERR);
 
     BTR_Arena_reset(&arena, 256);
     assert(arena.capacity == 256);
@@ -110,7 +110,7 @@ static void test5(void)
     assert(p != NULL);
 
     btr_alloc_r r = BTR_Allocator_reallocate(&wrapper, p, 64);
-    assert(r.status == BTR_ERR);
+    assert(r.status == BTR_STATUS_ERR);
     assert(r.error == BTR_ALLOC_ERR_UNSUPPORTED_OPERATION);
 
     BTR_Arena_destroy(&arena);

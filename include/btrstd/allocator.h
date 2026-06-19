@@ -11,7 +11,7 @@ typedef enum BTR_AllocErr {
     BTR_ALLOC_ERR_INVALID_SIZE,
 } btr_alloc_err_e;
 
-typedef BTR_Result(void *, btr_alloc_err_e) btr_alloc_r;
+typedef BTR_RESULT(void *, btr_alloc_err_e) btr_alloc_r;
 
 // Generic allocator wrapper
 typedef struct BTR_Allocator {

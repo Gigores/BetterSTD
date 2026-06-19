@@ -115,20 +115,20 @@ btr_container_ptr_r BTR_BAList_pop(btr_balist_s *this, long index)
     BTR_panicIf(!this, "`this` is invalid");
     if (index < 0) index = this->count + index;
     if (index < 0 || (size_t)index >= this->count)
-        BTR_Err(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+        BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
     void *toReturn = this->data[index];
     memmove(this->data + index, this->data + index + 1, (this->count - index) * sizeof(void *));
     this->count--;
     checkSizeToShrink(this);
-    BTR_Ok(btr_container_ptr_r, toReturn);
+    BTR_OK(btr_container_ptr_r, toReturn);
 }
 btr_container_ptr_r BTR_BAList_get(const btr_balist_s *this, long index)
 {
     BTR_panicIf(!this, "`this` is invalid");
     if (index < 0) index = this->count + index;
     if (index < 0 || (size_t)index >= this->count)
-        BTR_Err(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
-    BTR_Ok(btr_container_ptr_r, this->data[index]);
+        BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    BTR_OK(btr_container_ptr_r, this->data[index]);
 }
 void BTR_BAList_set(btr_balist_s *this, void *data, long index)
 {
@@ -141,15 +141,15 @@ btr_container_ptr_r BTR_BAList_first(const btr_balist_s *this)
 {
     BTR_panicIf(!this, "`this` is invalid");
     if (!this->count)
-        BTR_Err(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
-    BTR_Ok(btr_container_ptr_r, this->data[0]);
+        BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    BTR_OK(btr_container_ptr_r, this->data[0]);
 }
 btr_container_ptr_r BTR_BAList_last(const btr_balist_s *this)
 {
     BTR_panicIf(!this, "`this` is invalid");
     if (!this->count)
-        BTR_Err(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
-    BTR_Ok(btr_container_ptr_r, this->data[this->count - 1]);
+        BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    BTR_OK(btr_container_ptr_r, this->data[this->count - 1]);
 }
 btr_container_idx_r BTR_BAList_indexOf(
     btr_balist_s *list,
@@ -159,8 +159,8 @@ btr_container_idx_r BTR_BAList_indexOf(
     BTR_panicIf(!list, "`list` is invalid");
     BTR_BALIST_ENUMERATE(list, i, n)
         if (cmp(i, value))
-            BTR_Ok(btr_container_idx_r, n);
-    BTR_Err(btr_container_idx_r, BTR_CONTAINER_ERR_NOT_FOUND);
+            BTR_OK(btr_container_idx_r, n);
+    BTR_ERR(btr_container_idx_r, BTR_CONTAINER_ERR_NOT_FOUND);
 }
 size_t BTR_BAList_len(const btr_balist_s *this)
 {

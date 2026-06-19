@@ -32,7 +32,7 @@ typedef struct BTR_BitSet {
     btr_allocator_s *allocator;
 } btr_bit_set_s;
 
-typedef BTR_Result(bool, btr_container_error_e) btr_bit_r;
+typedef BTR_RESULT(bool, btr_container_error_e) btr_bit_r;
 
 // Creates a new bit set with a given capacity in bits.
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.

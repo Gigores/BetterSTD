@@ -127,8 +127,8 @@ btr_container_ptr_r BTR_BHTable_get(const btr_bhtable_s *this, const void *key)
         current;
         current = current->next
     ) if (this->compare(current->key, key))
-        BTR_Ok(btr_container_ptr_r, current->value);
-    BTR_Err(btr_container_ptr_r, BTR_CONTAINER_ERR_NOT_FOUND);
+        BTR_OK(btr_container_ptr_r, current->value);
+    BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_NOT_FOUND);
 }
 btr_container_ptr_r BTR_BHTable_pop(btr_bhtable_s *this, const void *key)
 {
@@ -146,12 +146,12 @@ btr_container_ptr_r BTR_BHTable_pop(btr_bhtable_s *this, const void *key)
             void *result = current->value;
             BTR_Allocator_deallocate(this->allocator, current);
             this->count--;
-            BTR_Ok(btr_container_ptr_r, result);
+            BTR_OK(btr_container_ptr_r, result);
         }
         prev = current;
         current = current->next;
     }
-    BTR_Err(btr_container_ptr_r, BTR_CONTAINER_ERR_NOT_FOUND);
+    BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_NOT_FOUND);
 }
 bool BTR_BHTable_contains(const btr_bhtable_s *this, const void *key)
 {

@@ -76,7 +76,7 @@ static void test4(void)
     for (long i = 0; i < 8; i += 2)
     {
         btr_bit_r r = BTR_BitSet_flip(&bs, i);
-        assert(r.status == BTR_OK);
+        assert(r.status == BTR_STATUS_OK);
         assert(r.value == 1);
     }
 
@@ -87,7 +87,7 @@ static void test4(void)
     for (long i = 0; i < 8; i += 2)
     {
         btr_bit_r r = BTR_BitSet_flip(&bs, i);
-        assert(r.status == BTR_OK);
+        assert(r.status == BTR_STATUS_OK);
         assert(r.value == 0);
     }
 
@@ -116,7 +116,7 @@ static void test5(void)
     assert(BTR_unwrap(BTR_BitSet_get(&bs, -1)) == 0);
 
     btr_bit_r r = BTR_BitSet_flip(&bs, -5);
-    assert(r.status == BTR_OK);
+    assert(r.status == BTR_STATUS_OK);
     assert(r.value == 1);
     assert(BTR_unwrap(BTR_BitSet_get(&bs, 3)) == 1);
 
@@ -131,20 +131,20 @@ static void test6(void)
 
     // get out of bounds
     btr_bit_r r = BTR_BitSet_get(&bs, 4);
-    assert(r.status == BTR_ERR);
+    assert(r.status == BTR_STATUS_ERR);
     assert(r.error == BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
 
     r = BTR_BitSet_get(&bs, -5);
-    assert(r.status == BTR_ERR);
+    assert(r.status == BTR_STATUS_ERR);
     assert(r.error == BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
 
     // flip out of bounds
     r = BTR_BitSet_flip(&bs, 4);
-    assert(r.status == BTR_ERR);
+    assert(r.status == BTR_STATUS_ERR);
     assert(r.error == BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
 
     r = BTR_BitSet_flip(&bs, -5);
-    assert(r.status == BTR_ERR);
+    assert(r.status == BTR_STATUS_ERR);
     assert(r.error == BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
 
     BTR_BitSet_free(&bs);
@@ -221,8 +221,8 @@ static void test9(void)
     }
 
     // bit 11 should be out of bounds
-    assert(BTR_BitSet_get(&bs, 11).status == BTR_ERR);
-    assert(BTR_BitSet_flip(&bs, 11).status == BTR_ERR);
+    assert(BTR_BitSet_get(&bs, 11).status == BTR_STATUS_ERR);
+    assert(BTR_BitSet_flip(&bs, 11).status == BTR_STATUS_ERR);
 
     BTR_BitSet_free(&bs);
 }

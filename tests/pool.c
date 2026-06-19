@@ -57,13 +57,13 @@ static void test4(void)
     for (int i = 0; i < 4; i++)
     {
         btr_alloc_r r = BTR_Pool_allocate(&pool);
-        assert(r.status == BTR_OK);
+        assert(r.status == BTR_STATUS_OK);
         assert(r.value != NULL);
     }
 
     // next allocation should fail
     btr_alloc_r r = BTR_Pool_allocate(&pool);
-    assert(r.status == BTR_ERR);
+    assert(r.status == BTR_STATUS_ERR);
     assert(r.error == BTR_ALLOC_ERR_OUT_OF_MEMORY);
 
     BTR_Pool_destroy(&pool);
@@ -137,7 +137,7 @@ static void test8(void)
         BTR_unwrap(BTR_Pool_allocate(&pool));
 
     btr_alloc_r r = BTR_Pool_allocate(&pool);
-    assert(r.status == BTR_ERR);
+    assert(r.status == BTR_STATUS_ERR);
 
     // reset with larger count
     BTR_Pool_reset(&pool, 8);
@@ -145,12 +145,12 @@ static void test8(void)
     for (int i = 0; i < 8; i++)
     {
         r = BTR_Pool_allocate(&pool);
-        assert(r.status == BTR_OK);
+        assert(r.status == BTR_STATUS_OK);
     }
 
     // exhausted again
     r = BTR_Pool_allocate(&pool);
-    assert(r.status == BTR_ERR);
+    assert(r.status == BTR_STATUS_ERR);
 
     BTR_Pool_destroy(&pool);
 }
@@ -193,12 +193,12 @@ static void test10(void)
     for (size_t i = 0; i < 64; i++)
         BTR_BLList_append(&list, (void *)&VALUES[i % 10]);
 
-    assert(BTR_isErr(BTR_Pool_allocate(&pool)));
+    assert(BTR_ISERR(BTR_Pool_allocate(&pool)));
 
     for (size_t i = 0; i < 64; i++)
         BTR_BLList_pop(&list, -1);
 
-    assert(BTR_isOk(BTR_Pool_allocate(&pool)));
+    assert(BTR_ISOK(BTR_Pool_allocate(&pool)));
 
     BTR_BLList_free(&list);
     BTR_Pool_destroy(&pool);

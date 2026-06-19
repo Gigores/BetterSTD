@@ -35,10 +35,10 @@ btr_bit_r BTR_BitSet_get(const btr_bit_set_s *this, long index)
     BTR_panicIf(!this, "`this` is null");
     if (index < 0) index = this->bitCount + index;
     if (index < 0 || (size_t)index >= this->bitCount)
-        BTR_Err(btr_bit_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+        BTR_ERR(btr_bit_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
     size_t byteIndex = (size_t) index / 8;
     size_t bitIndex = (size_t) index % 8;
-    BTR_Ok(btr_bit_r, (this->data[byteIndex] >> bitIndex) & 1);
+    BTR_OK(btr_bit_r, (this->data[byteIndex] >> bitIndex) & 1);
 }
 void BTR_BitSet_set(btr_bit_set_s *this, long index)
 {
@@ -63,11 +63,11 @@ btr_bit_r BTR_BitSet_flip(btr_bit_set_s *this, long index)
     BTR_panicIf(!this, "`this` is null");
     if (index < 0) index = this->bitCount + index;
     if (index < 0 || (size_t)index >= this->bitCount)
-        BTR_Err(btr_bit_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+        BTR_ERR(btr_bit_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
     size_t byteIndex = (size_t) index / 8;
     size_t bitIndex = (size_t) index % 8;
     this->data[byteIndex] ^= (1u << bitIndex);
-    BTR_Ok(btr_bit_r, (this->data[byteIndex] >> bitIndex) & 1);
+    BTR_OK(btr_bit_r, (this->data[byteIndex] >> bitIndex) & 1);
 }
 void BTR_BitSet_free(btr_bit_set_s *this)
 {

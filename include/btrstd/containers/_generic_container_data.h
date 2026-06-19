@@ -7,8 +7,8 @@ typedef enum BTR_ContainerError {
     BTR_CONTAINER_ERR_NOT_FOUND,
 } btr_container_error_e;
 
-typedef BTR_Result(void *, btr_container_error_e) btr_container_ptr_r;
-typedef BTR_Result(long, btr_container_error_e) btr_container_idx_r;
+typedef BTR_RESULT(void *, btr_container_error_e) btr_container_ptr_r;
+typedef BTR_RESULT(long, btr_container_error_e) btr_container_idx_r;
 
 #ifdef BTR_NO_PREFIX
 

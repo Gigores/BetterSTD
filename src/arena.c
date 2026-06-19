@@ -21,10 +21,10 @@ btr_alloc_r BTR_Arena_allocate(btr_arena_s *this, size_t size)
 {
     BTR_panicIf(!this, "`this` is NULL");
     if (this->next + size > this->capacity)
-        BTR_Err(btr_alloc_r, BTR_ALLOC_ERR_OUT_OF_MEMORY);
+        BTR_ERR(btr_alloc_r, BTR_ALLOC_ERR_OUT_OF_MEMORY);
     void *result = this->data + this->next;
     this->next += size;
-    BTR_Ok(btr_alloc_r, result);
+    BTR_OK(btr_alloc_r, result);
 }
 void BTR_Arena_destroy(btr_arena_s *this)
 {
@@ -52,7 +52,7 @@ btr_alloc_r BTR_Arena_reallocatec(
     __attribute__((unused)) void *pointer,
     __attribute__((unused)) size_t size
 ) {
-    BTR_Err(btr_alloc_r, BTR_ALLOC_ERR_UNSUPPORTED_OPERATION);
+    BTR_ERR(btr_alloc_r, BTR_ALLOC_ERR_UNSUPPORTED_OPERATION);
 }
 void BTR_Arena_deallocatec(
     __attribute__((unused)) void *context,

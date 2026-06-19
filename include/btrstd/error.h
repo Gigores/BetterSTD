@@ -3,16 +3,16 @@
 #include "stdbool.h"
 
 typedef enum BTR_ResultStatus {
-    BTR_OK,
-    BTR_ERR,
+    BTR_STATUS_OK,
+    BTR_STATUS_ERR,
 } btr_result_status_e;
 
 // Defines a generic Result type.
 // Usage example:
 // ```c
-// typedef BTR_Result(void *, alloc_error_t) alloc_result_t;
+// typedef BTR_RESULT(void *, alloc_error_t) alloc_result_t;
 // ```
-#define BTR_Result(V, E) struct { \
+#define BTR_RESULT(V, E) struct { \
     btr_result_status_e status;   \
     union {                       \
         V value;                  \
@@ -53,38 +53,38 @@ void BTR_panicImplIf
 
 // This macro panics with the given formatted error message if the given result is Err.
 // Otherwise evaluates to the .value of the result.
-#define BTR_expect(result, message, ...) ({                 \
-    __auto_type _r = (result);                              \
-    if (_r.status == BTR_ERR)                               \
+#define BTR_expect(result, message, ...) ({           \
+    __auto_type _r = (result);                        \
+    if (_r.status == BTR_STATUS_ERR)                  \
         BTR_panic(message __VA_OPT__(,) __VA_ARGS__); \
-    _r.value;                                               \
+    _r.value;                                         \
 })
 
 // This macro panics if the given result is Err.
 // Otherwise evaluates to the .value of the result.
-#define BTR_unwrap(result) ({             \
-    __auto_type _r = (result);            \
-    if (_r.status == BTR_ERR)             \
-        BTR_panic("unwrap failed"); \
-    _r.value;                             \
+#define BTR_unwrap(result) ({        \
+    __auto_type _r = (result);       \
+    if (_r.status == BTR_STATUS_ERR) \
+        BTR_panic("Unwrap failed");  \
+    _r.value;                        \
 })
 
 // This macro evaluates to the given "fallback" value if the result is Err.
 // Otherwise evaluates to the .value of the result.
 #define BTR_unwrapOr(result, fallback) ({ \
     __auto_type _r = (result);            \
-    _r.status == BTR_OK                   \
+    _r.status == BTR_STATUS_OK            \
         ? _r.value                        \
         : (fallback);                     \
 })
 
 // This macro evaluates to the .error of the result if it is Err.
 // Otherwise panics.
-#define BTR_unwrapErr(result) ({           \
-    __auto_type _r = (result);             \
-    if (_r.status == BTR_OK)               \
-        BTR_panic("expected error"); \
-    _r.error;                              \
+#define BTR_unwrapErr(result) ({     \
+    __auto_type _r = (result);       \
+    if (_r.status == BTR_STATUS_OK)  \
+        BTR_panic("Expected error"); \
+    _r.error;                        \
 })
 
 // Propagates an error.
@@ -94,22 +94,24 @@ void BTR_panicImplIf
 // ```c
 // int value = BTR_try(parseInt("42"));
 // ```
-#define BTR_try(result) ({     \
-    __auto_type _r = (result); \
-    if (_r.status == BTR_ERR)  \
-        return _r;             \
-    _r.value;                  \
+#define BTR_try(result) ({           \
+    __auto_type _r = (result);       \
+    if (_r.status == BTR_STATUS_ERR) \
+        return _r;                   \
+    _r.value;                        \
 })
 
 // Checks if the given result is Ok
-#define BTR_isOk(result) ((result).status == BTR_OK)
+#define BTR_ISOK(result) ((result).status == BTR_STATUS_OK)
 // Checks if the given result is Err
-#define BTR_isErr(result) ((result).status == BTR_ERR)
+#define BTR_ISERR(result) ((result).status == BTR_STATUS_ERR)
 
 // Returns an Ok result from the current function.
-#define BTR_Ok(T, Value) do { return ((T) { .status = BTR_OK, .value = (Value) }); } while(0)
+#define BTR_OK(T, Value) \
+    do { return ((T) { .status = BTR_STATUS_OK, .value = (Value) }); } while(0)
 // Returns an Err result from the current function.
-#define BTR_Err(T, Error) do { return ((T) { .status = BTR_ERR, .error = (Error) }); } while(0)
+#define BTR_ERR(T, Error) \
+    do { return ((T) { .status = BTR_STATUS_ERR, .error = (Error) }); } while(0)
 
 // Can be used as a placeholer for unfinished code.
 #define BTR_todo(...) BTR_panic("Not yet implemented" __VA_OPT__(": " __VA_ARGS__) )
@@ -122,8 +124,11 @@ void BTR_panicImplIf
 
 #define ResultStatus BTR_ResultStatus
 
+#define STATUS_OK BTR_STATUS_OK
+#define STATUS_ERR BTR_STATUS_ERR
+
 typedef btr_result_status_e result_status_e;
-#define Result BTR_Result
+#define RESULT BTR_RESULT
 
 #define panic   BTR_panic
 #define panicIf BTR_panicIf
@@ -134,11 +139,11 @@ typedef btr_result_status_e result_status_e;
 #define unwrapErr BTR_unwrapErr
 #define try       BTR_try
 
-#define isOk  BTR_isOk
-#define isErr BTR_isErr
+#define ISOK  BTR_ISOK
+#define ISERR BTR_ISERR
 
-#define Ok  BTR_Ok
-#define Err BTR_Err
+#define OK  BTR_OK
+#define ERR BTR_ERR
 
 #define todo          BTR_todo
 #define unimplemented BTR_unimplemented

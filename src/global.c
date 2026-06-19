@@ -6,14 +6,14 @@
 btr_alloc_r BTR_allocate(size_t size)
 {
     void *pointer = calloc(size, 1);
-    if (!pointer) BTR_Err(btr_alloc_r, BTR_ALLOC_ERR_OUT_OF_MEMORY);
-    BTR_Ok(btr_alloc_r, pointer);
+    if (!pointer) BTR_ERR(btr_alloc_r, BTR_ALLOC_ERR_OUT_OF_MEMORY);
+    BTR_OK(btr_alloc_r, pointer);
 }
 btr_alloc_r BTR_reallocate(void *pointer, size_t newSize)
 {
     void *newPointer = realloc(pointer, newSize);
-    if (!newPointer) BTR_Err(btr_alloc_r, BTR_ALLOC_ERR_OUT_OF_MEMORY);
-    BTR_Ok(btr_alloc_r, newPointer);
+    if (!newPointer) BTR_ERR(btr_alloc_r, BTR_ALLOC_ERR_OUT_OF_MEMORY);
+    BTR_OK(btr_alloc_r, newPointer);
 }
 void BTR_deallocate(void *pointer)
 {

@@ -30,11 +30,11 @@ btr_alloc_r BTR_Pool_allocate(btr_pool_s *this)
             break;
         }
     if (index < 0)
-        BTR_Err(btr_alloc_r, BTR_ALLOC_ERR_OUT_OF_MEMORY);
+        BTR_ERR(btr_alloc_r, BTR_ALLOC_ERR_OUT_OF_MEMORY);
     BTR_BitSet_set(&this->mask, index);
     uint8_t *data = this->data + index * this->itemSize;
     memset(this->data + index * this->itemSize, 0, this->itemSize);
-    BTR_Ok(btr_alloc_r, data);
+    BTR_OK(btr_alloc_r, data);
 }
 void BTR_Pool_deallocate(btr_pool_s *this, void *pointer)
 {
@@ -72,7 +72,7 @@ btr_alloc_r BTR_Pool_allocatec(void *context, size_t size)
 {
     BTR_panicIf(!context, "NULL allocator context");
     if (size != ((btr_pool_s *)context)->itemSize)
-        BTR_Err(btr_alloc_r, BTR_ALLOC_ERR_INVALID_SIZE);
+        BTR_ERR(btr_alloc_r, BTR_ALLOC_ERR_INVALID_SIZE);
     return BTR_Pool_allocate(context);
 }
 btr_alloc_r BTR_Pool_reallocatec(
@@ -80,7 +80,7 @@ btr_alloc_r BTR_Pool_reallocatec(
     __attribute__((unused)) void* pointer,
     __attribute__((unused)) size_t size
 ) {
-    BTR_Err(btr_alloc_r, BTR_ALLOC_ERR_UNSUPPORTED_OPERATION);
+    BTR_ERR(btr_alloc_r, BTR_ALLOC_ERR_UNSUPPORTED_OPERATION);
 }
 void BTR_Pool_deallocatec(void *context, void *pointer)
 {
