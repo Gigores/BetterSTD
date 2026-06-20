@@ -40,16 +40,18 @@ void BTR_OAList_reverse(btr_oalist_s *);
 void BTR_OAList_free(btr_oalist_s *);
 void BTR_OAList_clear(btr_oalist_s *);
 
-// #define BTR_OALIST_FOREACH(LIST, i) \
-//     void *i; \
-//     for (size_t _i = 0; _i < (LIST)->count && ((i = (LIST)->data[_i]), 1); _i++)
+#define BTR_OALIST_FOREACH(LIST, i) \
+    void *i; \
+    for (size_t _i = 0; _i < (LIST)->count && ((i = (LIST)->data[_i * (LIST)->itemSize]), 1); _i++)
 
-// #define BTR_OALIST_ENUMERATE(LIST, i, n) \
-//     void *i; \
-//     for (size_t n = 0; n < (LIST)->count && ((i = (LIST)->data[n]), 1); n++)
+#define BTR_OALIST_ENUMERATE(LIST, i, n) \
+    void *i; \
+    for (size_t n = 0; n < (LIST)->count && ((i = (LIST)->data[n * (LIST)->itemSize]), 1); n++)
+
+#define BTR_OALIST_OF(T) BTR_OAList_make(8, sizeof(T), NULL)
 
 // #define BTR_OALIST(...)                                     \
-//     BTR_BAList_makeFrom(                                    \
+//     BTR_OAList_makeFrom(                                    \
 //         (void *[]){ __VA_ARGS__ },                          \
 //         sizeof((void *[]){ __VA_ARGS__ }) / sizeof(void *), \
 //         NULL                                                \
