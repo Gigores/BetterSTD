@@ -1,5 +1,5 @@
 #include "btrstd/containers/bit_set.h"
-#include "_util.h"
+#include "_util.c"
 
 #include "string.h"
 

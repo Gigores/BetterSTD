@@ -1,5 +1,5 @@
 #include "btrstd/containers/borrowing_hash_table.h"
-#include "_util.h"
+#include "_util.c"
 
 #include "btrstd/error.h"
 #include "string.h"

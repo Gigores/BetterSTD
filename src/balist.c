@@ -1,5 +1,5 @@
 #include "btrstd/containers/borrowing_array_list.h"
-#include "_util.h"
+#include "_util.c"
 
 #include "stdlib.h"
 #include "string.h"

@@ -14,7 +14,10 @@ TESTS_DIR      : Final[str] = "tests"
 BUILD_DIR      : Final[str] = "build"
 OBJ_FILE       : Final[str] = "_btrstd.o"
 LIB_FILE       : Final[str] = "libbtrstd.a"
-COMPILE_THIS   : Final[str] = os.path.join("src", "_btrstd.c")
+SRC_DIR        : Final[str] = "src"
+COMPILE_THIS   : Final[List[str]] = [
+    os.path.join(SRC_DIR, i) for i in os.listdir(SRC_DIR) if i.endswith(".c")
+]
 TESTS_BUILD_DIR: Final[str] = os.path.join(BUILD_DIR, "tests")
 
 
@@ -40,26 +43,27 @@ def task_build(include_all: bool) -> None:
         return
     if not os.path.exists(BUILD_DIR):
         os.mkdir(BUILD_DIR)
-    args: List[str] = [
-        "gcc",
-        *load_args(),
-    ]
-    if include_all:
-        args.append("-DBTR_INCLUDE_ALL")
-    args += [
-        "-c",
-        COMPILE_THIS,
-        "-o",
-        os.path.join(BUILD_DIR, OBJ_FILE)
-    ]
-    res: subprocess.CompletedProcess[bytes] = subprocess.run(args)
-    if res.returncode != 0:
-        print(f"Build failed with return code of {res.returncode}")
-        return
+    for i in COMPILE_THIS:
+        args: List[str] = [
+            "gcc",
+            *load_args(),
+        ]
+        if include_all:
+            args.append("-DBTR_INCLUDE_ALL")
+        args += [
+            "-c",
+            i,
+            "-o",
+            os.path.join(BUILD_DIR, os.path.basename(i) + ".o")
+        ]
+        res: subprocess.CompletedProcess[bytes] = subprocess.run(args)
+        if res.returncode != 0:
+            print(f"Build failed with return code of {res.returncode}")
+            return
     res = subprocess.run([
         "ar", "rcs",
         os.path.join(BUILD_DIR, LIB_FILE),
-        os.path.join(BUILD_DIR, OBJ_FILE)
+        *[os.path.join(BUILD_DIR, i) for i in os.listdir(BUILD_DIR) if i.endswith(".c.o")]
     ])
     if res.returncode == 0:
         print("Build successfull")
@@ -74,7 +78,7 @@ def task_test(test: Optional[str], performance: bool) -> None:
         def launch_test(test_name: str) -> Tuple[float, subprocess.CompletedProcess[bytes]]:
             start: float = time.perf_counter()
             testResult: subprocess.CompletedProcess[bytes] = subprocess.run([
-                os.path.join("build", test_name)
+                os.path.join(TESTS_BUILD_DIR, test_name)
             ])
             return time.perf_counter() - start, testResult
 
@@ -88,7 +92,7 @@ def task_test(test: Optional[str], performance: bool) -> None:
             "-Lbuild",
             "-lbtrstd",
             "-o",
-            os.path.join("build", test_name)
+            os.path.join(TESTS_BUILD_DIR, test_name)
         ])
         if buildResult.returncode != 0:
             print(f"Build of {os.path.basename(file)} failed with return code of {buildResult.returncode}")

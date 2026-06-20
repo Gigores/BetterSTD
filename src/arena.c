@@ -1,6 +1,6 @@
 #include "btrstd/allocators/arena.h"
 
-#include "_util.h"
+#include "_util.c"
 
 
 btr_arena_s BTR_Arena_make(size_t capacity, btr_allocator_s *parentAllocator)
