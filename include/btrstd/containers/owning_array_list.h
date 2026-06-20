@@ -12,15 +12,24 @@ typedef struct BTR_OAList {
     size_t itemSize;
 } btr_oalist_s;
 
-btr_oalist_s BTR_OAList_makeFrom(void *items[], size_t itemCount, btr_allocator_s *allocator);
-btr_oalist_s BTR_OAList_make(size_t capacity, btr_allocator_s *allocator);
+btr_oalist_s BTR_OAList_makeFrom(
+    void *items[],
+    size_t itemCount,
+    size_t itemSize,
+    btr_allocator_s *allocator
+);
+btr_oalist_s BTR_OAList_make(
+    size_t capacity,
+    size_t itemSize,
+    btr_allocator_s *allocator
+);
 btr_oalist_s BTR_OAList_clone(const btr_oalist_s *list, btr_allocator_s *allocator);
-void BTR_OAList_append(btr_oalist_s *, void *data);
-void BTR_OAList_prepend(btr_oalist_s *, void *data);
-void BTR_OAList_insert(btr_oalist_s *, void *data, long index);
-btr_container_ptr_r BTR_OAList_pop(btr_oalist_s *, long index);
+void *BTR_OAList_append(btr_oalist_s *);
+void *BTR_OAList_prepend(btr_oalist_s *);
+void *BTR_OAList_insert(btr_oalist_s *, long index);
+void BTR_OAList_pop(btr_oalist_s *, long index, void *buffer);
 btr_container_ptr_r BTR_OAList_get(const btr_oalist_s *, long index);
-void BTR_OAList_set(btr_oalist_s *, void *data, long index);
+btr_container_ptr_r BTR_OAList_set(btr_oalist_s *, long index);
 btr_container_ptr_r BTR_OAList_first(const btr_oalist_s *);
 btr_container_ptr_r BTR_OAList_last(const btr_oalist_s *);
 btr_container_idx_r BTR_OAList_indexOf
