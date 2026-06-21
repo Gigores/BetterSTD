@@ -39,20 +39,30 @@ void *BTR_OAList_append(btr_oalist_s *);
 void *BTR_OAList_prepend(btr_oalist_s *);
 // Inserts an item so that its index is the specified one.
 // Returns a pointer to the new item, contents of which can be modified.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
 void *BTR_OAList_insert(btr_oalist_s *, long index);
 // Removes an item from a list and copies it into the buffer.
 // The buffer can be NULL. In this case, the data will not be copied.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
 void BTR_OAList_pop(btr_oalist_s *, long index, void *buffer);
 // Returns a pointer to an item of the given index in the owning array list.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
 btr_container_ptr_r BTR_OAList_get(const btr_oalist_s *, long index);
 // Returns a pointer to the first item in the owning array list.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
 btr_container_ptr_r BTR_OAList_first(const btr_oalist_s *);
 // Returns a pointer to the last item in the owning array list.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
 btr_container_ptr_r BTR_OAList_last(const btr_oalist_s *);
+// Returns the index of the first occurrence of the item.
+// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_NOT_FOUND` if the item wasn't found.
 btr_container_idx_r BTR_OAList_indexOf
     (btr_oalist_s *list, void *value, bool (*cmp)(const void *, const void *));
+// Returns the amount of items in the owning array list.
 size_t BTR_OAList_len(const btr_oalist_s *);
+// Tells if the given owning array list is empty.
 bool BTR_OAList_isEmpty(const btr_oalist_s *);
+// Reverses the order of items in the borrowing array list.
 void BTR_OAList_reverse(btr_oalist_s *);
 // Deallocates the owning array list.
 void BTR_OAList_free(btr_oalist_s *);
@@ -61,11 +71,11 @@ void BTR_OAList_clear(btr_oalist_s *);
 
 #define BTR_OALIST_FOREACH(LIST, i) \
     void *i; \
-    for (size_t _i = 0; _i < (LIST)->count && ((i = (LIST)->data[_i * (LIST)->itemSize]), 1); _i++)
+    for (size_t _i = 0; _i < (LIST)->count && ((i = (LIST)->data + _i * (LIST)->itemSize), 1); _i++)
 
 #define BTR_OALIST_ENUMERATE(LIST, i, n) \
     void *i; \
-    for (size_t n = 0; n < (LIST)->count && ((i = (LIST)->data[n * (LIST)->itemSize]), 1); n++)
+    for (size_t n = 0; n < (LIST)->count && ((i = (LIST)->data + n * (LIST)->itemSize), 1); n++)
 
 #define BTR_OALIST_OF(T) BTR_OAList_make(8, sizeof(T), NULL)
 

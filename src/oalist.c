@@ -144,6 +144,37 @@ btr_container_ptr_r BTR_OAList_last(const btr_oalist_s *this)
         BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
     BTR_OK(btr_container_ptr_r, this->data + (this->count - 1) * this->itemSize);
 }
+btr_container_idx_r BTR_OAList_indexOf
+    (btr_oalist_s *list, void *value, bool (*cmp)(const void *, const void *))
+{
+    BTR_panicIf(!list, "`list` is invalid");
+    BTR_OALIST_ENUMERATE(list, i, n)
+        if (cmp(value, i))
+            BTR_OK(btr_container_idx_r, n);
+    BTR_ERR(btr_container_idx_r, BTR_CONTAINER_ERR_NOT_FOUND);
+}
+size_t BTR_OAList_len(const btr_oalist_s *this)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    return this->count;
+}
+bool BTR_OAList_isEmpty(const btr_oalist_s *this)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    return !BTR_OAList_len(this);
+}
+void BTR_OAList_reverse(btr_oalist_s *this)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    void *newData = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, this->capacity * this->itemSize),
+        "Allocation failed"
+    );
+    BTR_OALIST_ENUMERATE(this, i, n)
+        memcpy(newData + (this->count - n - 1) * this->itemSize, i, this->itemSize);
+    BTR_Allocator_deallocate(this->allocator, this->data);
+    this->data = newData;
+}
 void BTR_OAList_free(btr_oalist_s *this)
 {
     BTR_Allocator_deallocate(this->allocator, this->data);

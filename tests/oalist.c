@@ -420,6 +420,118 @@ static void test16(void)
     BTR_OAList_free(&list);
 }
 
+static bool cmp_int(const void *a, const void *b)
+{
+    return *(const int *)a == *(const int *)b;
+}
+
+// test indexOf
+static void test17(void)
+{
+    printf("> test17\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 10, 20, 30, 40, 50);
+
+    for (size_t i = 0; i < 5; i++)
+    {
+        int val = (int)(i + 1) * 10;
+        long idx = BTR_unwrap(BTR_OAList_indexOf(&list, &val, cmp_int));
+        assert(idx == (long)i);
+    }
+
+    BTR_OAList_free(&list);
+}
+
+// test indexOf - not found
+static void test18(void)
+{
+    printf("> test18\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 10, 20, 30);
+
+    int missing = 999;
+    btr_container_idx_r r = BTR_OAList_indexOf(&list, &missing, cmp_int);
+    assert(r.status == BTR_STATUS_ERR);
+    assert(r.error == BTR_CONTAINER_ERR_NOT_FOUND);
+
+    BTR_OAList_free(&list);
+}
+
+// test indexOf - duplicate (finds first)
+static void test19(void)
+{
+    printf("> test19\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 10, 20, 30, 20, 40);
+
+    int needle = 20;
+    long idx = BTR_unwrap(BTR_OAList_indexOf(&list, &needle, cmp_int));
+    assert(idx == 1);
+
+    BTR_OAList_free(&list);
+}
+
+// test len
+static void test20(void)
+{
+    printf("> test20\n");
+
+    btr_oalist_s list = BTR_OALIST_OF(int);
+    assert(BTR_OAList_len(&list) == 0);
+
+    *(int *)BTR_OAList_append(&list) = 1;
+    assert(BTR_OAList_len(&list) == 1);
+
+    *(int *)BTR_OAList_append(&list) = 2;
+    assert(BTR_OAList_len(&list) == 2);
+
+    BTR_OAList_free(&list);
+}
+
+// test isEmpty
+static void test21(void)
+{
+    printf("> test21\n");
+
+    btr_oalist_s empty = BTR_OALIST_OF(int);
+    assert(BTR_OAList_isEmpty(&empty));
+
+    *(int *)BTR_OAList_append(&empty) = 1;
+    assert(!BTR_OAList_isEmpty(&empty));
+
+    BTR_OAList_free(&empty);
+}
+
+// test reverse
+static void test22(void)
+{
+    printf("> test22\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 10, 20, 30, 40, 50);
+
+    assert(BTR_OAList_len(&list) == 5);
+
+    BTR_OAList_reverse(&list);
+    assert(BTR_OAList_len(&list) == 5);
+    {
+        int expected[] = {50, 40, 30, 20, 10};
+        int *data = (int *)list.data;
+        for (size_t i = 0; i < ARR_COUNT(expected); i++)
+            assert(data[i] == expected[i]);
+    }
+
+    BTR_OAList_reverse(&list);
+    assert(BTR_OAList_len(&list) == 5);
+    {
+        int expected[] = {10, 20, 30, 40, 50};
+        int *data = (int *)list.data;
+        for (size_t i = 0; i < ARR_COUNT(expected); i++)
+            assert(data[i] == expected[i]);
+    }
+
+    BTR_OAList_free(&list);
+}
+
 int main(void)
 {
     test1();
@@ -438,6 +550,12 @@ int main(void)
     test14();
     test15();
     test16();
+    test17();
+    test18();
+    test19();
+    test20();
+    test21();
+    test22();
     printf("SUCCESS\n");
     return 0;
 }
