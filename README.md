@@ -67,6 +67,13 @@ The resulting `libbtrstd.a` static library will be placed inside the `build/` di
 - [x] [Logging system](./include/btrstd/logger.h)
 - [x] [String view](./include/btrstd/string_view.h) (Supports UTF-8)
 - [x] [Smart pointers](./include/btrstd/smart_pointers.h)
+- [ ] Json
+- [ ] TOML
+- [ ] Iterators
+- [ ] Slices
+- [ ] Time
+- [ ] File System
+
 **Allocators**
   - [x] [Global](./include/btrstd/allocators/global.h)
   - [x] [Arena](./include/btrstd/allocators/arena.h)
@@ -74,6 +81,7 @@ The resulting `libbtrstd.a` static library will be placed inside the `build/` di
   - [ ] Tracking
   - [ ] Stack
   - [ ] Heap
+
 **Containers**
   - [x] [Borrowing Hash Table](./include/btrstd/containers/borrowing_hash_table.h)
   - [x] [Borrowing Array List](./include/btrstd/containers/borrowing_array_list.h)
@@ -83,10 +91,4 @@ The resulting `libbtrstd.a` static library will be placed inside the `build/` di
   - [ ] Owning Linked List
   - [ ] Hash Set
   - [ ] Dynamic String (Supports UTF-8)
-- [ ] Json
-- [ ] TOML
-- [ ] Iterators
-- [ ] Slices
-- [ ] Time
-- [ ] File System
 
