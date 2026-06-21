@@ -10,6 +10,7 @@ typedef struct BTR_OAList {
     size_t capacity;
     size_t count;
     size_t itemSize;
+    btr_allocator_s *allocator;
 } btr_oalist_s;
 
 btr_oalist_s BTR_OAList_makeFrom(
@@ -18,6 +19,7 @@ btr_oalist_s BTR_OAList_makeFrom(
     size_t itemSize,
     btr_allocator_s *allocator
 );
+// Creates a new empty owning array list.
 btr_oalist_s BTR_OAList_make(
     size_t capacity,
     size_t itemSize,
@@ -37,7 +39,9 @@ btr_container_idx_r BTR_OAList_indexOf
 size_t BTR_OAList_len(const btr_oalist_s *);
 bool BTR_OAList_isEmpty(const btr_oalist_s *);
 void BTR_OAList_reverse(btr_oalist_s *);
+// Deallocates the owning array list.
 void BTR_OAList_free(btr_oalist_s *);
+// Deallocates the owning array list and initializes it again with as empty.
 void BTR_OAList_clear(btr_oalist_s *);
 
 #define BTR_OALIST_FOREACH(LIST, i) \

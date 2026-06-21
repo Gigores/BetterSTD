@@ -1,0 +1,103 @@
+#include "btrstd/containers/owning_array_list.h"
+#include "_util.c"
+
+#include "string.h"
+
+
+static void checkSizeToGrow(btr_oalist_s *this)
+{
+    if (this->count >= this->capacity)
+    {
+        size_t newCapacity = this->capacity ? this->capacity * 3 / 2 : 8;
+
+        void **newData = BTR_expect(
+            BTR_Allocator_allocate(this->allocator, newCapacity * this->itemSize),
+            "Reallocation failed"
+        );
+        memcpy(newData, this->data, this->count * this->itemSize);
+        BTR_Allocator_deallocate(this->allocator, this->data);
+        this->data = newData;
+        this->capacity = newCapacity;
+    }
+}
+static void checkSizeToShrink(btr_oalist_s *this)
+{
+    if (this->count <= this->capacity / 4)
+    {
+        size_t newCapacity = this->capacity / 2;
+        if (newCapacity == 0) {
+            BTR_Allocator_deallocate(this->allocator, this->data);
+            this->data = NULL;
+            this->capacity = 0;
+        } else {
+            void **newData = BTR_expect(
+                BTR_Allocator_allocate(this->allocator, newCapacity * this->itemSize),
+                "Reallocation failed"
+            );
+            memcpy(newData, this->data, this->count * this->itemSize);
+            BTR_Allocator_deallocate(this->allocator, this->data);
+            this->data = newData;
+            this->capacity = newCapacity;
+        }
+    }
+}
+
+btr_oalist_s BTR_OAList_make(
+    size_t capacity,
+    size_t itemSize,
+    btr_allocator_s *allocator
+) {
+    btr_allocator_s *theAllocator = getAllocator(allocator);
+    void *data = BTR_expect(
+        BTR_Allocator_allocate(theAllocator, capacity * itemSize),
+        "Allocation failed"
+    );
+    return (btr_oalist_s)
+    {
+        .data = data,
+        .capacity = capacity,
+        .count = 0,
+        .itemSize = itemSize,
+        .allocator = theAllocator,
+    };
+}
+void *BTR_OAList_append(btr_oalist_s *this)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    checkSizeToGrow(this);
+    return this->data + this->count++ * this->itemSize;
+}
+void *BTR_OAList_prepend(btr_oalist_s *this)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    return BTR_OAList_insert(this, 0);
+}
+void *BTR_OAList_insert(btr_oalist_s *this, long index)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    if (index < 0) index = this->count + index;
+    BTR_panicIf(index < 0 || (size_t)index > this->count, "Index out of bounds");
+    checkSizeToGrow(this);
+    memmove(
+        this->data + (index + 1) * this->itemSize,
+        this->data + index * this->itemSize,
+        (this->count - index) * this->itemSize
+    );
+    this->count++;
+    return this->data + index * this->itemSize;
+}
+void BTR_OAList_free(btr_oalist_s *this)
+{
+    BTR_Allocator_deallocate(this->allocator, this->data);
+}
+void BTR_OAList_clear(btr_oalist_s *this)
+{
+    BTR_OAList_free(this->data);
+    void *data = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, this->itemSize * 8),
+        "Allocation failed"
+    );
+    this->data = data;
+    this->capacity = 8;
+    this->count = 0;
+}
