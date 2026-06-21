@@ -107,6 +107,28 @@ void *BTR_OAList_insert(btr_oalist_s *this, long index)
     this->count++;
     return this->data + index * this->itemSize;
 }
+btr_container_ptr_r BTR_OAList_get(const btr_oalist_s *this, long index)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    if (index < 0) index = this->count + index;
+    if (index < 0 || (size_t)index >= this->count)
+        BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    BTR_OK(btr_container_ptr_r, this->data + index * this->itemSize);
+}
+btr_container_ptr_r BTR_OAList_first(const btr_oalist_s *this)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    if (!this->count)
+        BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    BTR_OK(btr_container_ptr_r, this->data);
+}
+btr_container_ptr_r BTR_OAList_last(const btr_oalist_s *this)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    if (!this->count)
+        BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    BTR_OK(btr_container_ptr_r, this->data + (this->count - 1) * this->itemSize);
+}
 void BTR_OAList_free(btr_oalist_s *this)
 {
     BTR_Allocator_deallocate(this->allocator, this->data);

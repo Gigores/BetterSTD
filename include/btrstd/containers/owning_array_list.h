@@ -41,8 +41,11 @@ void *BTR_OAList_prepend(btr_oalist_s *);
 // Returns a pointer to the new item, contents of which can be modified.
 void *BTR_OAList_insert(btr_oalist_s *, long index);
 void BTR_OAList_pop(btr_oalist_s *, long index, void *buffer);
+// Returns a pointer to an item of the given index in the owning array list.
 btr_container_ptr_r BTR_OAList_get(const btr_oalist_s *, long index);
+// Returns a pointer to the first item in the owning array list.
 btr_container_ptr_r BTR_OAList_first(const btr_oalist_s *);
+// Returns a pointer to the last item in the owning array list.
 btr_container_ptr_r BTR_OAList_last(const btr_oalist_s *);
 btr_container_idx_r BTR_OAList_indexOf
     (btr_oalist_s *list, void *value, bool (*cmp)(const void *, const void *));

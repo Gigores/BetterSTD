@@ -201,6 +201,101 @@ static void test6(void)
     BTR_OAList_free(&list);
 }
 
+// test get at various positions
+static void test7(void)
+{
+    printf("> test7\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 10, 20, 30, 40, 50);
+
+    // positive indices
+    assert(list.count == 5);
+    {
+        int expected[] = {10, 20, 30, 40, 50};
+        for (size_t i = 0; i < ARR_COUNT(expected); i++)
+        {
+            btr_container_ptr_r r = BTR_OAList_get(&list, i);
+            assert(r.status == BTR_STATUS_OK);
+            assert(*(int *)r.value == expected[i]);
+        }
+    }
+
+    // negative indices
+    assert(*(int *)BTR_unwrap(BTR_OAList_get(&list, -1)) == 50);
+    assert(*(int *)BTR_unwrap(BTR_OAList_get(&list, -2)) == 40);
+    assert(*(int *)BTR_unwrap(BTR_OAList_get(&list, -5)) == 10);
+
+    // out of bounds
+    {
+        btr_container_ptr_r r = BTR_OAList_get(&list, 5);
+        assert(r.status == BTR_STATUS_ERR);
+        assert(r.error == BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    }
+    {
+        btr_container_ptr_r r = BTR_OAList_get(&list, -6);
+        assert(r.status == BTR_STATUS_ERR);
+        assert(r.error == BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+    }
+
+    BTR_OAList_free(&list);
+}
+
+// test get on empty list
+static void test8(void)
+{
+    printf("> test8\n");
+
+    btr_oalist_s list = BTR_OALIST_OF(int);
+
+    btr_container_ptr_r r = BTR_OAList_get(&list, 0);
+    assert(r.status == BTR_STATUS_ERR);
+    assert(r.error == BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+
+    BTR_OAList_free(&list);
+}
+
+// test first
+static void test9(void)
+{
+    printf("> test9\n");
+
+    // non-empty list
+    btr_oalist_s list = BTR_OALIST(int, 100, 200, 300);
+    btr_container_ptr_r r = BTR_OAList_first(&list);
+    assert(r.status == BTR_STATUS_OK);
+    assert(*(int *)r.value == 100);
+
+    // empty list
+    btr_oalist_s empty = BTR_OALIST_OF(int);
+    r = BTR_OAList_first(&empty);
+    assert(r.status == BTR_STATUS_ERR);
+    assert(r.error == BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+
+    BTR_OAList_free(&list);
+    BTR_OAList_free(&empty);
+}
+
+// test last
+static void test10(void)
+{
+    printf("> test10\n");
+
+    // non-empty list
+    btr_oalist_s list = BTR_OALIST(int, 7, 8, 9);
+    btr_container_ptr_r r = BTR_OAList_last(&list);
+    assert(r.status == BTR_STATUS_OK);
+    assert(*(int *)r.value == 9);
+
+    // empty list
+    btr_oalist_s empty = BTR_OALIST_OF(int);
+    r = BTR_OAList_last(&empty);
+    assert(r.status == BTR_STATUS_ERR);
+    assert(r.error == BTR_CONTAINER_ERR_OUT_OF_BOUNDS);
+
+    BTR_OAList_free(&list);
+    BTR_OAList_free(&empty);
+}
+
 int main(void)
 {
     test1();
@@ -209,6 +304,10 @@ int main(void)
     test4();
     test5();
     test6();
+    test7();
+    test8();
+    test9();
+    test10();
     printf("SUCCESS\n");
     return 0;
 }
