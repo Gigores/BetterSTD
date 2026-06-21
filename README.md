@@ -67,14 +67,14 @@ The resulting `libbtrstd.a` static library will be placed inside the `build/` di
 - [x] [Logging system](./include/btrstd/logger.h)
 - [x] [String view](./include/btrstd/string_view.h) (Supports UTF-8)
 - [x] [Smart pointers](./include/btrstd/smart_pointers.h)
-- [ ] Allocators
+- Allocators
   - [x] [Global](./include/btrstd/allocators/global.h)
   - [x] [Arena](./include/btrstd/allocators/arena.h)
   - [x] [Pool](./include/btrstd/allocators/pool.h)
   - [ ] Tracking
   - [ ] Stack
   - [ ] Heap
-- [ ] Containers
+- Containers
   - [x] [Borrowing Hash Table](./include/btrstd/containers/borrowing_hash_table.h)
   - [x] [Borrowing Array List](./include/btrstd/containers/borrowing_array_list.h)
   - [x] [Borrowing Linked List](./include/btrstd/containers/borrowing_linked_list.h)
