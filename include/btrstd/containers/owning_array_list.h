@@ -13,8 +13,13 @@ typedef struct BTR_OAList {
     btr_allocator_s *allocator;
 } btr_oalist_s;
 
+// Creates a new owning array list from an array of given values.
+// Example:
+// ```c
+// btr_oalist_t list = BTR_OAList_make((int *){20, 26, 43}, 3, sizeof(int), NULL);
+// ```
 btr_oalist_s BTR_OAList_makeFrom(
-    void *items[],
+    void *items,
     size_t itemCount,
     size_t itemSize,
     btr_allocator_s *allocator
@@ -26,12 +31,17 @@ btr_oalist_s BTR_OAList_make(
     btr_allocator_s *allocator
 );
 btr_oalist_s BTR_OAList_clone(const btr_oalist_s *list, btr_allocator_s *allocator);
+// Appends the data to the end of the owning linked list.
+// Returns a pointer to the new item, contents of which can be modified.
 void *BTR_OAList_append(btr_oalist_s *);
+// Appends the data to the beginning of the owning linked list.
+// Returns a pointer to the new item, contents of which can be modified.
 void *BTR_OAList_prepend(btr_oalist_s *);
+// Inserts an item so that its index is the specified one.
+// Returns a pointer to the new item, contents of which can be modified.
 void *BTR_OAList_insert(btr_oalist_s *, long index);
 void BTR_OAList_pop(btr_oalist_s *, long index, void *buffer);
 btr_container_ptr_r BTR_OAList_get(const btr_oalist_s *, long index);
-btr_container_ptr_r BTR_OAList_set(btr_oalist_s *, long index);
 btr_container_ptr_r BTR_OAList_first(const btr_oalist_s *);
 btr_container_ptr_r BTR_OAList_last(const btr_oalist_s *);
 btr_container_idx_r BTR_OAList_indexOf
@@ -54,9 +64,10 @@ void BTR_OAList_clear(btr_oalist_s *);
 
 #define BTR_OALIST_OF(T) BTR_OAList_make(8, sizeof(T), NULL)
 
-// #define BTR_OALIST(...)                                     \
-//     BTR_OAList_makeFrom(                                    \
-//         (void *[]){ __VA_ARGS__ },                          \
-//         sizeof((void *[]){ __VA_ARGS__ }) / sizeof(void *), \
-//         NULL                                                \
-//     )
+#define BTR_OALIST(T, ...)                        \
+    BTR_OAList_makeFrom(                          \
+        (T[]){ __VA_ARGS__ },                     \
+        sizeof((T[]){ __VA_ARGS__ }) / sizeof(T), \
+        sizeof(T),                                \
+        NULL                                      \
+    )

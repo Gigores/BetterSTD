@@ -42,6 +42,27 @@ static void checkSizeToShrink(btr_oalist_s *this)
     }
 }
 
+btr_oalist_s BTR_OAList_makeFrom(
+    void *items,
+    size_t itemCount,
+    size_t itemSize,
+    btr_allocator_s *allocator
+) {
+    btr_allocator_s *theAllocator = getAllocator(allocator);
+    void *data = BTR_expect(
+        BTR_Allocator_allocate(theAllocator, itemCount * itemSize),
+        "Allocation failed"
+    );
+    memcpy(data, items, itemCount * itemSize);
+    return (btr_oalist_s)
+    {
+        .data = data,
+        .capacity = itemCount,
+        .count = itemCount,
+        .itemSize = itemSize,
+        .allocator = theAllocator,
+    };
+}
 btr_oalist_s BTR_OAList_make(
     size_t capacity,
     size_t itemSize,

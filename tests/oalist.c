@@ -17,7 +17,7 @@ static void test1(void)
 
     int values[] = {10, 20, 30};
     for (size_t i = 0; i < ARR_COUNT(values); i++)
-        memcpy(BTR_OAList_append(&list), &values[i], sizeof(int));
+        *(int *)BTR_OAList_append(&list) = values[i];
 
     assert(list.count == 3);
     int *data = (int *)list.data;
@@ -38,9 +38,9 @@ static void test2(void)
     int values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     for (size_t i = 0; i < ARR_COUNT(values); i++)
     {
-        void *slot = BTR_OAList_append(&list);
+        int *slot = BTR_OAList_append(&list);
         assert(slot != NULL);
-        memcpy(slot, &values[i], sizeof(int));
+        *slot = values[i];
     }
 
     assert(list.count == 10);
@@ -61,7 +61,7 @@ static void test3(void)
 
     int values[] = {10, 20, 30, 40};
     for (size_t i = 0; i < ARR_COUNT(values); i++)
-        memcpy(BTR_OAList_prepend(&list), &values[i], sizeof(int));
+        *(int *)BTR_OAList_prepend(&list) = values[i];
 
     assert(list.count == 4);
     int *data = (int *)list.data;
@@ -83,12 +83,12 @@ static void test4(void)
     int a = 1, b = 2, c = 3, d = 4;
 
     // insert into empty list
-    memcpy(BTR_OAList_insert(&list, 0), &a, sizeof(int));
+    *(int *)BTR_OAList_insert(&list, 0) = a;
     assert(list.count == 1);
     assert(*(int *)list.data == 1);
 
     // insert at end (index == count)
-    memcpy(BTR_OAList_insert(&list, 1), &b, sizeof(int));
+    *(int *)BTR_OAList_insert(&list, 1) = b;
     assert(list.count == 2);
     {
         int *data = (int *)list.data;
@@ -97,7 +97,7 @@ static void test4(void)
     }
 
     // insert in middle
-    memcpy(BTR_OAList_insert(&list, 1), &c, sizeof(int));
+    *(int *)BTR_OAList_insert(&list, 1) = c;
     assert(list.count == 3);
     {
         int *data = (int *)list.data;
@@ -107,7 +107,7 @@ static void test4(void)
     }
 
     // insert at head
-    memcpy(BTR_OAList_insert(&list, 0), &d, sizeof(int));
+    *(int *)BTR_OAList_insert(&list, 0) = d;
     assert(list.count == 4);
     {
         int *data = (int *)list.data;
@@ -125,15 +125,11 @@ static void test5(void)
 {
     printf("> test5\n");
 
-    btr_oalist_s list = BTR_OALIST_OF(int);
-
-    int values[] = {10, 20, 30, 40};
-    for (size_t i = 0; i < ARR_COUNT(values); i++)
-        memcpy(BTR_OAList_append(&list), &values[i], sizeof(int));
+    btr_oalist_s list = BTR_OALIST(int, 10, 20, 30, 40);
 
     // negative index: -1 means before last element
     int v = 99;
-    memcpy(BTR_OAList_insert(&list, -1), &v, sizeof(int));
+    *(int *)BTR_OAList_insert(&list, -1) = v;
     {
         int expected[] = {10, 20, 30, 99, 40};
         assert(list.count == 5);
@@ -144,7 +140,7 @@ static void test5(void)
 
     // negative index: -5 means before first element
     int w = 0;
-    memcpy(BTR_OAList_insert(&list, -5), &w, sizeof(int));
+    *(int *)BTR_OAList_insert(&list, -5) = w;
     {
         int expected[] = {0, 10, 20, 30, 99, 40};
         assert(list.count == 6);
@@ -164,8 +160,8 @@ static void test6(void)
     btr_oalist_s list = BTR_OALIST_OF(int);
 
     int a = 2, b = 3;
-    memcpy(BTR_OAList_append(&list), &a, sizeof(int));
-    memcpy(BTR_OAList_append(&list), &b, sizeof(int));
+    *(int *)BTR_OAList_append(&list) = a;
+    *(int *)BTR_OAList_append(&list) = b;
     {
         int *data = (int *)list.data;
         assert(data[0] == 2);
@@ -173,7 +169,7 @@ static void test6(void)
     }
 
     int c = 1;
-    memcpy(BTR_OAList_prepend(&list), &c, sizeof(int));
+    *(int *)BTR_OAList_prepend(&list) = c;
     {
         int expected[] = {1, 2, 3};
         assert(list.count == 3);
@@ -183,7 +179,7 @@ static void test6(void)
     }
 
     int d = 4;
-    memcpy(BTR_OAList_append(&list), &d, sizeof(int));
+    *(int *)BTR_OAList_append(&list) = d;
     {
         int expected[] = {1, 2, 3, 4};
         assert(list.count == 4);
@@ -193,7 +189,7 @@ static void test6(void)
     }
 
     int e = 0;
-    memcpy(BTR_OAList_insert(&list, 0), &e, sizeof(int));
+    *(int *)BTR_OAList_insert(&list, 0) = e;
     {
         int expected[] = {0, 1, 2, 3, 4};
         assert(list.count == 5);
