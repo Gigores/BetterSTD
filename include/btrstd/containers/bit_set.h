@@ -79,4 +79,7 @@ typedef btr_bit_r     bit_r;
 #define BitSet_flip  BTR_BitSet_flip
 #define BitSet_free  BTR_BitSet_free
 
+#define BITSET_FOREACH   BTR_BITSET_FOREACH
+#define BITSET_ENUMERATE BTR_BITSET_ENUMERATE
+
 #endif // BTR_NO_PREFIX

@@ -38,7 +38,7 @@ void BTR_Allocator_deallocate(btr_allocator_s *, void *pointer);
 #ifdef BTR_NO_PREFIX
 
 #define AllocErr BTR_AllocErr
-#define BTR_Allocator Allocator
+#define Allocator BTR_Allocator
 
 typedef btr_alloc_err_e alloc_err_e;
 typedef btr_alloc_r     alloc_r;

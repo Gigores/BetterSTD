@@ -86,3 +86,33 @@ void BTR_OAList_clear(btr_oalist_s *);
         sizeof(T),                                \
         NULL                                      \
     )
+
+#ifdef BTR_NO_PREFIX
+
+#define OAList BTR_OAList
+
+typedef btr_oalist_s oalist_s;
+
+#define OAList_makeFrom BTR_OAList_makeFrom
+#define OAList_make     BTR_OAList_make
+#define OAList_clone    BTR_OAList_clone
+#define OAList_append   BTR_OAList_append
+#define OAList_prepend  BTR_OAList_prepend
+#define OAList_insert   BTR_OAList_insert
+#define OAList_pop      BTR_OAList_pop
+#define OAList_get      BTR_OAList_get
+#define OAList_first    BTR_OAList_first
+#define OAList_last     BTR_OAList_last
+#define OAList_indexOf  BTR_OAList_indexOf
+#define OAList_len      BTR_OAList_len
+#define OAList_isEmpty  BTR_OAList_isEmpty
+#define OAList_reverse  BTR_OAList_reverse
+#define OAList_free     BTR_OAList_free
+#define OAList_clear    BTR_OAList_clear
+
+#define OALIST_FOREACH   BTR_OALIST_FOREACH
+#define OALIST_ENUMERATE BTR_OALIST_ENUMERATE
+#define OALIST_OF        BTR_OALIST_OF
+#define OALIST           BTR_OALIST
+
+#endif  // BTR_NO_PREFIX
