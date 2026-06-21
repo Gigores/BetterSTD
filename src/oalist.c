@@ -107,6 +107,21 @@ void *BTR_OAList_insert(btr_oalist_s *this, long index)
     this->count++;
     return this->data + index * this->itemSize;
 }
+void BTR_OAList_pop(btr_oalist_s *this, long index, void *buffer)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    if (index < 0) index = this->count + index;
+    BTR_panicIf(index < 0 || (size_t)index >= this->count, "Index out of bounds");
+    if (buffer)
+        memcpy(buffer, this->data + index * this->itemSize, this->itemSize);
+    memmove(
+        this->data + index * this->itemSize,
+        this->data + (index + 1) * this->itemSize,
+        (this->count - index - 1) * this->itemSize
+    );
+    this->count--;
+    checkSizeToShrink(this);
+}
 btr_container_ptr_r BTR_OAList_get(const btr_oalist_s *this, long index)
 {
     BTR_panicIf(!this, "`this` is invalid");

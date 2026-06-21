@@ -296,6 +296,130 @@ static void test10(void)
     BTR_OAList_free(&empty);
 }
 
+// test pop from end
+static void test11(void)
+{
+    printf("> test11\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 10, 20, 30, 40, 50);
+
+    int popped;
+    BTR_OAList_pop(&list, 4, &popped);
+    assert(popped == 50);
+    assert(list.count == 4);
+    {
+        int expected[] = {10, 20, 30, 40};
+        int *data = (int *)list.data;
+        for (size_t i = 0; i < ARR_COUNT(expected); i++)
+            assert(data[i] == expected[i]);
+    }
+
+    BTR_OAList_free(&list);
+}
+
+// test pop from front
+static void test12(void)
+{
+    printf("> test12\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 100, 200, 300);
+
+    int popped;
+    BTR_OAList_pop(&list, 0, &popped);
+    assert(popped == 100);
+    assert(list.count == 2);
+    {
+        int expected[] = {200, 300};
+        int *data = (int *)list.data;
+        for (size_t i = 0; i < ARR_COUNT(expected); i++)
+            assert(data[i] == expected[i]);
+    }
+
+    BTR_OAList_free(&list);
+}
+
+// test pop from middle
+static void test13(void)
+{
+    printf("> test13\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 1, 2, 3, 4, 5);
+
+    int popped;
+    BTR_OAList_pop(&list, 2, &popped);
+    assert(popped == 3);
+    assert(list.count == 4);
+    {
+        int expected[] = {1, 2, 4, 5};
+        int *data = (int *)list.data;
+        for (size_t i = 0; i < ARR_COUNT(expected); i++)
+            assert(data[i] == expected[i]);
+    }
+
+    BTR_OAList_free(&list);
+}
+
+// test pop with negative index
+static void test14(void)
+{
+    printf("> test14\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 10, 20, 30, 40);
+
+    int popped;
+    BTR_OAList_pop(&list, -1, &popped);
+    assert(popped == 40);
+    assert(list.count == 3);
+
+    BTR_OAList_pop(&list, 0, &popped);
+    assert(popped == 10);
+    assert(list.count == 2);
+
+    BTR_OAList_free(&list);
+}
+
+// test pop with NULL buffer (discard value)
+static void test15(void)
+{
+    printf("> test15\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 7, 8, 9);
+
+    BTR_OAList_pop(&list, 0, NULL);
+    assert(list.count == 2);
+    {
+        int expected[] = {8, 9};
+        int *data = (int *)list.data;
+        for (size_t i = 0; i < ARR_COUNT(expected); i++)
+            assert(data[i] == expected[i]);
+    }
+
+    BTR_OAList_free(&list);
+}
+
+// test pop until empty
+static void test16(void)
+{
+    printf("> test16\n");
+
+    btr_oalist_s list = BTR_OALIST(int, 1, 2, 3);
+
+    int popped;
+    BTR_OAList_pop(&list, -1, &popped);
+    assert(popped == 3);
+    assert(list.count == 2);
+
+    BTR_OAList_pop(&list, -1, &popped);
+    assert(popped == 2);
+    assert(list.count == 1);
+
+    BTR_OAList_pop(&list, -1, &popped);
+    assert(popped == 1);
+    assert(list.count == 0);
+
+    BTR_OAList_free(&list);
+}
+
 int main(void)
 {
     test1();
@@ -308,6 +432,12 @@ int main(void)
     test8();
     test9();
     test10();
+    test11();
+    test12();
+    test13();
+    test14();
+    test15();
+    test16();
     printf("SUCCESS\n");
     return 0;
 }

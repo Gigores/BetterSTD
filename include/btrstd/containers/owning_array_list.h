@@ -40,6 +40,8 @@ void *BTR_OAList_prepend(btr_oalist_s *);
 // Inserts an item so that its index is the specified one.
 // Returns a pointer to the new item, contents of which can be modified.
 void *BTR_OAList_insert(btr_oalist_s *, long index);
+// Removes an item from a list and copies it into the buffer.
+// The buffer can be NULL. In this case, the data will not be copied.
 void BTR_OAList_pop(btr_oalist_s *, long index, void *buffer);
 // Returns a pointer to an item of the given index in the owning array list.
 btr_container_ptr_r BTR_OAList_get(const btr_oalist_s *, long index);
