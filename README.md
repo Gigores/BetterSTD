@@ -78,7 +78,7 @@ The resulting `libbtrstd.a` static library will be placed inside the `build/` di
   - [x] [Borrowing Hash Table](./include/btrstd/containers/borrowing_hash_table.h)
   - [x] [Borrowing Array List](./include/btrstd/containers/borrowing_array_list.h)
   - [x] [Borrowing Linked List](./include/btrstd/containers/borrowing_linked_list.h)
-  - [x] Owning Array List
+  - [x] [Owning Array List](./include/btrstd/containers/owning_linked_list.h)
   - [x] [Bit Set](./include/btrstd/containers/bit_set.h)
   - [ ] Owning Linked List
   - [ ] Hash Set
