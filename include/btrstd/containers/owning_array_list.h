@@ -32,10 +32,10 @@ btr_oalist_s BTR_OAList_make(
 );
 // Creates a new owning array list from the given one.
 btr_oalist_s BTR_OAList_clone(const btr_oalist_s *list, btr_allocator_s *allocator);
-// Appends the data to the end of the owning linked list.
+// Appends the data to the end of the owning array list.
 // Returns a pointer to the new item, contents of which can be modified.
 void *BTR_OAList_append(btr_oalist_s *);
-// Appends the data to the beginning of the owning linked list.
+// Appends the data to the beginning of the owning array list.
 // Returns a pointer to the new item, contents of which can be modified.
 void *BTR_OAList_prepend(btr_oalist_s *);
 // Inserts an item so that its index is the specified one.
