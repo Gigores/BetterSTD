@@ -4,6 +4,7 @@ from typing import Final, List, Tuple, Optional
 from enum import StrEnum
 import subprocess
 import argparse
+import platform
 import shutil
 import time
 import os
@@ -31,6 +32,11 @@ def load_args() -> List[str]:
     with open(BUILD_ARGS_FILE, "r") as f:
         result: Final[str] = f.read()
     return result.split()
+
+def get_sanitizer_flags() -> List[str]:
+    if platform.system() == "Linux":
+        return ["-fsanitize=address"]
+    return []
 
 
 def task_build(include_all: bool) -> None:
@@ -86,7 +92,7 @@ def task_test(test: Optional[str], performance: bool) -> None:
         buildResult: subprocess.CompletedProcess[bytes] = subprocess.run([
             "gcc",
             *build_args,
-            "-fsanitize=address",
+            *get_sanitizer_flags(),
             "-DBTR_INCLUDE_ALL",
             os.path.join(TESTS_DIR, file),
             "-Lbuild",
