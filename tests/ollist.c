@@ -81,18 +81,14 @@ static void test4(void)
     const int VALUES[] = {1, 2, 3, 4, 5};
     const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
 
-    btr_ollist_s list = BTR_OLList_make(sizeof(int), NULL);
+    btr_ollist_s list = BTR_OLLIST_OF(int);
     for (size_t i = 0; i < N; i++)
         *(int *)BTR_OLList_prepend(&list) = VALUES[i];
 
     assert(BTR_OLList_len(&list) == N);
 
-    size_t i = 0;
-    BTR_OLLIST_FOREACH(&list, node)
-    {
+    BTR_OLLIST_ENUMERATE(&list, node, i)
         assert(getInt(node) == VALUES[N - 1 - i]);
-        i++;
-    }
     assert(i == N);
 
     BTR_OLList_free(&list);
@@ -103,7 +99,7 @@ static void test5(void)
 {
     printf("> test5\n");
 
-    btr_ollist_s list = BTR_OLList_make(sizeof(int), NULL);
+    btr_ollist_s list = BTR_OLLIST_OF(int);
 
     // insert into empty (index 0)
     *(int *)BTR_OLList_insert(&list, 0) = 10;
@@ -136,10 +132,8 @@ static void test6(void)
 {
     printf("> test6\n");
 
-    const int VALUES[] = {10, 20, 30, 40, 50};
-    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
-
-    btr_ollist_s list = BTR_OLList_makeFrom((void *)VALUES, N, sizeof(int), NULL);
+    const size_t N = 5;
+    btr_ollist_s list = BTR_OLLIST(int, 10, 20, 30, 40, 50);
     assert(BTR_OLList_len(&list) == N);
 
     // pop middle with buffer
@@ -177,7 +171,7 @@ static void test7(void)
 {
     printf("> test7\n");
 
-    btr_ollist_s list = BTR_OLList_make(sizeof(int), NULL);
+    btr_ollist_s list = BTR_OLLIST_OF(int);
 
     btr_container_ptr_r r = BTR_OLList_get(&list, 0);
     assert(r.status == BTR_STATUS_ERR);
@@ -290,10 +284,7 @@ static void test11(void)
 {
     printf("> test11\n");
 
-    const int VALUES[] = {1, 2, 3};
-    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
-
-    btr_ollist_s list = BTR_OLList_makeFrom((void *)VALUES, N, sizeof(int), NULL);
+    btr_ollist_s list = BTR_OLLIST(int, 1, 2, 3);
     assert(!BTR_OLList_isEmpty(&list));
 
     BTR_OLList_clear(&list);
