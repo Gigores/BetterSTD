@@ -82,6 +82,23 @@ btr_oalist_s BTR_OAList_make(
         .allocator = theAllocator,
     };
 }
+btr_oalist_s BTR_OAList_clone(const btr_oalist_s *list, btr_allocator_s *allocator)
+{
+    btr_allocator_s *theAllocator = getAllocator(allocator);
+    void *data = BTR_expect(
+        BTR_Allocator_allocate(theAllocator, list->capacity * list->itemSize),
+        "Allocation failed"
+    );
+    memcpy(data, list->data, list->capacity * list->itemSize);
+    return (btr_oalist_s)
+    {
+        .data = data,
+        .capacity = list->capacity,
+        .count = list->count,
+        .itemSize = list->itemSize,
+        .allocator = theAllocator,
+    };
+}
 void *BTR_OAList_append(btr_oalist_s *this)
 {
     BTR_panicIf(!this, "`this` is invalid");
