@@ -40,11 +40,11 @@ void *BTR_OAList_append(btr_oalist_s *);
 void *BTR_OAList_prepend(btr_oalist_s *);
 // Inserts an item so that its index is the specified one.
 // Returns a pointer to the new item, contents of which can be modified.
-// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
+// Panics if the index is invalid.
 void *BTR_OAList_insert(btr_oalist_s *, long index);
 // Removes an item from a list and copies it into the buffer.
 // The buffer can be NULL. In this case, the data will not be copied.
-// Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the index is invalid.
+// Panics if the index is invalid.
 void BTR_OAList_pop(btr_oalist_s *, long index, void *buffer);
 // Returns a pointer to an item of the given index in the owning array list.
 // Returns `BTR_ERR` with `BTR_CONTAINER_ERR_OUT_OF_BOUNDS` if the list is empty.
