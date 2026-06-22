@@ -61,14 +61,12 @@ python buildScript build
 
 The resulting `libbtrstd.a` static library will be placed inside the `build/` directory.
 
-## Current and planned
+## Roadmap
 
 - [x] [Error handling system](./include/btrstd/error.h)
 - [x] [Logging system](./include/btrstd/logger.h)
 - [x] [String view](./include/btrstd/string_view.h) (Supports UTF-8)
-- [x] [Smart pointers](./include/btrstd/smart_pointers.h)
-- [ ] Json
-- [ ] TOML
+- [x] [Auto pointers](./include/btrstd/smart_pointers.h)
 - [ ] Iterators
 - [ ] Slices
 - [ ] Time
