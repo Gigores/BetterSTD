@@ -72,14 +72,14 @@ void BTR_OLList_clear(btr_ollist_s *);
 // BTR_OLLIST_FOREACH(list, item)
 //     printf("%s\n", (char *)item);
 // ```
-#define BTR_OLLIST_FOREACH(LIST, i) BTR_BLLIST_FOREACH(&LIST->underlying, i)
+#define BTR_OLLIST_FOREACH(LIST, i) BTR_BLLIST_FOREACH(&(LIST)->underlying, i)
 // Example usage:
 // ```c
 // btr_ollist_t list = {...};  // a list of strings
 // BTR_OLLIST_ENUMERATE(list, item, index)
 //     printf("%zu: %s\n", index, (char *)item);
 // ```
-#define BTR_OLLIST_ENUMERATE(LIST, i, n) BTR_BLLIST_ENUMERATE(&LIST->underlying, i, n)
+#define BTR_OLLIST_ENUMERATE(LIST, i, n) BTR_BLLIST_ENUMERATE(&(LIST)->underlying, i, n)
 
 #define BTR_OLLIST_OF(T) BTR_OLList_make(sizeof(T), NULL)
 
