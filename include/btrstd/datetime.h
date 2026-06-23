@@ -67,7 +67,11 @@ typedef struct BTR_DateTime {
 
 // Returns the current UTC datetime
 btr_datetime_s BTR_DateTime_now(void);
+// Returns the current local datetime
+btr_datetime_s BTR_DateTime_localNow(void);
 // Returns the datetime created from a time point
 btr_datetime_s BTR_DateTime_fromTimestamp(btr_time_point_s);
+// Returns the local datetime created from a time point
+btr_datetime_s BTR_DateTime_fromLocalTimestamp(btr_time_point_s);
 // Returns a time point created from a datetime.
 btr_time_point_s BTR_DateTime_toTimestamp(const btr_datetime_s *);

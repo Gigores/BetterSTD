@@ -163,6 +163,9 @@ btr_duration_s BTR_Timer_elapsed(const btr_timer_s *this) {
 btr_datetime_s BTR_DateTime_now(void) {
     return BTR_DateTime_fromTimestamp(BTR_Time_now());
 }
+btr_datetime_s BTR_DateTime_localNow(void) {
+    return BTR_DateTime_fromLocalTimestamp(BTR_Time_now());
+}
 btr_datetime_s BTR_DateTime_fromTimestamp(btr_time_point_s point)
 {
     time_t sec = (time_t)(point.nanoseconds / 1000000000LL);
@@ -185,6 +188,35 @@ btr_datetime_s BTR_DateTime_fromTimestamp(btr_time_point_s point)
         .second     = tm.tm_sec,
 
         .nanosecond = (unsigned)(point.nanoseconds % 1000000000LL),
+    };
+}
+btr_datetime_s BTR_DateTime_fromTimestampLocal(btr_time_point_s point)
+{
+    time_t sec = (time_t)(point.nanoseconds / 1000000000LL);
+
+    struct tm tm;
+
+#ifdef _WIN32
+    localtime_s(&tm, &sec);
+#else
+    localtime_r(&sec, &tm);
+#endif
+
+    long long ns = point.nanoseconds % 1000000000LL;
+    if (ns < 0) {
+        ns += 1000000000LL;
+    }
+
+    return (btr_datetime_s) {
+        .year       = (unsigned)(tm.tm_year + 1900),
+        .month      = (unsigned)(tm.tm_mon + 1),
+        .day        = (unsigned)tm.tm_mday,
+
+        .hour       = (unsigned)tm.tm_hour,
+        .minute     = (unsigned)tm.tm_min,
+        .second     = (unsigned)tm.tm_sec,
+
+        .nanosecond = (unsigned)ns
     };
 }
 btr_time_point_s BTR_DateTime_toTimestamp(const btr_datetime_s *date)
