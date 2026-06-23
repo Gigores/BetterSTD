@@ -17,9 +17,9 @@ btr_time_point_s BTR_Time_now(void)
     uli.HighPart = ft.dwHighDateTime;
 
     long long ns = (long long)uli.QuadPart * 100LL;
-    const long long EPOCH_DIFF = 11644473600000000000ULL;
+    const unsigned long long EPOCH_DIFF = 11644473600000000000ULL;
     return (btr_time_point_s){
-        .nanoseconds = ns - 11644473600000000000ULL
+        .nanoseconds = ns - EPOCH_DIFF
     };
 #else
     struct timespec ts;
@@ -130,7 +130,9 @@ btr_duration_s BTR_Time_diff(btr_time_point_s a, btr_time_point_s b) {
             .nanoseconds = b.nanoseconds - a.nanoseconds,
         };
 }
-btr_duration_s BTR_Time_since(btr_time_point_s start);
+btr_duration_s BTR_Time_since(btr_time_point_s start) {
+    return BTR_Time_diff(start, BTR_Time_now());
+}
 
 void BTR_sleep(btr_duration_s time)
 {
@@ -168,7 +170,7 @@ btr_datetime_s BTR_DateTime_fromTimestamp(btr_time_point_s point)
     struct tm tm;
 
 #ifdef _WIN32
-    gmtime_r(&tm, &sec);
+    gmtime_s(&tm, &sec);
 #else
     gmtime_r(&sec, &tm);
 #endif
