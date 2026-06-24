@@ -75,3 +75,52 @@ btr_datetime_s BTR_DateTime_fromTimestamp(btr_time_point_s);
 btr_datetime_s BTR_DateTime_fromTimestampLocal(btr_time_point_s);
 // Returns a time point created from a datetime.
 btr_time_point_s BTR_DateTime_toTimestamp(const btr_datetime_s *);
+
+#ifdef BTR_NO_PREFIX
+
+#define Duration  BTR_Duration
+#define TimePoint BTR_TimePoint
+#define Timer     BTR_Timer
+#define DateTime  BTR_DateTime
+
+typedef btr_duration_s    duration_s;
+typedef btr_time_point_s  time_point_s;
+typedef btr_timer_s       timer_s;
+typedef btr_datetime_s    datetime_s;
+
+#define Time_now       BTR_Time_now
+#define Time_monotonic BTR_Time_monotonic
+
+#define Hour    BTR_Hour
+#define Min     BTR_Min
+#define Sec     BTR_Sec
+#define Milsec  BTR_Milsec
+#define Micsec  BTR_Micsec
+#define Nansec  BTR_Nansec
+
+#define Duration_asSec    BTR_Duration_asSec
+#define Duration_asMilsec BTR_Duration_asMilsec
+#define Duration_asMicsec BTR_Duration_asMicsec
+#define Duration_asNansec BTR_Duration_asNansec
+
+#define Duration_add BTR_Duration_add
+#define Duration_sub BTR_Duration_sub
+#define Duration_mul BTR_Duration_mul
+#define Duration_div BTR_Duration_div
+
+#define Time_diff  BTR_Time_diff
+#define Time_since BTR_Time_since
+
+#define sleep BTR_sleep
+
+#define Timer_start   BTR_Timer_start
+#define Timer_reset   BTR_Timer_reset
+#define Timer_elapsed BTR_Timer_elapsed
+
+#define DateTime_now              BTR_DateTime_now
+#define DateTime_localNow         BTR_DateTime_localNow
+#define DateTime_fromTimestamp    BTR_DateTime_fromTimestamp
+#define DateTime_fromTimestampLocal BTR_DateTime_fromTimestampLocal
+#define DateTime_toTimestamp      BTR_DateTime_toTimestamp
+
+#endif  // BTR_NO_PREFIX

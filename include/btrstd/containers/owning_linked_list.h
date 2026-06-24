@@ -90,3 +90,33 @@ void BTR_OLList_clear(btr_ollist_s *);
         sizeof(T),                                \
         NULL                                      \
     )
+
+#ifdef BTR_NO_PREFIX
+
+#define OLList BTR_OLList
+
+typedef btr_ollist_s ollist_s;
+
+#define OLList_makeFrom BTR_OLList_makeFrom
+#define OLList_make     BTR_OLList_make
+#define OLList_clone    BTR_OLList_clone
+#define OLList_append   BTR_OLList_append
+#define OLList_prepend  BTR_OLList_prepend
+#define OLList_insert   BTR_OLList_insert
+#define OLList_pop      BTR_OLList_pop
+#define OLList_get      BTR_OLList_get
+#define OLList_first    BTR_OLList_first
+#define OLList_last     BTR_OLList_last
+#define OLList_indexOf  BTR_OLList_indexOf
+#define OLList_len      BTR_OLList_len
+#define OLList_isEmpty  BTR_OLList_isEmpty
+#define OLList_reverse  BTR_OLList_reverse
+#define OLList_free     BTR_OLList_free
+#define OLList_clear    BTR_OLList_clear
+
+#define OLLIST_FOREACH   BTR_OLLIST_FOREACH
+#define OLLIST_ENUMERATE BTR_OLLIST_ENUMERATE
+#define OLLIST_OF        BTR_OLLIST_OF
+#define OLLIST           BTR_OLLIST
+
+#endif  // BTR_NO_PREFIX

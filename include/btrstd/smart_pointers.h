@@ -45,8 +45,10 @@ void BTR_autoHeapCleanup(void *p);
 
 #ifdef BTR_NO_PREFIX
 
-#define autoPtr BTR_autoPtr
-#define autoFile BTR_autoFile
-#define autoHeap BTR_autoHeap
+#define autoPtr         BTR_autoPtr
+#define autoFile        BTR_autoFile
+#define autoHeap        BTR_autoHeap
+#define autoFileCleanup BTR_autoFileCleanup
+#define autoHeapCleanup BTR_autoHeapCleanup
 
 #endif  // BTR_NO_PREFIX

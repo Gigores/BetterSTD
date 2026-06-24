@@ -142,6 +142,8 @@ typedef btr_string_view_s string_view_s;
 #define StringView_trim              BTR_StringView_trim
 
 #define StringView_compare           BTR_StringView_compare
+#define StringView_parseDouble       BTR_StringView_parseDouble
+#define StringView_parseLong         BTR_StringView_parseLong
 
 #define STRING_FORMAT                BTR_STRING_FORMAT
 #define STRING_ARGS                  BTR_STRING_ARGS

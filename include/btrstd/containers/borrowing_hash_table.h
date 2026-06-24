@@ -63,7 +63,8 @@ void BTR_BHTable_clear(btr_bhtable_s *);
 
 #ifdef BTR_NO_PREFIX
 
-#define BHTable BTR_BHTable
+#define BHTable    BTR_BHTable
+#define TableEntry BTR_TableEntry
 
 typedef btr_hash_t hash_t;
 
