@@ -10,7 +10,7 @@ static void checkSizeToGrow(btr_oalist_s *this)
     {
         size_t newCapacity = this->capacity ? this->capacity * 3 / 2 : 8;
 
-        void **newData = BTR_expect(
+        void *newData = BTR_expect(
             BTR_Allocator_allocate(this->allocator, newCapacity * this->itemSize),
             "Reallocation failed"
         );
@@ -30,7 +30,7 @@ static void checkSizeToShrink(btr_oalist_s *this)
             this->data = NULL;
             this->capacity = 0;
         } else {
-            void **newData = BTR_expect(
+            void *newData = BTR_expect(
                 BTR_Allocator_allocate(this->allocator, newCapacity * this->itemSize),
                 "Reallocation failed"
             );
@@ -198,7 +198,7 @@ void BTR_OAList_free(btr_oalist_s *this)
 }
 void BTR_OAList_clear(btr_oalist_s *this)
 {
-    BTR_OAList_free(this->data);
+    BTR_OAList_free(this);
     void *data = BTR_expect(
         BTR_Allocator_allocate(this->allocator, this->itemSize * 8),
         "Allocation failed"
