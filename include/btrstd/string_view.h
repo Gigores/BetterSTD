@@ -93,21 +93,21 @@ long BTR_StringView_parseLong(btr_string_view_s *sv, int base);
 #define BTR_STRING_ARGS(STRING) STRING.length, STRING.data + STRING.start
 
 #define BTR_StringView_endsWith(STRING, POSTFIX) _Generic((POSTFIX), \
-    btr_string_view_s *: BTR_StringView_endsWithView,                   \
-    const char *: BTR_StringView_endsWithCString,                        \
-    char *: BTR_StringView_endsWithCString                               \
+    btr_string_view_s *: BTR_StringView_endsWithView,                \
+    const char *: BTR_StringView_endsWithCString,                    \
+    char *: BTR_StringView_endsWithCString                           \
 )(STRING, POSTFIX)
 
 #define BTR_StringView_startsWith(STRING, POSTFIX) _Generic((POSTFIX), \
-    btr_string_view_s *: BTR_StringView_startsWithView,                   \
-    const char *: BTR_StringView_startsWithCString,                        \
-    char *: BTR_StringView_startsWithCString                               \
+    btr_string_view_s *: BTR_StringView_startsWithView,                \
+    const char *: BTR_StringView_startsWithCString,                    \
+    char *: BTR_StringView_startsWithCString                           \
 )(STRING, POSTFIX)
 
 #define BTR_StringView_find(STRING, POSTFIX) _Generic((POSTFIX), \
-    btr_string_view_s *: BTR_StringView_findView,                   \
-    const char *: BTR_StringView_findCString,                        \
-    char *: BTR_StringView_findCString                               \
+    btr_string_view_s *: BTR_StringView_findView,                \
+    const char *: BTR_StringView_findCString,                    \
+    char *: BTR_StringView_findCString                           \
 )(STRING, POSTFIX)
 
 #ifdef BTR_NO_PREFIX
