@@ -217,13 +217,13 @@ btr_string_view_s BTR_StringView_substring(
 void BTR_StringView_trimLeft(btr_string_view_s *string)
 {
     BTR_panicIf(!string, "`string` is NULL");
-    while (isspace(*(string->data + string->start)))
+    while (isspace(*(unsigned char *)(string->data + string->start)))
         BTR_StringView_cropLeft(string, 1);
 }
 void BTR_StringView_trimRight(btr_string_view_s *string)
 {
     BTR_panicIf(!string, "`string` is NULL");
-    while (isspace(*(string->data + string->start + string->length - 1)))
+    while (isspace(*(unsigned char *)(string->data + string->start + string->length - 1)))
         BTR_StringView_cropRight(string, 1);
 }
 void BTR_StringView_trim(btr_string_view_s *string)

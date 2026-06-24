@@ -22,9 +22,9 @@
 
 typedef struct BTR_StringView {
     char *data;
-    unsigned int start;
-    unsigned int length;
-    unsigned int capacity;
+    size_t start;
+    size_t length;
+    size_t capacity;
 } btr_string_view_s;
 
 // Creates a string view from an array of bytes.

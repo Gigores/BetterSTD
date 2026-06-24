@@ -55,9 +55,9 @@ To build this library you can use the following command:
 
 ```shell
 # On Linux
-./buildScript build
+./buildSystem build
 # On Windows
-python buildScript build
+python buildSystem build
 ```
 
 The resulting `libbtrstd.a` static library will be placed inside the `build/` directory.
