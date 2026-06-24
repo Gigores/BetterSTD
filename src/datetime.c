@@ -1,9 +1,9 @@
 #include "btrstd/datetime.h"
 
+#include "time.h"
+
 #ifdef _WIN32
 #   include "windows.h"
-#else
-#   include "time.h"
 #endif
 
 btr_time_point_s BTR_Time_now(void)
@@ -164,7 +164,7 @@ btr_datetime_s BTR_DateTime_now(void) {
     return BTR_DateTime_fromTimestamp(BTR_Time_now());
 }
 btr_datetime_s BTR_DateTime_localNow(void) {
-    return BTR_DateTime_fromLocalTimestamp(BTR_Time_now());
+    return BTR_DateTime_fromTimestampLocal(BTR_Time_now());
 }
 btr_datetime_s BTR_DateTime_fromTimestamp(btr_time_point_s point)
 {
