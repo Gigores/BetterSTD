@@ -1,1 +1,1 @@
--std=gnu11 -Iinclude -Wall -Wextra -Wno-unused-function
+-std=gnu11 -Iinclude -Wall -Wextra -Wno-unused-function -finput-charset=UTF-8 -fexec-charset=UTF-8
