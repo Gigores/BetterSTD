@@ -89,8 +89,11 @@ void BTR_vlogImpl(
     printf(COL_INTER": "COL_RESET);
     if (logger->file) fprintf(logger->file, ": ");
     
+    va_list args_copy;
+    va_copy(args_copy, args);
     vprintf(formatString, args);
-    if (logger->file) vfprintf(logger->file, formatString, args);
+    if (logger->file) vfprintf(logger->file, formatString, args_copy);
+    va_end(args_copy);
 
     printf("\n");
     if (logger->file) fprintf(logger->file, "\n");
