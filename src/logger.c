@@ -47,8 +47,8 @@ const char *BTR_LogLevel_getColor(btr_log_level_e level)
 static void doLogTime(btr_logger_s *logger)
 {
     btr_datetime_s date = BTR_DateTime_localNow();
-    printf(COL_INTER"["COL_RESET"%02d:%02d:%02d.%d"COL_INTER"] ", date.hour, date.minute, date.second, date.nanosecond / 1000);
-    if (logger->file) fprintf(logger->file, "[%02d:%02d:%02d.%d] ", date.hour, date.minute, date.second, date.nanosecond / 1000);
+    printf(COL_INTER"["COL_RESET"%02d:%02d:%02d.%03d"COL_INTER"] ", date.hour, date.minute, date.second, date.nanosecond / 1000000);
+    if (logger->file) fprintf(logger->file, "[%02d:%02d:%02d.%03d] ", date.hour, date.minute, date.second, date.nanosecond / 1000000);
 }
 static void doLogLevel(btr_logger_s *logger, btr_log_level_e logLevel)
 {
