@@ -2,7 +2,8 @@
 
 BetterSTD is a bloated general-purpose utility library for modern ***GNU C***, that was made to
 "extend" C's standard library with features like different kinds of containers (list, dynamic
-array, ...) and utilities like logging system, string views and clunky error handling.
+array, ...) and utilities like logging system, string views and clunky error handling. The
+library is also cross-platform and is being tested on both Windows and Linux.
 
 This library is opinionated, container implementations are slow and the build system is in python
 like wtf. It was designed by me, for me. Just so that I don't have to reimplement stuff I already
@@ -67,9 +68,9 @@ The resulting `libbtrstd.a` static library will be placed inside the `build/` di
 - [x] [Logging system](./include/btrstd/logger.h)
 - [x] [String view](./include/btrstd/string_view.h) (Supports UTF-8)
 - [x] [Auto pointers](./include/btrstd/smart_pointers.h)
+- [x] [DataTime](./include/btrstd/datetime.h)
 - [ ] Iterators
 - [ ] Slices
-- [ ] Time
 - [ ] File System
 
 **Allocators**
