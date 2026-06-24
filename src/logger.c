@@ -1,8 +1,8 @@
 #include "btrstd/logger.h"
 #include "btrstd/error.h"
+#include "btrstd/datetime.h"
 #include "stdarg.h"
 #include "stdio.h"
-#include "time.h"
 
 
 #define COL_RESET "\e[0m"
@@ -46,16 +46,19 @@ const char *BTR_LogLevel_getColor(btr_log_level_e level)
 }
 static void doLogTime(btr_logger_s *logger)
 {
-    time_t currentTime = time(NULL);
-    struct tm *t = localtime(&currentTime);
-    char buffer[128];
-    strftime(buffer, sizeof(buffer), "%H:%M:%S", t);
-    struct timespec ts;
-    timespec_get(&ts, TIME_UTC);
-    long millis = ts.tv_nsec / 1000000;
-
-    printf(COL_INTER"["COL_RESET"%s.%03ld"COL_INTER"] ", buffer, millis);
-    if (logger->file) fprintf(logger->file, "[%s.%03ld] ", buffer, millis);
+    // time_t currentTime = time(NULL);
+    // struct tm *t = localtime(&currentTime);
+    // char buffer[128];
+    // strftime(buffer, sizeof(buffer), "%H:%M:%S", t);
+    // struct timespec ts;
+    // timespec_get(&ts, TIME_UTC);
+    // long millis = ts.tv_nsec / 1000000;
+    //
+    // printf(COL_INTER"["COL_RESET"%s.%03ld"COL_INTER"] ", buffer, millis);
+    // if (logger->file) fprintf(logger->file, "[%s.%03ld] ", buffer, millis);
+    btr_datetime_s date = BTR_DateTime_localNow();
+    printf(COL_INTER"["COL_RESET"%02d:%02d:%02d.%d"COL_INTER"] ", date.hour, date.minute, date.second, date.nanosecond / 1000);
+    if (logger->file) fprintf(logger->file, "[%02d:%02d:%02d.%d] ", date.hour, date.minute, date.second, date.nanosecond / 1000);
 }
 static void doLogLevel(btr_logger_s *logger, btr_log_level_e logLevel)
 {
