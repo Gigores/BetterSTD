@@ -91,7 +91,7 @@ size_t BTR_StringView_len(btr_string_view_s *string)
     BTR_panicIf(!string, "`string` is NULL");
     size_t count = 0;
     char *currentChar = string->data + string->start;
-    while (currentChar < string->data + string->capacity)
+    while (currentChar < string->data + string->start + string->length)
     {
         currentChar += utf8CharLen(*currentChar);
         count++;
@@ -126,8 +126,8 @@ bool BTR_StringView_endsWithView(btr_string_view_s *string, btr_string_view_s *p
     size_t lenPostfix = BTR_StringView_byteCount(postfix);
     size_t counter = 0;
     while (
-        *(string->data + string->start + len - counter) ==
-        *(postfix->data + postfix->start + lenPostfix - counter) &&
+        *(string->data + string->start + len - counter - 1) ==
+        *(postfix->data + postfix->start + lenPostfix - counter - 1) &&
         counter < lenPostfix
     ) counter++;
     if (counter < lenPostfix)
@@ -164,6 +164,7 @@ btr_string_view_s BTR_StringView_findView(btr_string_view_s *string, btr_string_
 {
     BTR_panicIf(!string || !substring, "`string` or `substring` is NULL");
     size_t substringSize = BTR_StringView_byteCount(substring);
+    BTR_panicIf(substringSize > BTR_StringView_byteCount(string), "Substring too long");
     size_t maxCount = BTR_StringView_byteCount(string) - substringSize;
     for (size_t count = 0; count < maxCount; count++)
     {
