@@ -33,7 +33,7 @@ __attribute__((noreturn)) void BTR_panicImpl
 // }
 // ```
 #define BTR_panic(format, ...) \
-    BTR_panicImpl(__FILE__, __LINE__, __FUNCTION__, format __VA_OPT__(,) __VA_ARGS__)
+    BTR_panicImpl(__FILE__, __LINE__, __func__, format __VA_OPT__(,) __VA_ARGS__)
 
 void BTR_panicImplIf
     (const char *file, int line, const char *func, bool condition, const char *format, ...);
@@ -49,7 +49,7 @@ void BTR_panicImplIf
 // }
 // ```
 #define BTR_panicIf(condition, format, ...) \
-    BTR_panicImplIf(__FILE__, __LINE__, __FUNCTION__, condition, format __VA_OPT__(,) __VA_ARGS__)
+    BTR_panicImplIf(__FILE__, __LINE__, __func__, condition, format __VA_OPT__(,) __VA_ARGS__)
 
 // This macro panics with the given formatted error message if the given result is Err.
 // Otherwise evaluates to the .value of the result.
