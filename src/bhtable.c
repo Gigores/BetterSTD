@@ -160,8 +160,7 @@ bool BTR_BHTable_contains(const btr_bhtable_s *this, const void *key)
         current;
         current = current->next
     ) if (this->compare(current->key, key))
-        if (this->compare(current->key, key))
-            return true;
+        return true;
     return false;
 }
 size_t BTR_BHTable_len(const btr_bhtable_s *this)
