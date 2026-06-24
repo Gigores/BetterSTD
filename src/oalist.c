@@ -166,7 +166,7 @@ btr_container_idx_r BTR_OAList_indexOf
 {
     BTR_panicIf(!list, "`list` is invalid");
     BTR_OALIST_ENUMERATE(list, i, n)
-        if (cmp(value, i))
+        if (cmp(i, value))
             BTR_OK(btr_container_idx_r, n);
     BTR_ERR(btr_container_idx_r, BTR_CONTAINER_ERR_NOT_FOUND);
 }

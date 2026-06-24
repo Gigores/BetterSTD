@@ -26,7 +26,7 @@ btr_time_point_s BTR_Time_now(void)
     clock_gettime(CLOCK_REALTIME, &ts);
 
     return (btr_time_point_s) {
-        .nanoseconds = (long long)ts.tv_sec * 1000000000ULL + ts.tv_nsec,
+        .nanoseconds = (unsigned long long)ts.tv_sec * 1000000000ULL + ts.tv_nsec,
     };
 #endif
 }
@@ -50,7 +50,7 @@ btr_time_point_s BTR_Time_monotonic(void)
     clock_gettime(CLOCK_MONOTONIC, &ts);
 
     return (btr_time_point_s) {
-        .nanoseconds = (long long)ts.tv_sec * 1000000000ULL + ts.tv_nsec,
+        .nanoseconds = (unsigned long long)ts.tv_sec * 1000000000ULL + ts.tv_nsec,
     };
 #endif
 }
