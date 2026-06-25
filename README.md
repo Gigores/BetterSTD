@@ -69,23 +69,23 @@ The resulting `libbtrstd.a` static library will be placed inside the `build/` di
 - [x] [String view](./include/btrstd/string_view.h) (Supports UTF-8)
 - [x] [Auto pointers](./include/btrstd/smart_pointers.h)
 - [x] [DataTime](./include/btrstd/datetime.h)
+- [ ] String (Supports UTF-8)
 - [ ] Iterators
 - [ ] Slices
 - [ ] File System
 
 **Allocators**
-  - [x] [Global](./include/btrstd/allocators/global.h)
-  - [x] [Arena](./include/btrstd/allocators/arena.h)
-  - [x] [Pool](./include/btrstd/allocators/pool.h)
-  - [ ] Tracking
-  - [ ] Stack
-  - [ ] Heap
+- [x] [Global](./include/btrstd/allocators/global.h)
+- [x] [Arena](./include/btrstd/allocators/arena.h)
+- [x] [Pool](./include/btrstd/allocators/pool.h)
+- [ ] Tracking
+- [ ] Stack
+- [ ] Heap
 
 **Containers**
-  - [x] Hash Table [Borrowing](./include/btrstd/containers/borrowing_hash_table.h)
-  - [x] Array List [Borrowing](./include/btrstd/containers/borrowing_array_list.h) [Owning](./include/btrstd/containers/owning_array_list.h)
-  - [x] Linked List [Borrowing](./include/btrstd/containers/borrowing_linked_list.h) [Owning](./include/btrstd/containers/owning_linked_list.h)
-  - [x] [Bit Set](./include/btrstd/containers/bit_set.h)
-  - [ ] Hash Set
-  - [ ] Dynamic String (Supports UTF-8)
+- [x] Hash Table [Borrowing](./include/btrstd/containers/borrowing_hash_table.h)
+- [x] Array List [Borrowing](./include/btrstd/containers/borrowing_array_list.h) [Owning](./include/btrstd/containers/owning_array_list.h)
+- [x] Linked List [Borrowing](./include/btrstd/containers/borrowing_linked_list.h) [Owning](./include/btrstd/containers/owning_linked_list.h)
+- [x] [Bit Set](./include/btrstd/containers/bit_set.h)
+- [ ] Hash Set
 

@@ -1,3 +1,8 @@
+# Update 1.2.0 (Not out yet)
+
+### Additions
+- Added `btr_string_s` type.
+
 # Update 1.1.0
 
 ### Additions
