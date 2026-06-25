@@ -107,3 +107,18 @@ void BTR_OLList_clear(btr_ollist_s *this)
         BTR_Allocator_deallocate(this->allocator, i);
     BTR_BLList_clear(&this->underlying);
 }
+void *BTR_OLList_toArray(btr_ollist_s *this, btr_allocator_s *allocator)
+{
+    BTR_panicIf(!this, "`this` is null");
+    void *result = BTR_expect(
+        BTR_Allocator_allocate((allocator) ? allocator : this->allocator, BTR_BLList_len(&this->underlying) * this->itemSize),
+        "Allocation failed"
+    );
+    BTR_BLLIST_ENUMERATE(&this->underlying, i, n)
+        memcpy(
+            result + n * this->itemSize,
+            i,
+            this->itemSize
+        );
+    return result;
+}

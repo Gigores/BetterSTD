@@ -320,6 +320,41 @@ static void test12(void)
     BTR_OLList_free(&list);
 }
 
+// test `toArray`
+static void test13(void)
+{
+    printf("> test13\n");
+
+    const int VALUES[] = {10, 20, 30, 40, 50};
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+
+    btr_ollist_s list = BTR_OLLIST(int, 10, 20, 30, 40, 50);
+    assert(BTR_OLList_len(&list) == N);
+
+    int *arr = (int *)BTR_OLList_toArray(&list, NULL);
+    assert(arr != NULL);
+    for (size_t i = 0; i < N; i++)
+        assert(arr[i] == VALUES[i]);
+
+    BTR_Allocator_deallocate(list.allocator, arr);
+    BTR_OLList_free(&list);
+}
+
+// test `toArray` on empty list
+static void test14(void)
+{
+    printf("> test14\n");
+
+    btr_ollist_s list = BTR_OLList_make(sizeof(int), NULL);
+    assert(BTR_OLList_len(&list) == 0);
+
+    int *arr = (int *)BTR_OLList_toArray(&list, NULL);
+    assert(arr != NULL);
+
+    BTR_Allocator_deallocate(list.allocator, arr);
+    BTR_OLList_free(&list);
+}
+
 int main(void)
 {
     test1();
@@ -334,6 +369,8 @@ int main(void)
     test10();
     test11();
     test12();
+    test13();
+    test14();
     printf("SUCCESS\n");
     return 0;
 }

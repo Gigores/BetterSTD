@@ -65,6 +65,11 @@ void BTR_OLList_reverse(btr_ollist_s *);
 void BTR_OLList_free(btr_ollist_s *);
 // Exactly the same as `OLList_free`
 void BTR_OLList_clear(btr_ollist_s *);
+// Creates an array with the same contents as the given owning
+// linked list.
+// The returned array must be freed.
+// The `allocator` parameter can be set as `NULL`, in this case it will use the same allocator which the container uses.
+void *BTR_OLList_toArray(btr_ollist_s *, btr_allocator_s *allocator);
 
 // Example usage:
 // ```c
