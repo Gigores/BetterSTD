@@ -5,4 +5,5 @@
 - Added BTR_OAList_toArray method.
 - Added BTR_OLList_toArray method.
 
+- Added explicit NULL pointer exception handling for OLList
 - Fixed many BTR_NO_PREFIX mistakes.
