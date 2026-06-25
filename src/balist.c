@@ -197,3 +197,14 @@ void BTR_BAList_clear(btr_balist_s *this)
     BTR_panicIf(!this, "`this` is invalid");
     BTR_BAList_free(this);
 }
+void **BTR_BAList_toArray(btr_balist_s *this)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    void **result = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, this->count * sizeof(void *)),
+        "Allocation failed"
+    );
+    BTR_BALIST_ENUMERATE(this, i, n)
+        result[n] = i;
+    return result;
+}

@@ -75,6 +75,10 @@ void BTR_BAList_reverse(btr_balist_s *);
 void BTR_BAList_free(btr_balist_s *);
 // Exactly the same as `BAList_free`
 void BTR_BAList_clear(btr_balist_s *);
+// Creates an array with the same contents as the given borrowing
+// array list.
+// The returned array must be freed.
+void **BTR_BAList_toArray(btr_balist_s *);
 
 // Example usage:
 // ```c
@@ -131,6 +135,7 @@ typedef btr_balist_s balist_s;
 #define BAList_reverse   BTR_BAList_reverse
 #define BAList_free      BTR_BAList_free
 #define BAList_clear     BTR_BAList_clear
+#define BAList_toArray   BTR_BAList_toArray
 
 #define BALIST_FOREACH   BTR_BALIST_FOREACH
 #define BALIST_ENUMERATE BTR_BALIST_ENUMERATE
