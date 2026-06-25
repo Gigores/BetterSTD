@@ -342,7 +342,7 @@ static void test10(void)
     for (size_t i = 0; i < N; i++)
         BTR_BAList_append(&list, (void *)&VALUES[i]);
 
-    void **arr = BTR_BAList_toArray(&list);
+    void **arr = BTR_BAList_toArray(&list, NULL);
     assert(arr != NULL);
     for (size_t i = 0; i < N; i++)
         assert(*(int *)arr[i] == VALUES[i]);
@@ -359,7 +359,7 @@ static void test11(void)
     btr_balist_s list = BTR_BAList_make(4, NULL);
     assert(list.count == 0);
 
-    void **arr = BTR_BAList_toArray(&list);
+    void **arr = BTR_BAList_toArray(&list, NULL);
     assert(arr != NULL);
 
     BTR_Allocator_deallocate(list.allocator, arr);

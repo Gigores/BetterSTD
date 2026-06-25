@@ -78,7 +78,8 @@ void BTR_BAList_clear(btr_balist_s *);
 // Creates an array with the same contents as the given borrowing
 // array list.
 // The returned array must be freed.
-void **BTR_BAList_toArray(btr_balist_s *);
+// The `allocator` parameter can be set as `NULL`, in this case it will use the same allocator which the container uses.
+void **BTR_BAList_toArray(btr_balist_s *, btr_allocator_s *allocator);
 
 // Example usage:
 // ```c
