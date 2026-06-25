@@ -69,6 +69,11 @@ void BTR_OAList_reverse(btr_oalist_s *);
 void BTR_OAList_free(btr_oalist_s *);
 // Deallocates the owning array list and initializes it again with as empty.
 void BTR_OAList_clear(btr_oalist_s *);
+// Creates an array with the same contents as the given owning
+// array list.
+// The returned array must be freed.
+// The `allocator` parameter can be set as `NULL`, in this case it will use the same allocator which the container uses.
+void *BTR_OAList_toArray(btr_oalist_s *, btr_allocator_s *allocator);
 
 #define BTR_OALIST_FOREACH(LIST, i) \
     void *i; \

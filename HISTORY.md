@@ -2,5 +2,6 @@
 
 - Added BTR_BAList_toArray method.
 - Added BTR_BLList_toArray method.
+- Added BTR_OAList_toArray method.
 
 - Fixed many BTR_NO_PREFIX mistakes.

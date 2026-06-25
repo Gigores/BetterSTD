@@ -532,6 +532,40 @@ static void test22(void)
     BTR_OAList_free(&list);
 }
 
+// test `toArray`
+static void test23(void)
+{
+    printf("> test23\n");
+
+    const int VALUES[] = {10, 20, 30, 40, 50};
+
+    btr_oalist_s list = BTR_OALIST(int, 10, 20, 30, 40, 50);
+    assert(BTR_OAList_len(&list) == ARR_COUNT(VALUES));
+
+    int *arr = (int *)BTR_OAList_toArray(&list, NULL);
+    assert(arr != NULL);
+    for (size_t i = 0; i < ARR_COUNT(VALUES); i++)
+        assert(arr[i] == VALUES[i]);
+
+    BTR_Allocator_deallocate(list.allocator, arr);
+    BTR_OAList_free(&list);
+}
+
+// test `toArray` on empty list
+static void test24(void)
+{
+    printf("> test24\n");
+
+    btr_oalist_s list = BTR_OAList_make(8, sizeof(int), NULL);
+    assert(BTR_OAList_isEmpty(&list));
+
+    int *arr = (int *)BTR_OAList_toArray(&list, NULL);
+    assert(arr != NULL);
+
+    BTR_Allocator_deallocate(list.allocator, arr);
+    BTR_OAList_free(&list);
+}
+
 int main(void)
 {
     test1();
@@ -556,6 +590,8 @@ int main(void)
     test20();
     test21();
     test22();
+    test23();
+    test24();
     printf("SUCCESS\n");
     return 0;
 }
