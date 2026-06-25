@@ -7,3 +7,4 @@
 #include "btrstd/string_view.h"
 #include "btrstd/smart_pointers.h"
 #include "btrstd/allocator.h"
+#include "btrstd/string.h"
