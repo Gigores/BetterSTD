@@ -157,6 +157,7 @@ typedef btr_bllist_s bllist_s;
 #define BLList_reverse  BTR_BLList_reverse
 #define BLList_free     BTR_BLList_free
 #define BLList_clear    BTR_BLList_clear
+#define BLList_toArray  BTR_BLList_toArray
 
 #define BLLIST_FOREACH   BTR_BLLIST_FOREACH
 #define BLLIST_ENUMERATE BTR_BLLIST_ENUMERATE

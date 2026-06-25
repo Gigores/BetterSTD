@@ -118,6 +118,7 @@ typedef btr_ollist_s ollist_s;
 #define OLList_reverse  BTR_OLList_reverse
 #define OLList_free     BTR_OLList_free
 #define OLList_clear    BTR_OLList_clear
+#define OLList_toArray  BTR_OLList_toArray
 
 #define OLLIST_FOREACH   BTR_OLLIST_FOREACH
 #define OLLIST_ENUMERATE BTR_OLLIST_ENUMERATE

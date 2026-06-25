@@ -115,6 +115,7 @@ typedef btr_oalist_s oalist_s;
 #define OAList_reverse  BTR_OAList_reverse
 #define OAList_free     BTR_OAList_free
 #define OAList_clear    BTR_OAList_clear
+#define OAList_toArray  BTR_OAList_toArray
 
 #define OALIST_FOREACH   BTR_OALIST_FOREACH
 #define OALIST_ENUMERATE BTR_OALIST_ENUMERATE
