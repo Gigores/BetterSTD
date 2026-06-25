@@ -204,7 +204,6 @@ void **BTR_BAList_toArray(btr_balist_s *this, btr_allocator_s *allocator)
         BTR_Allocator_allocate((allocator) ? allocator : this->allocator, this->count * sizeof(void *)),
         "Allocation failed"
     );
-    BTR_BALIST_ENUMERATE(this, i, n)
-        result[n] = i;
+    memcpy(result, this->data, this->count * sizeof(void *));
     return result;
 }
