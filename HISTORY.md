@@ -1,4 +1,4 @@
-# Update 1.1.0 (Not out yet)
+# Update 1.1.0
 
 - Added BTR_BAList_toArray method.
 - Added BTR_BLList_toArray method.
