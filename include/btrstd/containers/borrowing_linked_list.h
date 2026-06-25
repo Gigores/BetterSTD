@@ -87,6 +87,11 @@ void BTR_BLList_reverse(btr_bllist_s *);
 void BTR_BLList_free(btr_bllist_s *);
 // Exactly the same as `BLList_free`
 void BTR_BLList_clear(btr_bllist_s *);
+// Creates an array with the same contents as the given borrowing
+// linked list.
+// The returned array must be freed.
+// The `allocator` parameter can be set as `NULL`, in this case it will use the same allocator which the container uses.
+void **BTR_BLList_toArray(btr_bllist_s *, btr_allocator_s *allocator);
 // Example usage:
 // ```c
 // btr_bllist_t list = {...};  // a list of strings

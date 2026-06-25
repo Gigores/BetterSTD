@@ -197,3 +197,14 @@ void BTR_BLList_clear(btr_bllist_s *this)
     BTR_panicIf(!this, "`this` is null");
     BTR_BLList_free(this);
 }
+void **BTR_BLList_toArray(btr_bllist_s *this, btr_allocator_s *allocator)
+{
+    BTR_panicIf(!this, "`this` is null");
+    void **result = BTR_expect(
+        BTR_Allocator_allocate((allocator) ? allocator : this->allocator, this->size * sizeof(void *)),
+        "Allocation failed"
+    );
+    BTR_BLLIST_ENUMERATE(this, i, n)
+        result[n] = i;
+    return result;
+}

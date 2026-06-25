@@ -334,6 +334,42 @@ static void test9(void)
     BTR_BLList_free(&list);
 }
 
+// test `toArray`
+static void test10(void)
+{
+    printf("> test10\n");
+
+    const int VALUES[] = {10, 20, 30, 40, 50};
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+
+    btr_bllist_s list = BTR_BLList_make(NULL);
+    for (size_t i = 0; i < N; i++)
+        BTR_BLList_append(&list, (void *)&VALUES[i]);
+
+    void **arr = BTR_BLList_toArray(&list, NULL);
+    assert(arr != NULL);
+    for (size_t i = 0; i < N; i++)
+        assert(*(int *)arr[i] == VALUES[i]);
+
+    BTR_Allocator_deallocate(list.allocator, arr);
+    BTR_BLList_free(&list);
+}
+
+// test `toArray` on empty list
+static void test11(void)
+{
+    printf("> test11\n");
+
+    btr_bllist_s list = BTR_BLList_make(NULL);
+    assert(list.size == 0);
+
+    void **arr = BTR_BLList_toArray(&list, NULL);
+    assert(arr != NULL);
+
+    BTR_Allocator_deallocate(list.allocator, arr);
+    BTR_BLList_free(&list);
+}
+
 int main(void) {
     test1();
     test2();
@@ -344,6 +380,8 @@ int main(void) {
     test7();
     test8();
     test9();
+    test10();
+    test11();
     printf("SUCCESS\n");
 
     return 0;
