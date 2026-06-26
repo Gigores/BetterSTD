@@ -107,6 +107,22 @@ const char *BTR_String_charAt(btr_string_s *this, int index)
     btr_string_view_s view = BTR_String_getView(this);
     return BTR_StringView_charAt(&view, index);
 }
+size_t BTR_String_len(btr_string_s *this)
+{
+    btr_string_view_s view = BTR_String_getView(this);
+    return BTR_StringView_len(&view);
+}
+void BTR_String_pop(btr_string_s *this, int index, char *buffer)
+{
+    size_t len = BTR_String_len(this);
+    if (index < 0) index = (int) len + index;
+    size_t charIndex = 0;
+    for (size_t curIndex = 0; curIndex < (size_t)index; curIndex++)
+        charIndex += BTR_UTF8_charLen(*BTR_String_charAt(this, charIndex));
+    size_t charLen = BTR_UTF8_charLen(*BTR_String_charAt(this, charIndex));
+    for (size_t i = 0; i < charLen; i++)
+        BTR_OAList_pop(&this->data, charIndex, buffer + i);
+}
 btr_string_view_s BTR_String_getView(btr_string_s *this)
 {
     return (btr_string_view_s)

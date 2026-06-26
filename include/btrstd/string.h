@@ -51,6 +51,8 @@ void BTR_String_cropRight(btr_string_s *, size_t count);
 // Returns a pointer to a beginning of a UTF-8 character of the
 // given index. Returns `NULL` if the pointer is invalid.
 const char *BTR_String_charAt(btr_string_s *, int index);
+size_t BTR_String_len(btr_string_s *);
+void BTR_String_pop(btr_string_s *, int index, char *buffer);
 
 // Returns a String View poining to the given String.
 btr_string_view_s BTR_String_getView(btr_string_s *);

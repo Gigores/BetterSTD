@@ -51,6 +51,23 @@ static void test5(void)
     assert(BTR_String_compareView(&string, BTR_StringView_fromCString("строка")) == 0);
     BTR_String_free(&string);
 }
+// test pop
+static void test6(void)
+{
+    printf("> test6\n");
+    btr_string_s string = BTR_String_from("Test string", NULL);
+    char buffer = '\0';
+    BTR_String_pop(&string, 1, &buffer);
+    assert(buffer == 'e');
+    assert(BTR_String_compareView(&string, BTR_StringView_fromCString("Tst string")) == 0);
+    BTR_String_free(&string);
+
+    btr_string_s string2 = BTR_String_from("Тестовая строка двенадцатая", NULL);
+    char buffer2[2] = { 0 };
+    BTR_String_pop(&string2, 3, buffer2);
+    assert(BTR_String_compareView(&string2, BTR_StringView_fromCString("Тесовая строка двенадцатая")) == 0);
+    BTR_String_free(&string2);
+}
 
 int main(void)
 {
@@ -59,5 +76,6 @@ int main(void)
     test3();
     test4();
     test5();
+    test6();
     printf("SUCCESS\n");
 }
