@@ -15,7 +15,8 @@ static void test1(void)
 static void test2(void)
 {
     printf("> test2\n");
-    btr_string_s string = BTR_String_fromCString("Test string", NULL);
+    btr_string_view_s sv = BTR_StringView_fromCString("Test string");
+    btr_string_s string = BTR_String_fromStringView(sv, NULL);
     const char *cstr = BTR_String_toCString(&string, NULL);
     assert(strcmp(cstr, "Test string") == 0);
     BTR_String_free(&string);

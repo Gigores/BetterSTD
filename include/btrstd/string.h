@@ -14,7 +14,10 @@ typedef struct BTR_String {
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
 btr_string_s BTR_String_fromCString(const char *, btr_allocator_s *allocator);
 // Creates a new String with the same contents as the input String.
+// The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
 btr_string_s BTR_String_clone(btr_string_s *, btr_allocator_s *allocator);
+// Creates a new String with the same contents as the input String View.
+// The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
 btr_string_s BTR_String_fromStringView(btr_string_view_s, btr_allocator_s *allocator);
 // Creates a new empty string.
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.

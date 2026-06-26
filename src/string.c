@@ -1,6 +1,7 @@
 #include "btrstd/string.h"
 #include "_util.c"
 #include "string.h"
+#include "stdio.h"
 
 btr_string_s BTR_String_fromCString(const char *string, btr_allocator_s *allocator)
 {
@@ -20,7 +21,16 @@ btr_string_s BTR_String_clone(btr_string_s *string, btr_allocator_s *allocator)
         .data = data,
     };
 }
-btr_string_s BTR_String_fromStringView(btr_string_view_s, btr_allocator_s *allocator);
+btr_string_s BTR_String_fromStringView(btr_string_view_s string, btr_allocator_s *allocator)
+{
+    btr_allocator_s *theAllocator = getAllocator(allocator);
+    btr_oalist_s data = BTR_OAList_make(BTR_StringView_len(&string), sizeof(char), theAllocator);
+    memcpy(data.data, string.data + string.start, string.length);
+    data.count += string.length;
+    return (btr_string_s) {
+        .data = data,
+    };
+}
 btr_string_s BTR_String_new(btr_allocator_s *allocator)
 {
     return (btr_string_s) {

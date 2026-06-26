@@ -90,7 +90,7 @@ long BTR_StringView_parseLong(btr_string_view_s *sv, int base);
 // printf("Printing > "STRING_FORMAT"\n", STRING_ARGS(str));
 // ```
 #define BTR_STRING_FORMAT "%.*s"
-#define BTR_STRING_ARGS(STRING) STRING.length, STRING.data + STRING.start
+#define BTR_STRING_ARGS(STRING) (int) STRING.length, STRING.data + STRING.start
 
 #define BTR_StringView_endsWith(STRING, POSTFIX) _Generic((POSTFIX), \
     btr_string_view_s *: BTR_StringView_endsWithView,                \
