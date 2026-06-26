@@ -31,11 +31,21 @@ static void test3(void)
     assert(BTR_String_compareView(&string, BTR_StringView_fromCString("Тестовая строка номер 12")) == 0);
     BTR_String_free(&string);
 }
+// test prepend
+static void test4(void)
+{
+    printf("> test4\n");
+    btr_string_s string = BTR_String_from("Тестовая строка", NULL);
+    BTR_String_prepend(&string, "42 ");
+    assert(BTR_String_compareView(&string, BTR_StringView_fromCString("42 Тестовая строка")) == 0);
+    BTR_String_free(&string);
+}
 
 int main(void)
 {
     test1();
     test2();
     test3();
+    test4();
     printf("SUCCESS\n");
 }

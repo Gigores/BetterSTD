@@ -25,11 +25,20 @@ btr_string_s BTR_String_new(btr_allocator_s *allocator);
 
 // Appends the given c-style null-terminated string to the end of the given String.
 void BTR_String_appendCString(btr_string_s *, const char *data);
+// Appends the given single character to the end of the given String.
 void BTR_String_appendChar(btr_string_s *, char data);
 // Appends the given String to the end of the given String.
 void BTR_String_appendString(btr_string_s *, btr_string_s *data);
 // Appends the given String View to the end of the given String.
 void BTR_String_appendStringView(btr_string_s *, btr_string_view_s data);
+// Prepends the given c-style null-terminated string to the beginning of the given String.
+void BTR_String_prependCString(btr_string_s *, const char *data);
+// Prepends the given single character to the beginning of the given String.
+void BTR_String_prependChar(btr_string_s *, char data);
+// Prepends the given String to the beginning of the given String.
+void BTR_String_prependString(btr_string_s *, btr_string_s *data);
+// Prepends the given String View to the beginning of the given String.
+void BTR_String_prependStringView(btr_string_s *, btr_string_view_s data);
 
 // Returns a String View poining to the given String.
 btr_string_view_s BTR_String_getView(btr_string_s *);
@@ -58,4 +67,11 @@ char *BTR_String_toCString(btr_string_s *, btr_allocator_s *allocator);
     char: BTR_String_appendChar,                   \
     btr_string_s *: BTR_String_appendString,       \
     btr_string_view_s: BTR_String_appendStringView \
+)(str, T)
+#define BTR_String_prepend(str, T) _Generic((T),    \
+    const char *: BTR_String_prependCString,        \
+    char *: BTR_String_prependCString,              \
+    char: BTR_String_prependChar,                   \
+    btr_string_s *: BTR_String_prependString,       \
+    btr_string_view_s: BTR_String_prependStringView \
 )(str, T)

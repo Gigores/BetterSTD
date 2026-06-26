@@ -38,25 +38,44 @@ btr_string_s BTR_String_new(btr_allocator_s *allocator)
     };
 }
 
-void BTR_String_appendCString(btr_string_s *string, const char *data)
+void BTR_String_appendCString(btr_string_s *this, const char *data)
 {
     size_t len = strlen(data);
     for (size_t i = 0; i < len; i++)
-        *(char *)BTR_OAList_append(&string->data) = data[i];
+        *(char *)BTR_OAList_append(&this->data) = data[i];
 }
-void BTR_String_appendChar(btr_string_s *string, char data)
+void BTR_String_appendChar(btr_string_s *this, char data)
 {
-    *(char *)BTR_OAList_append(&string->data) = data;
+    *(char *)BTR_OAList_append(&this->data) = data;
 }
-void BTR_String_appendString(btr_string_s *string, btr_string_s *data)
+void BTR_String_appendString(btr_string_s *this, btr_string_s *data)
 {
     for (size_t i = 0; i < data->data.count; i++)
-        *(char *)BTR_OAList_append(&string->data) = *(char *)BTR_unwrap(BTR_OAList_get(&data->data, i));
+        *(char *)BTR_OAList_append(&this->data) = *(char *)BTR_unwrap(BTR_OAList_get(&data->data, i));
 }
-void BTR_String_appendStringView(btr_string_s *string, btr_string_view_s data)
+void BTR_String_appendStringView(btr_string_s *this, btr_string_view_s data)
 {
     for (size_t i = 0; i < data.length; i++)
-        *(char *)BTR_OAList_append(&string->data) = *(data.data + data.start + i);
+        *(char *)BTR_OAList_append(&this->data) = *(data.data + data.start + i);
+}
+void BTR_String_prependCString(btr_string_s *this, const char *data)
+{
+    for (int i = strlen(data) - 1; i >= 0; i--)
+        *(char *)BTR_OAList_prepend(&this->data) = data[i];
+}
+void BTR_String_prependChar(btr_string_s *this, char data)
+{
+    *(char *)BTR_OAList_prepend(&this->data) = data;
+}
+void BTR_String_prependString(btr_string_s *this, btr_string_s *data)
+{
+    for (int i = data->data.count - 1; i >= 0; i--)
+        *(char *)BTR_OAList_prepend(&this->data) = *(char *)BTR_unwrap(BTR_OAList_get(&data->data, i));
+}
+void BTR_String_prependStringView(btr_string_s *this, btr_string_view_s data)
+{
+    for (int i = data.length - 1; i >= 0; i--)
+        *(char *)BTR_OAList_prepend(&this->data) = *(data.data + data.start + i);
 }
 
 btr_string_view_s BTR_String_getView(btr_string_s *this)
