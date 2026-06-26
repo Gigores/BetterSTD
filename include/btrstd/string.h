@@ -51,7 +51,11 @@ void BTR_String_cropRight(btr_string_s *, size_t count);
 // Returns a pointer to a beginning of a UTF-8 character of the
 // given index. Returns `NULL` if the pointer is invalid.
 const char *BTR_String_charAt(btr_string_s *, int index);
+// Returns the amount of UTF-8 characters in the string.
 size_t BTR_String_len(btr_string_s *);
+// Deletes a UTF-8 character at the given index.
+// The character (all of its bytes) is being copied.
+// If the buffer is NULL, the character is not getting copied.
 void BTR_String_pop(btr_string_s *, int index, char *buffer);
 
 // Returns a String View poining to the given String.

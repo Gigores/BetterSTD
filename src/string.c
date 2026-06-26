@@ -121,7 +121,7 @@ void BTR_String_pop(btr_string_s *this, int index, char *buffer)
         charIndex += BTR_UTF8_charLen(*BTR_String_charAt(this, charIndex));
     size_t charLen = BTR_UTF8_charLen(*BTR_String_charAt(this, charIndex));
     for (size_t i = 0; i < charLen; i++)
-        BTR_OAList_pop(&this->data, charIndex, buffer + i);
+        BTR_OAList_pop(&this->data, charIndex, (buffer) ? buffer + i : NULL);
 }
 btr_string_view_s BTR_String_getView(btr_string_s *this)
 {

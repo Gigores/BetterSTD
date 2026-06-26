@@ -63,8 +63,7 @@ static void test6(void)
     BTR_String_free(&string);
 
     btr_string_s string2 = BTR_String_from("Тестовая строка двенадцатая", NULL);
-    char buffer2[2] = { 0 };
-    BTR_String_pop(&string2, 3, buffer2);
+    BTR_String_pop(&string2, 3, NULL);
     assert(BTR_String_compareView(&string2, BTR_StringView_fromCString("Тесовая строка двенадцатая")) == 0);
     BTR_String_free(&string2);
 }
