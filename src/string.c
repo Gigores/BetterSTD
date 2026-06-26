@@ -21,7 +21,12 @@ btr_string_s BTR_String_clone(btr_string_s *string, btr_allocator_s *allocator)
     };
 }
 btr_string_s BTR_String_fromStringView(btr_string_view_s, btr_allocator_s *allocator);
-btr_string_s BTR_String_new(btr_allocator_s *allocator);
+btr_string_s BTR_String_new(btr_allocator_s *allocator)
+{
+    return (btr_string_s) {
+        .data = BTR_OAList_make(8, sizeof(char), allocator),
+    };
+}
 btr_string_view_s BTR_String_getView(btr_string_s *this)
 {
     return (btr_string_view_s)
