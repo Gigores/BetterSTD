@@ -1,0 +1,42 @@
+#include "btrstd/string.h"
+#include "_util.c"
+#include "string.h"
+
+btr_string_s BTR_String_fromCString(const char *string, btr_allocator_s *allocator)
+{
+    btr_allocator_s *theAllocator = getAllocator(allocator);
+    btr_oalist_s data = BTR_OAList_make(8, sizeof(char), theAllocator);
+    size_t len = strlen(string);
+    for (size_t i = 0; i < len; i++)
+        *(char *)BTR_OAList_append(&data) = string[i];
+    return (btr_string_s) {
+        .data = data,
+    };
+}
+btr_string_s BTR_String_clone(btr_string_s *, btr_allocator_s *allocator);
+btr_string_s BTR_String_fromStringView(btr_string_view_s, btr_allocator_s *allocator);
+btr_string_s BTR_String_new(btr_allocator_s *allocator);
+btr_string_view_s BTR_String_getView(btr_string_s *this)
+{
+    return (btr_string_view_s)
+    {
+        .data = this->data.data,
+        .capacity = this->data.count,
+        .length = this->data.count,
+    };
+}
+int BTR_String_compare(btr_string_s *a, btr_string_s *b)
+{
+    btr_string_view_s sva = BTR_String_getView(a);
+    btr_string_view_s svb = BTR_String_getView(b);
+    return BTR_StringView_compare(&sva, &svb);
+}
+int BTR_String_compareView(btr_string_s *a, btr_string_view_s b)
+{
+    btr_string_view_s sva = BTR_String_getView(a);
+    return BTR_StringView_compare(&sva, &b);
+}
+void BTR_String_free(btr_string_s *this) {
+    BTR_OAList_free(&this->data);
+}
+char *BTR_String_toCString(btr_string_s *);
