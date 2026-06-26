@@ -101,6 +101,12 @@ int BTR_String_compareView(btr_string_s *a, btr_string_view_s b)
 void BTR_String_free(btr_string_s *this) {
     BTR_OAList_free(&this->data);
 }
+char *BTR_String_freeToCString(btr_string_s *this, btr_allocator_s *allocator)
+{
+    char *result = BTR_String_toCString(this, allocator);
+    BTR_String_free(this);
+    return result;
+}
 char *BTR_String_toCString(btr_string_s *this, btr_allocator_s *allocator)
 {
     btr_allocator_s *theAllocator = (allocator) ? allocator : this->data.allocator;
