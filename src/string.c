@@ -37,6 +37,28 @@ btr_string_s BTR_String_new(btr_allocator_s *allocator)
         .data = BTR_OAList_make(8, sizeof(char), allocator),
     };
 }
+
+void BTR_String_appendCString(btr_string_s *string, const char *data)
+{
+    size_t len = strlen(data);
+    for (size_t i = 0; i < len; i++)
+        *(char *)BTR_OAList_append(&string->data) = data[i];
+}
+void BTR_String_appendChar(btr_string_s *string, char data)
+{
+    *(char *)BTR_OAList_append(&string->data) = data;
+}
+void BTR_String_appendString(btr_string_s *string, btr_string_s *data)
+{
+    for (size_t i = 0; i < data->data.count; i++)
+        *(char *)BTR_OAList_append(&string->data) = *(char *)BTR_unwrap(BTR_OAList_get(&data->data, i));
+}
+void BTR_String_appendStringView(btr_string_s *string, btr_string_view_s data)
+{
+    for (size_t i = 0; i < data.length; i++)
+        *(char *)BTR_OAList_append(&string->data) = *(data.data + data.start + i);
+}
+
 btr_string_view_s BTR_String_getView(btr_string_s *this)
 {
     return (btr_string_view_s)
