@@ -13,7 +13,13 @@ btr_string_s BTR_String_fromCString(const char *string, btr_allocator_s *allocat
         .data = data,
     };
 }
-btr_string_s BTR_String_clone(btr_string_s *, btr_allocator_s *allocator);
+btr_string_s BTR_String_clone(btr_string_s *string, btr_allocator_s *allocator)
+{
+    btr_oalist_s data = BTR_OAList_clone(&string->data, allocator);
+    return (btr_string_s) {
+        .data = data,
+    };
+}
 btr_string_s BTR_String_fromStringView(btr_string_view_s, btr_allocator_s *allocator);
 btr_string_s BTR_String_new(btr_allocator_s *allocator);
 btr_string_view_s BTR_String_getView(btr_string_s *this)
@@ -39,4 +45,14 @@ int BTR_String_compareView(btr_string_s *a, btr_string_view_s b)
 void BTR_String_free(btr_string_s *this) {
     BTR_OAList_free(&this->data);
 }
-char *BTR_String_toCString(btr_string_s *);
+char *BTR_String_toCString(btr_string_s *this, btr_allocator_s *allocator)
+{
+    btr_allocator_s *theAllocator = (allocator) ? allocator : this->data.allocator;
+    char *result = BTR_expect(
+        BTR_Allocator_allocate(theAllocator, (this->data.count + 1) * sizeof(char)),
+        "Allocation failed"
+    );
+    memcpy(result, this->data.data, this->data.count * sizeof(char));
+    result[this->data.count] = '\0';
+    return result;
+}
