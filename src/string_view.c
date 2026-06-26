@@ -1,24 +1,12 @@
 #include "btrstd/string_view.h"
 #include "btrstd/error.h"
+#include "btrstd/utf8.h"
 #include "string.h"
 #include "stdlib.h"
 #include "ctype.h"
 
 #include "stdio.h"
 
-
-static size_t utf8CharLen(unsigned char c)
-{
-    if ((c & 0x80) == 0)    return 1;
-    if ((c & 0xE0) == 0xC0) return 2;
-    if ((c & 0xF0) == 0xE0) return 3;
-    if ((c & 0xF8) == 0xF0) return 4;
-    return 0;
-}
-static bool isUtf8Continuation(unsigned char c)
-{
-    return (c & 0xC0) == 0x80;
-}
 btr_string_view_s BTR_StringView_fromCString(const char *chars)
 {
     BTR_panicIf(!chars, "`chars` is NULL");
@@ -34,7 +22,7 @@ void BTR_StringView_cropLeft(btr_string_view_s *string, unsigned int charCount)
     BTR_panicIf(!string, "`string` is NULL");
     for (unsigned int i = 0; i < charCount; i++)
     {
-        size_t curCharSize = utf8CharLen(*(string->data + string->start));
+        size_t curCharSize = BTR_UTF8_charLen(*(string->data + string->start));
         if (curCharSize == 0 || curCharSize > string->length) break;
         string->start  += curCharSize;
         string->length -= curCharSize;
@@ -46,10 +34,10 @@ void BTR_StringView_cropRight(btr_string_view_s *string, unsigned int charCount)
     for (unsigned int i = 0; i < charCount; i++)
     {
         size_t offset = 0;
-        while (isUtf8Continuation(*(string->data + string->start + string->length - offset - 1)))
+        while (BTR_UTF8_isContinuation(*(string->data + string->start + string->length - offset - 1)))
             offset++;
         size_t curCharSize =
-            utf8CharLen(*(string->data + string->start + string->length - offset - 1));
+            BTR_UTF8_charLen(*(string->data + string->start + string->length - offset - 1));
         string->length -= curCharSize;
     }
 }
@@ -60,10 +48,10 @@ void BTR_StringView_revertLeft(btr_string_view_s *string, unsigned int charCount
     {
         if (string->start == 0) return;
         size_t offset = 0;
-        while (string->start > offset + 1 && isUtf8Continuation(
+        while (string->start > offset + 1 && BTR_UTF8_isContinuation(
             (unsigned char)string->data[string->start - offset - 1])
         ) offset++;
-        size_t charSize = utf8CharLen((unsigned char)string->data[string->start - offset - 1]);
+        size_t charSize = BTR_UTF8_charLen((unsigned char)string->data[string->start - offset - 1]);
         if (charSize == 0 || charSize > string->start) return;
         string->start  -= charSize;
         string->length += charSize;
@@ -75,7 +63,7 @@ void BTR_StringView_revertRight(btr_string_view_s *string, unsigned int charCoun
     for (unsigned int i = 0; i < charCount; i++)
     {
         if (string->start + string->length >= string->capacity) return;
-        size_t charSize = utf8CharLen((unsigned char)string->data[string->start + string->length]);
+        size_t charSize = BTR_UTF8_charLen((unsigned char)string->data[string->start + string->length]);
         if (charSize == 0) return;
         if (string->start + string->length + charSize > string->capacity) return;
         string->length += charSize;
@@ -93,7 +81,7 @@ size_t BTR_StringView_len(btr_string_view_s *string)
     char *currentChar = string->data + string->start;
     while (currentChar < string->data + string->start + string->length)
     {
-        currentChar += utf8CharLen(*currentChar);
+        currentChar += BTR_UTF8_charLen(*currentChar);
         count++;
     }
     return count;
@@ -116,7 +104,7 @@ const char *BTR_StringView_charAt(btr_string_view_s *string, int index)
         if (counter > len)
             return NULL;
         else
-            pointer += utf8CharLen((unsigned char)*pointer);
+            pointer += BTR_UTF8_charLen((unsigned char)*pointer);
     return pointer;
 }
 bool BTR_StringView_endsWithView(btr_string_view_s *string, btr_string_view_s *postfix)
@@ -202,7 +190,7 @@ btr_string_view_s BTR_StringView_substring(
     ) {
         if (counter == start) byteStart = byteOffset;
         if (counter == start + count) byteCount = byteOffset - byteStart;
-        byteOffset += utf8CharLen(*(string->data + string->start + byteOffset));
+        byteOffset += BTR_UTF8_charLen(*(string->data + string->start + byteOffset));
         counter++;
     }
     if (byteCount == 0 && counter > start)

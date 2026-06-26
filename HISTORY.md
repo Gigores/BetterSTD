@@ -1,7 +1,8 @@
 # Update 1.2.0 (Not out yet)
 
 ### Additions
-- Added `btr_string_s` type.
+- Added `btrstd/string.h` module.
+- Added `btrstd/utf8.h` module.
 
 # Update 1.1.0
 
