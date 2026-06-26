@@ -1,4 +1,5 @@
 #include "btrstd/string.h"
+#include "btrstd/utf8.h"
 #include "_util.c"
 #include "string.h"
 #include "stdio.h"
@@ -78,6 +79,29 @@ void BTR_String_prependStringView(btr_string_s *this, btr_string_view_s data)
         *(char *)BTR_OAList_prepend(&this->data) = *(data.data + data.start + i);
 }
 
+void BTR_String_cropLeft(btr_string_s *this, size_t count)
+{
+    for (size_t i = 0; i < count; i++)
+        for (
+            int j = BTR_UTF8_charLen(*(char *)BTR_unwrap(BTR_OAList_first(&this->data))) - 1;
+            j >= 0;
+            j--
+        ) BTR_OAList_pop(&this->data, 0, NULL);
+}
+void BTR_String_cropRight(btr_string_s *this, size_t count)
+{
+    for (size_t i = 0; i < count; i++)
+    {
+        size_t length = 1;
+        char curChar = *(char *)BTR_unwrap(BTR_OAList_get(&this->data, BTR_OAList_len(&this->data) - 1));
+        while (BTR_UTF8_isContinuation(curChar)) {
+            length++;
+            curChar = *(char *)BTR_unwrap(BTR_OAList_get(&this->data, BTR_OAList_len(&this->data) - length - 1));
+        }
+        for (size_t i = 0; i < length; i++)
+            BTR_OAList_pop(&this->data, -1, NULL);
+    }
+}
 btr_string_view_s BTR_String_getView(btr_string_s *this)
 {
     return (btr_string_view_s)

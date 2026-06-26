@@ -40,6 +40,17 @@ static void test4(void)
     assert(BTR_String_compareView(&string, BTR_StringView_fromCString("42 Тестовая строка")) == 0);
     BTR_String_free(&string);
 }
+// test crop
+static void test5(void)
+{
+    printf("> test5\n");
+    btr_string_s string = BTR_String_from("Тестовая строка двенадцатая", NULL);
+    BTR_String_cropLeft(&string, 9);
+    assert(BTR_String_compareView(&string, BTR_StringView_fromCString("строка двенадцатая")) == 0);
+    BTR_String_cropRight(&string, 12);
+    assert(BTR_String_compareView(&string, BTR_StringView_fromCString("строка")) == 0);
+    BTR_String_free(&string);
+}
 
 int main(void)
 {
@@ -47,5 +58,6 @@ int main(void)
     test2();
     test3();
     test4();
+    test5();
     printf("SUCCESS\n");
 }

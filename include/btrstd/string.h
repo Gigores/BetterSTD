@@ -23,6 +23,7 @@ btr_string_s BTR_String_fromStringView(btr_string_view_s, btr_allocator_s *alloc
 // The `allocator` parameter can be set as `NULL`, in this case it will use the global allocator.
 btr_string_s BTR_String_new(btr_allocator_s *allocator);
 
+// APPEND
 // Appends the given c-style null-terminated string to the end of the given String.
 void BTR_String_appendCString(btr_string_s *, const char *data);
 // Appends the given single character to the end of the given String.
@@ -31,6 +32,7 @@ void BTR_String_appendChar(btr_string_s *, char data);
 void BTR_String_appendString(btr_string_s *, btr_string_s *data);
 // Appends the given String View to the end of the given String.
 void BTR_String_appendStringView(btr_string_s *, btr_string_view_s data);
+// PREPEND
 // Prepends the given c-style null-terminated string to the beginning of the given String.
 void BTR_String_prependCString(btr_string_s *, const char *data);
 // Prepends the given single character to the beginning of the given String.
@@ -39,6 +41,9 @@ void BTR_String_prependChar(btr_string_s *, char data);
 void BTR_String_prependString(btr_string_s *, btr_string_s *data);
 // Prepends the given String View to the beginning of the given String.
 void BTR_String_prependStringView(btr_string_s *, btr_string_view_s data);
+
+void BTR_String_cropLeft(btr_string_s *, size_t count);
+void BTR_String_cropRight(btr_string_s *, size_t count);
 
 // Returns a String View poining to the given String.
 btr_string_view_s BTR_String_getView(btr_string_s *);
