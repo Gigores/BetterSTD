@@ -71,6 +71,9 @@ size_t BTR_BAList_len(const btr_balist_s *);
 bool BTR_BAList_isEmpty(const btr_balist_s *);
 // Reverses the order of items in the borrowing array list.
 void BTR_BAList_reverse(btr_balist_s *);
+void BTR_BAList_reserve(btr_balist_s *, size_t itemCount);
+void BTR_BAList_reserveNew(btr_balist_s *, size_t itemCount);
+void BTR_BAList_cropCapacity(btr_balist_s *);
 // Deallocates the borrowing array list.
 void BTR_BAList_free(btr_balist_s *);
 // Exactly the same as `BAList_free`
