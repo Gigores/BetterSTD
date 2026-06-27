@@ -119,6 +119,8 @@ void BTR_panicImplIf
 #define BTR_unimplemented(...) BTR_panic("Not implemented" __VA_OPT__(": " __VA_ARGS__) )
 // Can be used for deprecating code.
 #define BTR_deprecated(...) BTR_panic("Deprecated" __VA_OPT__(": " __VA_ARGS__) )
+// Can be used for code, which is marked for removal.
+#define BTR_markedForRemoval(...) BTR_panic("Marked for removal" __VA_OPT__(": " __VA_ARGS__) )
 
 #ifdef BTR_NO_PREFIX
 
@@ -145,8 +147,9 @@ typedef btr_result_status_e result_status_e;
 #define OK  BTR_OK
 #define ERR BTR_ERR
 
-#define todo          BTR_todo
-#define unimplemented BTR_unimplemented
-#define deprecated    BTR_deprecated
+#define todo             BTR_todo
+#define unimplemented    BTR_unimplemented
+#define deprecated       BTR_deprecated
+#define markedForRemoval BTR_markedForRemoval
 
 #endif  // BTR_NO_PREFIX

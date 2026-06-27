@@ -1,6 +1,7 @@
 # Update 1.2.0 (Not out yet)
 
 ### Additions
+- Added `BTR_markedForRemoval` marco in `btrstd/error.h` module.
 - Added `btrstd/string.h` module.
 - Added `btrstd/utf8.h` module.
 
