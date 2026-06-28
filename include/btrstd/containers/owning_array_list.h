@@ -65,8 +65,14 @@ size_t BTR_OAList_len(const btr_oalist_s *);
 bool BTR_OAList_isEmpty(const btr_oalist_s *);
 // Reverses the order of items in the borrowing array list.
 void BTR_OAList_reverse(btr_oalist_s *);
+// Reallocates the owning array list with new capacity of
+// max(this.capacity, itemCount)
 void BTR_OAList_reserve(btr_oalist_s *, size_t itemCount);
+// Reallocates the owning array list with new capacity of
+// this.count + itemCount
 void BTR_OAList_reserveNew(btr_oalist_s *, size_t itemCount);
+// Reallocates the owning array list with new capacity of
+// this.count
 void BTR_OAList_cropCapacity(btr_oalist_s *);
 // Deallocates the owning array list.
 void BTR_OAList_free(btr_oalist_s *);

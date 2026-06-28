@@ -566,6 +566,75 @@ static void test24(void)
     BTR_OAList_free(&list);
 }
 
+// test `reserve`
+static void test25(void)
+{
+    printf("> test25\n");
+
+    btr_oalist_s list = BTR_OAList_make(4, sizeof(int), NULL);
+    int vals[] = {10, 20, 30};
+    for (int i = 0; i < 3; i++)
+        *(int *)BTR_OAList_append(&list) = vals[i];
+
+    // reserve larger — should grow
+    BTR_OAList_reserve(&list, 64);
+    assert(list.capacity >= 64);
+    {
+        int *data = (int *)list.data;
+        for (int i = 0; i < 3; i++)
+            assert(data[i] == vals[i]);
+    }
+
+    // reserve smaller — should be no-op
+    BTR_OAList_reserve(&list, 2);
+    assert(list.capacity >= 64);
+
+    BTR_OAList_free(&list);
+}
+
+// test `reserveNew`
+static void test26(void)
+{
+    printf("> test26\n");
+
+    btr_oalist_s list = BTR_OAList_make(4, sizeof(int), NULL);
+    int vals[] = {10, 20, 30};
+    for (int i = 0; i < 3; i++)
+        *(int *)BTR_OAList_append(&list) = vals[i];
+
+    BTR_OAList_reserveNew(&list, 10);
+    assert(list.capacity >= list.count + 10);
+    {
+        int *data = (int *)list.data;
+        for (int i = 0; i < 3; i++)
+            assert(data[i] == vals[i]);
+    }
+
+    BTR_OAList_free(&list);
+}
+
+// test `cropCapacity`
+static void test27(void)
+{
+    printf("> test27\n");
+
+    btr_oalist_s list = BTR_OAList_make(64, sizeof(int), NULL);
+    int vals[] = {10, 20, 30, 40, 50};
+    for (int i = 0; i < 5; i++)
+        *(int *)BTR_OAList_append(&list) = vals[i];
+    assert(list.capacity == 64);
+
+    BTR_OAList_cropCapacity(&list);
+    assert(list.capacity == list.count);
+    {
+        int *data = (int *)list.data;
+        for (size_t i = 0; i < ARR_COUNT(vals); i++)
+            assert(data[i] == vals[i]);
+    }
+
+    BTR_OAList_free(&list);
+}
+
 int main(void)
 {
     test1();
@@ -592,6 +661,9 @@ int main(void)
     test22();
     test23();
     test24();
+    test25();
+    test26();
+    test27();
     printf("SUCCESS\n");
     return 0;
 }

@@ -192,6 +192,37 @@ void BTR_OAList_reverse(btr_oalist_s *this)
     BTR_Allocator_deallocate(this->allocator, this->data);
     this->data = newData;
 }
+void BTR_OAList_reserve(btr_oalist_s *this, size_t itemCount)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    if (itemCount <= this->capacity)
+        return;
+    void *newData = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, itemCount * this->itemSize),
+        "Allocation failed"
+    );
+    memcpy(newData, this->data, this->count * this->itemSize);
+    BTR_Allocator_deallocate(this->allocator, this->data);
+    this->data = newData;
+    this->capacity = itemCount;
+}
+void BTR_OAList_reserveNew(btr_oalist_s *this, size_t itemCount)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    BTR_OAList_reserve(this, this->count + itemCount);
+}
+void BTR_OAList_cropCapacity(btr_oalist_s *this)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    void *newData = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, this->count * this->itemSize),
+        "Allocation failed"
+    );
+    memcpy(newData, this->data, this->count * this->itemSize);
+    BTR_Allocator_deallocate(this->allocator, this->data);
+    this->data = newData;
+    this->capacity = this->count;
+}
 void BTR_OAList_free(btr_oalist_s *this)
 {
     BTR_panicIf(!this, "`this` is invalid");
