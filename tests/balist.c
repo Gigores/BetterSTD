@@ -366,6 +366,70 @@ static void test11(void)
     BTR_BAList_free(&list);
 }
 
+// test `reserve`
+static void test12(void)
+{
+    printf("> test12\n");
+
+    const int VALUES[] = {10, 20, 30};
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+
+    btr_balist_s list = BTR_BAList_make(4, NULL);
+    for (size_t i = 0; i < N; i++)
+        BTR_BAList_append(&list, (void *)&VALUES[i]);
+
+    // reserve larger — should grow
+    BTR_BAList_reserve(&list, 64);
+    assert(list.capacity >= 64);
+    checkList(&list, (int *)VALUES, N);
+
+    // reserve smaller — should be no-op
+    BTR_BAList_reserve(&list, 2);
+    assert(list.capacity >= 64);
+
+    BTR_BAList_free(&list);
+}
+
+// test `reserveNew`
+static void test13(void)
+{
+    printf("> test13\n");
+
+    const int VALUES[] = {10, 20, 30};
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+
+    btr_balist_s list = BTR_BAList_make(4, NULL);
+    for (size_t i = 0; i < N; i++)
+        BTR_BAList_append(&list, (void *)&VALUES[i]);
+
+    BTR_BAList_reserveNew(&list, 10);
+    assert(list.capacity >= list.count + 10);
+    checkList(&list, (int *)VALUES, N);
+
+    BTR_BAList_free(&list);
+}
+
+// test `cropCapacity`
+static void test14(void)
+{
+    printf("> test14\n");
+
+    const int VALUES[] = {10, 20, 30, 40, 50};
+    const size_t N = sizeof(VALUES) / sizeof(VALUES[0]);
+
+    btr_balist_s list = BTR_BAList_make(64, NULL);
+    for (size_t i = 0; i < N; i++)
+        BTR_BAList_append(&list, (void *)&VALUES[i]);
+    assert(list.capacity == 64);
+
+    BTR_BAList_cropCapacity(&list);
+    assert(list.capacity == N);
+    assert(list.capacity == list.count);
+    checkList(&list, (int *)VALUES, N);
+
+    BTR_BAList_free(&list);
+}
+
 int main(void) {
     test1();
     test2();
@@ -378,6 +442,9 @@ int main(void) {
     test9();
     test10();
     test11();
+    test12();
+    test13();
+    test14();
     printf("SUCCESS\n");
     return 0;
 }

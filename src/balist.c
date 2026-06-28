@@ -184,6 +184,37 @@ void BTR_BAList_reverse(btr_balist_s *this)
     BTR_Allocator_deallocate(this->allocator, this->data);
     this->data = newData;
 }
+void BTR_BAList_reserve(btr_balist_s *this, size_t itemCount)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    if (itemCount <= this->capacity)
+        return;
+    void **newData = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, itemCount * sizeof(void *)),
+        "Allocation failed"
+    );
+    memcpy(newData, this->data, this->count * sizeof(void *));
+    BTR_Allocator_deallocate(this->allocator, this->data);
+    this->data = newData;
+    this->capacity = itemCount;
+}
+void BTR_BAList_reserveNew(btr_balist_s *this, size_t itemCount)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    BTR_BAList_reserve(this, this->count + itemCount);
+}
+void BTR_BAList_cropCapacity(btr_balist_s *this)
+{
+    BTR_panicIf(!this, "`this` is invalid");
+    void **newData = BTR_expect(
+        BTR_Allocator_allocate(this->allocator, this->count * sizeof(void *)),
+        "Allocation failed"
+    );
+    memcpy(newData, this->data, this->count * sizeof(void *));
+    BTR_Allocator_deallocate(this->allocator, this->data);
+    this->data = newData;
+    this->capacity = this->count;
+}
 void BTR_BAList_free(btr_balist_s *this)
 {
     BTR_panicIf(!this, "`this` is invalid");
