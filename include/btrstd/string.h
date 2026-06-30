@@ -117,3 +117,10 @@ char *BTR_String_toCString(btr_string_s *, btr_allocator_s *allocator);
     btr_string_s *: BTR_String_prependString,       \
     btr_string_view_s: BTR_String_prependStringView \
 )(str, T)
+#define BTR_String_insert(str, T, index) _Generic((T), \
+    const char *: BTR_String_insertCString,            \
+    char *: BTR_String_insertCString,                  \
+    char: BTR_String_insertChar,                       \
+    btr_string_s *: BTR_String_insertString,           \
+    btr_string_view_s: BTR_String_insertStringView     \
+)(str, T, index)

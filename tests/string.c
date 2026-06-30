@@ -113,6 +113,22 @@ static void test9(void)
 
     BTR_String_free(&string);
 }
+// test insert
+static void test10(void)
+{
+    printf("> test10\n");
+    btr_string_s string = BTR_String_from("Привет, мир!", NULL);
+    BTR_String_insertCString(&string, " мой милый", 7);
+    assert(BTR_String_compareView(&string, BTR_StringView_fromCString("Привет, мой милый мир!")) == 0);
+    BTR_String_free(&string);
+
+    btr_string_s string2 = BTR_String_from("Hello, World!", NULL);
+    BTR_String_insertCString(&string2, " my pretty", 6);
+    assert(BTR_String_compareView(&string2, BTR_StringView_fromCString("Hello, my pretty World!")) == 0);
+    BTR_String_insertChar(&string2, '!', 23);
+    assert(BTR_String_compareView(&string2, BTR_StringView_fromCString("Hello, my pretty World!!")) == 0);
+    BTR_String_free(&string2);
+}
 
 int main(void)
 {
@@ -125,5 +141,6 @@ int main(void)
     test7();
     test8();
     test9();
+    test10();
     printf("SUCCESS\n");
 }

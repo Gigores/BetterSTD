@@ -79,6 +79,51 @@ void BTR_String_prependStringView(btr_string_s *this, btr_string_view_s data)
         *(char *)BTR_OAList_prepend(&this->data) = *(data.data + data.start + i);
 }
 
+void BTR_String_insertCString(btr_string_s *this, const char *data, int index)
+{
+    if (index < 0) index = this->data.count + index;
+    size_t curByteIndex = 0;
+    for (size_t curStringIndex = 0; curStringIndex < (size_t)index; curStringIndex++)
+        curByteIndex += BTR_UTF8_charLen(((char *)this->data.data)[curByteIndex]);
+    for (size_t i = 0; i < strlen(data); i++)
+    {
+        *(char *)BTR_OAList_insert(&this->data, curByteIndex) = data[i];
+        curByteIndex++;
+    }
+}
+void BTR_String_insertChar(btr_string_s *this, char data, int index)
+{
+    if (index < 0) index = this->data.count + index;
+    size_t curByteIndex = 0;
+    for (size_t curStringIndex = 0; curStringIndex < (size_t)index; curStringIndex++)
+        curByteIndex += BTR_UTF8_charLen(((char *)this->data.data)[curByteIndex]);
+    *(char *)BTR_OAList_insert(&this->data, curByteIndex) = data;
+}
+void BTR_String_insertString(btr_string_s *this, btr_string_s *data, int index)
+{
+    if (index < 0) index = this->data.count + index;
+    size_t curByteIndex = 0;
+    for (size_t curStringIndex = 0; curStringIndex < (size_t)index; curStringIndex++)
+        curByteIndex += BTR_UTF8_charLen(((char *)this->data.data)[curByteIndex]);
+    for (size_t i = 0; i < data->data.count; i++)
+    {
+        *(char *)BTR_OAList_insert(&this->data, curByteIndex) = ((char *)data->data.data)[i];
+        curByteIndex++;
+    }
+}
+void BTR_String_insertStringView(btr_string_s *this, btr_string_view_s data, int index)
+{
+    if (index < 0) index = this->data.count + index;
+    size_t curByteIndex = 0;
+    for (size_t curStringIndex = 0; curStringIndex < (size_t)index; curStringIndex++)
+        curByteIndex += BTR_UTF8_charLen(((char *)this->data.data)[curByteIndex]);
+    for (size_t i = 0; i < data.length; i++)
+    {
+        *(char *)BTR_OAList_insert(&this->data, curByteIndex) = *(data.data + data.start + i);
+        curByteIndex++;
+    }
+}
+
 void BTR_String_cropLeft(btr_string_s *this, size_t count)
 {
     for (size_t i = 0; i < count; i++)
