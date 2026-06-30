@@ -123,6 +123,15 @@ void BTR_String_pop(btr_string_s *this, int index, char *buffer)
     for (size_t i = 0; i < charLen; i++)
         BTR_OAList_pop(&this->data, charIndex, (buffer) ? buffer + i : NULL);
 }
+void BTR_String_reserve(btr_string_s *this, size_t itemCount) {
+    BTR_OAList_reserve(&this->data, itemCount);
+}
+void BTR_String_reserveNew(btr_string_s *this, size_t itemCount) {
+    BTR_OAList_reserveNew(&this->data, itemCount);
+}
+void BTR_String_cropCapacity(btr_string_s *this) {
+    BTR_OAList_cropCapacity(&this->data);
+}
 btr_string_view_s BTR_String_getView(btr_string_s *this)
 {
     return (btr_string_view_s)

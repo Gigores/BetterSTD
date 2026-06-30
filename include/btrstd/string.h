@@ -41,6 +41,19 @@ void BTR_String_prependChar(btr_string_s *, char data);
 void BTR_String_prependString(btr_string_s *, btr_string_s *data);
 // Prepends the given String View to the beginning of the given String.
 void BTR_String_prependStringView(btr_string_s *, btr_string_view_s data);
+// INSERT *
+// Inserts the given c-style null-terminated string for it's first character
+// to be at the specified index in the given String.
+void BTR_String_insertCString(btr_string_s *, const char *data, int index);
+// Inserts the given single character for it's first character to be at the
+// specified index in the given String.
+void BTR_String_insertChar(btr_string_s *, char data, int index);
+// Inserts the given String for it's first character to be at the specified
+// index in the given String.
+void BTR_String_insertString(btr_string_s *, btr_string_s *data, int index);
+// Inserts the given String View for it's first character to be at the
+// specified index in the given String.
+void BTR_String_insertStringView(btr_string_s *, btr_string_view_s data, int index);
 
 // Crops the given amount of UTF-8 characters from
 // the left of the given string.
@@ -57,6 +70,16 @@ size_t BTR_String_len(btr_string_s *);
 // The character (all of its bytes) is being copied.
 // If the buffer is NULL, the character is not getting copied.
 void BTR_String_pop(btr_string_s *, int index, char *buffer);
+
+// Reallocates the String with new byte capacity of
+// max(this.capacity, byteCount)
+void BTR_String_reserve(btr_string_s *, size_t byteCount);
+// Reallocates the String with new byte capacity of
+// this.count + byteCount
+void BTR_String_reserveNew(btr_string_s *, size_t byteCount);
+// Reallocates the String with new byte capacity of
+// this.count
+void BTR_String_cropCapacity(btr_string_s *);
 
 // Returns a String View poining to the given String.
 btr_string_view_s BTR_String_getView(btr_string_s *);

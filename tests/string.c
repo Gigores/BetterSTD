@@ -68,6 +68,52 @@ static void test6(void)
     BTR_String_free(&string2);
 }
 
+// test reserve
+static void test7(void)
+{
+    printf("> test7\n");
+    btr_string_s string = BTR_String_from("Hello", NULL);
+
+    // reserve larger — should grow
+    BTR_String_reserve(&string, 128);
+    assert(string.data.capacity >= 128);
+    assert(BTR_String_compareView(&string, BTR_StringView_fromCString("Hello")) == 0);
+
+    // reserve smaller — should be no-op
+    BTR_String_reserve(&string, 2);
+    assert(string.data.capacity >= 128);
+
+    BTR_String_free(&string);
+}
+// test reserveNew
+static void test8(void)
+{
+    printf("> test8\n");
+    btr_string_s string = BTR_String_from("Hello", NULL);
+
+    BTR_String_reserveNew(&string, 50);
+    assert(string.data.capacity >= string.data.count + 50);
+    assert(BTR_String_compareView(&string, BTR_StringView_fromCString("Hello")) == 0);
+
+    BTR_String_free(&string);
+}
+// test cropCapacity
+static void test9(void)
+{
+    printf("> test9\n");
+    btr_string_s string = BTR_String_from("Hello, world!", NULL);
+
+    // grow capacity first so we can verify crop
+    BTR_String_reserve(&string, 256);
+    assert(string.data.capacity >= 256);
+
+    BTR_String_cropCapacity(&string);
+    assert(string.data.capacity == string.data.count);
+    assert(BTR_String_compareView(&string, BTR_StringView_fromCString("Hello, world!")) == 0);
+
+    BTR_String_free(&string);
+}
+
 int main(void)
 {
     test1();
@@ -76,5 +122,8 @@ int main(void)
     test4();
     test5();
     test6();
+    test7();
+    test8();
+    test9();
     printf("SUCCESS\n");
 }
