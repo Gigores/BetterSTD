@@ -41,7 +41,7 @@ void BTR_String_prependChar(btr_string_s *, char data);
 void BTR_String_prependString(btr_string_s *, btr_string_s *data);
 // Prepends the given String View to the beginning of the given String.
 void BTR_String_prependStringView(btr_string_s *, btr_string_view_s data);
-// INSERT *
+// INSERT
 // Inserts the given c-style null-terminated string for it's first character
 // to be at the specified index in the given String.
 void BTR_String_insertCString(btr_string_s *, const char *data, int index);
@@ -91,6 +91,8 @@ int BTR_String_compare(btr_string_s *, btr_string_s *);
 int BTR_String_compareView(btr_string_s *, btr_string_view_s);
 // Deallocates the given String.
 void BTR_String_free(btr_string_s *);
+// Deallocates the given String and allocates a new c-style null-terminated
+// string with the same content.
 char *BTR_String_freeToCString(btr_string_s *, btr_allocator_s *allocator);
 // Converts the given String to c-style null terminated string.
 // The result string must be freed.
