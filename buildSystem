@@ -57,6 +57,7 @@ def task_build(include_all: bool) -> None:
         if include_all:
             args.append("-DBTR_INCLUDE_ALL")
         args += [
+            "-O3",
             "-c",
             i,
             "-o",
