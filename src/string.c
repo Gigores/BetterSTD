@@ -137,9 +137,12 @@ void BTR_String_cropRight(btr_string_s *this, size_t count)
 {
     for (size_t i = 0; i < count; i++)
     {
+        size_t byteCount = BTR_OAList_len(&this->data);
+        if (byteCount == 0) break;
         size_t length = 1;
         char curChar = *(char *)BTR_unwrap(BTR_OAList_get(&this->data, BTR_OAList_len(&this->data) - 1));
-        while (BTR_UTF8_isContinuation(curChar)) {
+        while (BTR_UTF8_isContinuation(curChar) && length < byteCount)
+        {
             length++;
             curChar = *(char *)BTR_unwrap(BTR_OAList_get(&this->data, BTR_OAList_len(&this->data) - length - 1));
         }
