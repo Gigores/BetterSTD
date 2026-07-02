@@ -114,9 +114,9 @@ bool BTR_StringView_endsWithView(btr_string_view_s *string, btr_string_view_s *p
     size_t lenPostfix = BTR_StringView_byteCount(postfix);
     size_t counter = 0;
     while (
+        counter < lenPostfix &&
         *(string->data + string->start + len - counter - 1) ==
-        *(postfix->data + postfix->start + lenPostfix - counter - 1) &&
-        counter < lenPostfix
+        *(postfix->data + postfix->start + lenPostfix - counter - 1)
     ) counter++;
     if (counter < lenPostfix)
         return false;
@@ -128,9 +128,9 @@ bool BTR_StringView_startsWithView(btr_string_view_s *string, btr_string_view_s 
     size_t counter = 0;
     size_t byteCount = BTR_StringView_byteCount(prefix);
     while (
+        counter < byteCount &&
         *(string->data + string->start + counter) ==
-        *(prefix->data + prefix->start + counter) &&
-        counter < byteCount
+        *(prefix->data + prefix->start + counter)
     ) counter++;
     if (counter < byteCount)
         return false;
