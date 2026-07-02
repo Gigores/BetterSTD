@@ -93,6 +93,7 @@ int BTR_String_compareView(btr_string_s *, btr_string_view_s);
 void BTR_String_free(btr_string_s *);
 // Deallocates the given String and allocates a new c-style null-terminated
 // string with the same content.
+// The `allocator` parameter can be set as `NULL`, in this case it will use the same allocator which the string uses.
 char *BTR_String_freeToCString(btr_string_s *, btr_allocator_s *allocator);
 // Converts the given String to c-style null terminated string.
 // The result string must be freed.
