@@ -13,6 +13,7 @@
 ### Fixes
 - `BTR_panicIf` now also aborts the program.
 - Buffer overrun was fixed in `BTR_StringView_startsWith` and `BTR_StringView_endsWith`.
+- Undefined behaviour was fixed in `BTR_Pool_deallocate`.
 
 # Update 1.1.0
 

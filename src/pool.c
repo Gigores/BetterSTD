@@ -38,14 +38,15 @@ btr_alloc_r BTR_Pool_allocate(btr_pool_s *this)
 }
 void BTR_Pool_deallocate(btr_pool_s *this, void *pointer)
 {
-    ptrdiff_t offset = (uint8_t *)pointer - this->data;
-    size_t index = offset / this->itemSize;
+    uintptr_t ptr = (uintptr_t)pointer;
+    uintptr_t base = (uintptr_t)this->data;
+    uintptr_t end = base + this->itemSize * this->itemCount;
     BTR_panicIf(
-        offset < 0 ||
-        offset % this->itemSize != 0 ||
-        index >= this->itemCount,
+        ptr < base || ptr >= end ||
+        (ptr - base) % this->itemSize != 0,
         "Invalid pointer"
     );
+    size_t index = (ptr - base) / this->itemSize;
     BTR_panicIf(
         !BTR_unwrap(BTR_BitSet_get(&this->mask, index)),
         "Double free detected"
