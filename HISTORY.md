@@ -1,4 +1,9 @@
-# Update 1.2.0 (Not out yet)
+# Update 2.0.0 (Only plans)
+
+### Fixes
+- Fix truncation for `BTR_StringView_charAt`.
+
+# Update 1.2.0 (WIP)
 
 ### Additions
 - Added `btrstd/string.h` module.

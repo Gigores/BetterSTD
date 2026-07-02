@@ -55,6 +55,11 @@ void BTR_String_insertString(btr_string_s *, btr_string_s *data, int index);
 // specified index in the given String.
 void BTR_String_insertStringView(btr_string_s *, btr_string_view_s data, int index);
 
+// REPLACE
+size_t BTR_String_replaceCString(btr_string_s *, const char *from, const char *to);
+size_t BTR_String_replaceString(btr_string_s *, btr_string_s from, btr_string_s to);
+size_t BTR_String_replaceStringView(btr_string_s *, btr_string_view_s from, btr_string_view_s to);
+
 // Crops the given amount of UTF-8 characters from
 // the left of the given string.
 void BTR_String_cropLeft(btr_string_s *, size_t count);
@@ -66,10 +71,13 @@ void BTR_String_cropRight(btr_string_s *, size_t count);
 const char *BTR_String_charAt(btr_string_s *, int index);
 // Returns the amount of UTF-8 characters in the string.
 size_t BTR_String_len(btr_string_s *);
+bool BTR_String_isEmpty(btr_string_s *);
 // Deletes a UTF-8 character at the given index.
 // The character (all of its bytes) is being copied.
 // If the buffer is NULL, the character is not getting copied.
 void BTR_String_pop(btr_string_s *, int index, char *buffer);
+void BTR_String_remove(btr_string_s *, size_t start, size_t count);
+void BTR_String_clear(btr_string_s *);
 
 // Reallocates the String with new byte capacity of
 // max(this.capacity, byteCount)
@@ -80,6 +88,9 @@ void BTR_String_reserveNew(btr_string_s *, size_t byteCount);
 // Reallocates the String with new byte capacity of
 // this.count
 void BTR_String_cropCapacity(btr_string_s *);
+
+void BTR_String_toUpper(btr_string_s *);
+void BTR_String_toLower(btr_string_s *);
 
 // Returns a String View poining to the given String.
 btr_string_view_s BTR_String_getView(btr_string_s *);
@@ -127,3 +138,9 @@ char *BTR_String_toCString(btr_string_s *, btr_allocator_s *allocator);
     btr_string_s *: BTR_String_insertString,           \
     btr_string_view_s: BTR_String_insertStringView     \
 )(str, T, index)
+#define BTR_String_replace(str, T, to) _Generic((T), \
+    const char *: BTR_String_replaceCString,            \
+    char *: BTR_String_replaceCString,                  \
+    btr_string_s *: BTR_String_replaceString,           \
+    btr_string_view_s: BTR_String_replaceStringView     \
+)(str, T, to)
