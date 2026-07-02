@@ -10,6 +10,8 @@
 - Added `BTR_OAList_reserveNew` method in `btrstd/containers/owning_array_list.h`
 - Added `BTR_OAList_cropCapacity` method in `btrstd/containers/owning_array_list.h`
 - Added `BTR_markedForRemoval` marco in `btrstd/error.h` module.
+### Fixes
+- `BTR_panicIf` now also aborts the program.
 
 # Update 1.1.0
 
