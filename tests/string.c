@@ -66,6 +66,13 @@ static void test6(void)
     BTR_String_pop(&string2, 3, NULL);
     assert(BTR_String_compareView(&string2, BTR_StringView_fromCString("Тесовая строка двенадцатая")) == 0);
     BTR_String_free(&string2);
+    
+    btr_string_s string3 = BTR_String_from("a🔥b", NULL);
+    char buffer2 = '\0';
+    BTR_String_pop(&string3, 2, &buffer2);
+    assert(buffer2 == 'b');
+    assert(BTR_String_compareView(&string3, BTR_StringView_fromCString("a🔥")) == 0);
+    BTR_String_free(&string3);
 }
 
 // test reserve

@@ -161,12 +161,14 @@ void BTR_String_pop(btr_string_s *this, int index, char *buffer)
 {
     size_t len = BTR_String_len(this);
     if (index < 0) index = (int) len + index;
-    size_t charIndex = 0;
+    char *rawData = this->data.data;
+    size_t byteOffset = 0;
     for (size_t curIndex = 0; curIndex < (size_t)index; curIndex++)
-        charIndex += BTR_UTF8_charLen(*BTR_String_charAt(this, charIndex));
-    size_t charLen = BTR_UTF8_charLen(*BTR_String_charAt(this, charIndex));
+        byteOffset += BTR_UTF8_charLen((unsigned char)rawData[byteOffset]);
+
+    size_t charLen = BTR_UTF8_charLen((unsigned char)rawData[byteOffset]);
     for (size_t i = 0; i < charLen; i++)
-        BTR_OAList_pop(&this->data, charIndex, (buffer) ? buffer + i : NULL);
+        BTR_OAList_pop(&this->data, byteOffset, (buffer) ? buffer + i : NULL);
 }
 void BTR_String_reserve(btr_string_s *this, size_t itemCount) {
     BTR_OAList_reserve(&this->data, itemCount);
