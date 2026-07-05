@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 from typing import Final, List, Tuple, Optional
-from enum import StrEnum
+from enum import Enum
 import subprocess
 import argparse
 import platform
@@ -22,7 +22,7 @@ COMPILE_THIS   : Final[List[str]] = [
 TESTS_BUILD_DIR: Final[str] = os.path.join(BUILD_DIR, "tests")
 
 
-class Commands(StrEnum):
+class Commands(Enum):
     BUILD = "build"
     CLEAN = "clean"
     TEST  = "test"
@@ -63,7 +63,7 @@ def task_build(include_all: bool) -> None:
             "-o",
             os.path.join(BUILD_DIR, os.path.basename(i) + ".o")
         ]
-        res: subprocess.CompletedProcess[bytes] = subprocess.run(args)
+        res: subprocess.CompletedProcess = subprocess.run(args)
         if res.returncode != 0:
             print(f"Build failed with return code of {res.returncode}")
             return
@@ -78,14 +78,14 @@ def task_build(include_all: bool) -> None:
         print(f"Archiving failed with return code of {res.returncode}")
         return
 
-def launch_test(test_name: str) -> Tuple[float, subprocess.CompletedProcess[bytes]]:
+def launch_test(test_name: str) -> Tuple[float, subprocess.CompletedProcess]:
     start: float = time.perf_counter()
-    testResult: subprocess.CompletedProcess[bytes] = subprocess.run([
+    testResult: subprocess.CompletedProcess = subprocess.run([
         os.path.join(TESTS_BUILD_DIR, test_name)
     ])
     return time.perf_counter() - start, testResult
 
-def build_test(test_name: str, file: str) -> subprocess.CompletedProcess[bytes]:
+def build_test(test_name: str, file: str) -> subprocess.CompletedProcess:
 
     build_args: Final[List[str]] = load_args()
     return subprocess.run([
@@ -122,7 +122,7 @@ def perform_single_test(test_name: str, file: str) -> None:
 def perform_test(file: str, performance: bool) -> None:
 
     test_name: str = os.path.basename(file).split(".")[0]
-    buildResult: subprocess.CompletedProcess[bytes] = build_test(test_name, file)
+    buildResult: subprocess.CompletedProcess = build_test(test_name, file)
     if buildResult.returncode != 0:
         print(f"Build of {os.path.basename(file)} failed with return code of {buildResult.returncode}")
         return
@@ -156,7 +156,7 @@ if __name__ == "__main__":
         prog="buildSystem",
         description="BetterSTD build system"
     )
-    subparsers: argparse._SubParsersAction[argparse.ArgumentParser] = \
+    subparsers: argparse._SubParsersAction = \
         parser.add_subparsers(dest="action", required=True)
 
     test_parser: argparse.ArgumentParser = subparsers.add_parser("test")
