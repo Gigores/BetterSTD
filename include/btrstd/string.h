@@ -71,12 +71,17 @@ void BTR_String_cropRight(btr_string_s *, size_t count);
 const char *BTR_String_charAt(btr_string_s *, int index);
 // Returns the amount of UTF-8 characters in the string.
 size_t BTR_String_len(btr_string_s *);
+// Tells if the function is empty.
 bool BTR_String_isEmpty(btr_string_s *);
 // Deletes a UTF-8 character at the given index.
 // The character (all of its bytes) is being copied.
 // If the buffer is NULL, the character is not getting copied.
 void BTR_String_pop(btr_string_s *, int index, char *buffer);
+// Returns the given amount of UTF-8 characters at the given index.
 void BTR_String_remove(btr_string_s *, size_t start, size_t count);
+// Returns the given amount of bytes at the given index.
+void BTR_String_removeBytes(btr_string_s *, size_t start, size_t count);
+// Clears the string
 void BTR_String_clear(btr_string_s *);
 
 // Reallocates the String with new byte capacity of
