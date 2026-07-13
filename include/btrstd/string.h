@@ -56,8 +56,12 @@ void BTR_String_insertString(btr_string_s *, btr_string_s *data, int index);
 void BTR_String_insertStringView(btr_string_s *, btr_string_view_s data, int index);
 
 // REPLACE
+// Replaces all instances of given c-style null-terminated string with
+// another c-style null-terminated string.
 size_t BTR_String_replaceCString(btr_string_s *, const char *from, const char *to);
+// Replaces all instances of given string with another string.
 size_t BTR_String_replaceString(btr_string_s *, btr_string_s from, btr_string_s to);
+// Replaces all instances of given string view with another string view.
 size_t BTR_String_replaceStringView(btr_string_s *, btr_string_view_s from, btr_string_view_s to);
 
 // Crops the given amount of UTF-8 characters from
@@ -94,7 +98,9 @@ void BTR_String_reserveNew(btr_string_s *, size_t byteCount);
 // this.count
 void BTR_String_cropCapacity(btr_string_s *);
 
+// Converts all lowercase characters into uppercase.
 void BTR_String_toUpper(btr_string_s *);
+// Converts all uppercase characters into lowercase.
 void BTR_String_toLower(btr_string_s *);
 
 // Returns a String View poining to the given String.
