@@ -3,7 +3,7 @@
 ### Fixes
 - Fix truncation for `BTR_StringView_charAt`.
 
-# Update 1.2.0 (WIP)
+# Update 1.2.0
 
 ### Additions
 - Added `btrstd/string.h` module.
