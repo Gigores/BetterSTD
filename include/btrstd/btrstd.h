@@ -8,3 +8,5 @@
 #include "btrstd/smart_pointers.h"
 #include "btrstd/allocator.h"
 #include "btrstd/string.h"
+
+#define BTR_VERSION "1.2.0"

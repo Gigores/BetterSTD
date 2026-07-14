@@ -6,6 +6,7 @@
 # Update 1.2.0
 
 ### Additions
+- Added `BTR_VERSION` macro.
 - Added `btrstd/string.h` module.
 - Added `btrstd/utf8.h` module.
 - Added `BTR_BAList_reserve` method in `btrstd/containers/borrowing_array_list.h`.
