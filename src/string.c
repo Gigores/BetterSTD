@@ -51,7 +51,7 @@ btr_string_s BTR_String_fromStringView(btr_string_view_s string, btr_allocator_s
 {
     btr_allocator_s *theAllocator = getAllocator(allocator);
     btr_oalist_s data = BTR_OAList_make(BTR_StringView_len(&string), sizeof(char), theAllocator);
-    memcpy(data.data, string.data + string.start, string.length);
+    memcpy(data.data, string.data, string.length);
     data.count += string.length;
     return (btr_string_s) {
         .data = data,
@@ -82,7 +82,7 @@ void BTR_String_appendString(btr_string_s *this, btr_string_s *data)
 void BTR_String_appendStringView(btr_string_s *this, btr_string_view_s data)
 {
     for (size_t i = 0; i < data.length; i++)
-        *(char *)BTR_OAList_append(&this->data) = *(data.data + data.start + i);
+        *(char *)BTR_OAList_append(&this->data) = *(data.data + i);
 }
 void BTR_String_prependCString(btr_string_s *this, const char *data)
 {
@@ -101,7 +101,7 @@ void BTR_String_prependString(btr_string_s *this, btr_string_s *data)
 void BTR_String_prependStringView(btr_string_s *this, btr_string_view_s data)
 {
     for (int i = data.length - 1; i >= 0; i--)
-        *(char *)BTR_OAList_prepend(&this->data) = *(data.data + data.start + i);
+        *(char *)BTR_OAList_prepend(&this->data) = *(data.data + i);
 }
 
 void BTR_String_insertCString(btr_string_s *this, const char *data, int index)
@@ -144,7 +144,7 @@ void BTR_String_insertStringView(btr_string_s *this, btr_string_view_s data, int
         curByteIndex += BTR_UTF8_charLen(((char *)this->data.data)[curByteIndex]);
     for (size_t i = 0; i < data.length; i++)
     {
-        *(char *)BTR_OAList_insert(&this->data, curByteIndex) = *(data.data + data.start + i);
+        *(char *)BTR_OAList_insert(&this->data, curByteIndex) = *(data.data + i);
         curByteIndex++;
     }
 }
@@ -234,7 +234,6 @@ btr_string_view_s BTR_String_getView(btr_string_s *this)
     return (btr_string_view_s)
     {
         .data = this->data.data,
-        .capacity = this->data.count,
         .length = this->data.count,
     };
 }
@@ -282,8 +281,8 @@ size_t BTR_String_replaceStringView(btr_string_s *this, btr_string_view_s from, 
 {
     return btr_string_replace_bytes(
         this,
-        from.data + from.start, from.length,
-        to.data + to.start, to.length
+        from.data, from.length,
+        to.data, to.length
     );
 }
 

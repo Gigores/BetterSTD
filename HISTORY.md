@@ -1,5 +1,9 @@
 # Update 2.0.0 (Only plans)
 
+### Breaking features
+- `btr_string_view_s` refactor and optimization:
+  - Field `start` removed.
+  - Field `capacity` removed.
 ### Fixes
 - Fix truncation for `BTR_StringView_charAt`.
 

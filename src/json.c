@@ -290,7 +290,7 @@ static btr_json_value_s parse(parse_state_t *state)
                 BTR_Allocator_allocate(state->allocator, next->content.length + 1),
                 "Allocation failed",
             );
-            memcpy(key, next->content.data + next->content.start, next->content.length);
+            memcpy(key, next->content.data, next->content.length);
             key[next->content.length] = '\0';
 
             next = parser_advance(state);

@@ -8,13 +8,12 @@
 // String view is an object that represents a string. But unlike regular C strings,
 // which are pointers to character array, terminated by a \0 character, string view
 // doesn't need to be terminated.
-// String view stores its length, as well as a start offset, which helps efficiently
+// String view stores its length and a data pointer, which helps efficiently
 // slice and manipulate memory without destructive operations.
-//     strView{length, start, data}
-//                │      │      └▷  [This is a test string!0]
-//                │      └▷               |
-//                └▷                      ---------
-// When printed: "is a test"
+//     strView{data, length}
+//                │     └▷  [This is a test string!0]
+//                └▷         ^^^^^^^^^^^
+// When printed: "This is a t"
 // It also doesn't own the string it points to, which helps save memory.
 
 // This string view implementation fully supports UTF-8.
@@ -22,9 +21,7 @@
 
 typedef struct BTR_StringView {
     char *data;
-    size_t start;
     size_t length;
-    size_t capacity;
 } btr_string_view_s;
 
 // Creates a string view from an array of bytes.
@@ -90,7 +87,7 @@ long BTR_StringView_parseLong(btr_string_view_s *sv, int base);
 // printf("Printing > "STRING_FORMAT"\n", STRING_ARGS(str));
 // ```
 #define BTR_STRING_FORMAT "%.*s"
-#define BTR_STRING_ARGS(STRING) (int) STRING.length, STRING.data + STRING.start
+#define BTR_STRING_ARGS(STRING) (int) STRING.length, STRING.data
 
 #define BTR_StringView_endsWith(STRING, POSTFIX) _Generic((POSTFIX), \
     btr_string_view_s *: BTR_StringView_endsWithView,                \
