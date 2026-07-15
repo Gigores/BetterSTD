@@ -49,7 +49,7 @@ size_t BTR_StringView_len(btr_string_view_s);
 bool BTR_StringView_isEmpty(btr_string_view_s);
 // Returns a pointer to a beginning of a UTF-8 character of the
 // given index. Returns `NULL` if the pointer is invalid.
-const char *BTR_StringView_charAt(btr_string_view_s, int index);
+const char *BTR_StringView_charAt(btr_string_view_s, long index);
 // Tells if the string view ends with another string view.
 bool BTR_StringView_endsWithView(btr_string_view_s, btr_string_view_s postfixToSearch);
 // Tells if the string view starts with another string view.

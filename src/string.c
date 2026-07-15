@@ -175,7 +175,7 @@ void BTR_String_cropRight(btr_string_s *this, size_t count)
             BTR_OAList_pop(&this->data, -1, NULL);
     }
 }
-const char *BTR_String_charAt(btr_string_s *this, int index)
+const char *BTR_String_charAt(btr_string_s *this, long index)
 {
     btr_string_view_s view = BTR_String_getView(this);
     return BTR_StringView_charAt(view, index);

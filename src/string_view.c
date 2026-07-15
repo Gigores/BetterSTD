@@ -83,7 +83,7 @@ bool BTR_StringView_isEmpty(btr_string_view_s string)
 {
     return !BTR_StringView_len(string);
 }
-const char *BTR_StringView_charAt(btr_string_view_s string, int index)
+const char *BTR_StringView_charAt(btr_string_view_s string, long index)
 {
     size_t len = BTR_StringView_len(string);
     if (index < 0)
