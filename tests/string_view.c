@@ -12,34 +12,34 @@ static void test1(void)
 
     btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
-    BTR_StringView_cropLeft(&view, 1);
+    view = BTR_StringView_cropLeft(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "Ж你😀",
             .length = strlen("Ж你😀")
         }
     ) == 0);
 
-    BTR_StringView_cropLeft(&view, 1);
+    view = BTR_StringView_cropLeft(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "你😀",
             .length = strlen("你😀")
         }
     ) == 0);
 
-    BTR_StringView_cropLeft(&view, 1);
+    view = BTR_StringView_cropLeft(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "😀",
             .length = strlen("😀")
         }
     ) == 0);
 
-    BTR_StringView_cropLeft(&view, 1);
+    view = BTR_StringView_cropLeft(view, 1);
     assert(view.length == 0);
 }
 
@@ -52,34 +52,34 @@ static void test3(void)
 
     btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
-    BTR_StringView_cropRight(&view, 1);
+    view = BTR_StringView_cropRight(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "😀你Ж",
             .length = strlen("😀你Ж")
         }
     ) == 0);
 
-    BTR_StringView_cropRight(&view, 1);
+    view = BTR_StringView_cropRight(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "😀你",
             .length = strlen("😀你")
         }
     ) == 0);
 
-    BTR_StringView_cropRight(&view, 1);
+    view = BTR_StringView_cropRight(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "😀",
             .length = strlen("😀")
         }
     ) == 0);
 
-    BTR_StringView_cropRight(&view, 1);
+    view = BTR_StringView_cropRight(view, 1);
     assert(view.length == 0);
 }
 // test `cropLeft` and `cropRight` at the same time
@@ -91,43 +91,43 @@ static void test5(void)
 
     btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
-    BTR_StringView_cropRight(&view, 1);
+    view = BTR_StringView_cropRight(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "AЖ你😀BŁ文",
             .length = strlen("AЖ你😀BŁ文")
         }
     ) == 0);
 
-    BTR_StringView_cropLeft(&view, 2);
+    view = BTR_StringView_cropLeft(view, 2);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "你😀BŁ文",
             .length = strlen("你😀BŁ文")
         }
     ) == 0);
 
-    BTR_StringView_cropRight(&view, 2);
+    view = BTR_StringView_cropRight(view, 2);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "你😀B",
             .length = strlen("你😀B")
         }
     ) == 0);
 
-    BTR_StringView_cropLeft(&view, 2);
+    view = BTR_StringView_cropLeft(view, 2);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "B",
             .length = strlen("B")
         }
     ) == 0);
 
-    BTR_StringView_cropRight(&view, 1);
+    view = BTR_StringView_cropRight(view, 1);
     assert(view.length == 0);
 }
 // test `revertRight` and `revertLeft`
@@ -139,37 +139,37 @@ static void test7(void)
 
     btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
-    BTR_StringView_cropRight(&view, 1);
+    view = BTR_StringView_cropRight(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "AЖ你😀BŁ文",
             .length = strlen("AЖ你😀BŁ文")
         }
     ) == 0);
 
-    BTR_StringView_revertRight(&view, 1);
+    view = BTR_StringView_revertRight(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "AЖ你😀BŁ文🚀",
             .length = strlen("AЖ你😀BŁ文🚀")
         }
     ) == 0);
 
-    BTR_StringView_cropLeft(&view, 1);
+    view = BTR_StringView_cropLeft(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "Ж你😀BŁ文🚀",
             .length = strlen("Ж你😀BŁ文🚀")
         }
     ) == 0);
 
-    BTR_StringView_revertLeft(&view, 1);
+    view = BTR_StringView_revertLeft(view, 1);
     assert(BTR_StringView_compare(
-        &view,
-        &(btr_string_view_s) {
+        view,
+        (btr_string_view_s) {
             .data = "AЖ你😀BŁ文🚀",
             .length = strlen("AЖ你😀BŁ文🚀")
         }
@@ -184,40 +184,40 @@ static void test8(void)
 
     btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
-    assert(BTR_StringView_byteCount(&view) == strlen(TEXT));
-    assert(BTR_StringView_len(&view) == strlen(TEXT) / 2);
-    assert(!BTR_StringView_isEmpty(&view));
+    assert(BTR_StringView_byteCount(view) == strlen(TEXT));
+    assert(BTR_StringView_len(view) == strlen(TEXT) / 2);
+    assert(!BTR_StringView_isEmpty(view));
 
-    BTR_StringView_cropLeft(&view, 2);
+    view = BTR_StringView_cropLeft(view, 2);
 
-    assert(BTR_StringView_byteCount(&view) == strlen(TEXT) - 4);
-    assert(BTR_StringView_len(&view) == (strlen(TEXT) - 4) / 2);
-    assert(!BTR_StringView_isEmpty(&view));
+    assert(BTR_StringView_byteCount(view) == strlen(TEXT) - 4);
+    assert(BTR_StringView_len(view) == (strlen(TEXT) - 4) / 2);
+    assert(!BTR_StringView_isEmpty(view));
 
-    for (size_t i = 0; i < BTR_StringView_len(&view); i++)
-        assert(*BTR_StringView_charAt(&view, i) == TEXT[4 + i * 2]);
+    for (size_t i = 0; i < BTR_StringView_len(view); i++)
+        assert(*BTR_StringView_charAt(view, i) == TEXT[4 + i * 2]);
 
     size_t len = strlen(TEXT);
-    for (size_t i = 1; i < BTR_StringView_len(&view); i++)
-        assert(*BTR_StringView_charAt(&view, -i) == TEXT[len - i * 2]);
+    for (size_t i = 1; i < BTR_StringView_len(view); i++)
+        assert(*BTR_StringView_charAt(view, -i) == TEXT[len - i * 2]);
 
     btr_string_view_s prefix1 = BTR_StringView_fromCString("σκεπ");
-    assert(BTR_StringView_startsWith(&view, &prefix1));
+    assert(BTR_StringView_startsWith(view, prefix1));
 
     btr_string_view_s prefix2 = BTR_StringView_fromCString("οφθό");
-    assert(!BTR_StringView_startsWith(&view, &prefix2));
+    assert(!BTR_StringView_startsWith(view, prefix2));
 
-    assert(BTR_StringView_endsWith(&view, "γμία"));
+    assert(BTR_StringView_endsWith(view, "γμία"));
 
-    assert(!BTR_StringView_endsWith(&view, "οφθό"));
+    assert(!BTR_StringView_endsWith(view, "οφθό"));
 
-    assert(BTR_StringView_find(&view, "οφθό").data);
+    assert(BTR_StringView_find(view, "οφθό").data);
 
-    assert(!BTR_StringView_find(&view, "hello, great sir!").data);
+    assert(!BTR_StringView_find(view, "hello, great sir!").data);
 
-    btr_string_view_s sub = BTR_StringView_substring(&view, 2, 8);
+    btr_string_view_s sub = BTR_StringView_substring(view, 2, 8);
     btr_string_view_s testView = BTR_StringView_fromCString("επάζωτην");
-    assert(!BTR_StringView_compare(&sub, &testView));
+    assert(!BTR_StringView_compare(sub, testView));
 }
 // test `trim`
 static void test9(void)
@@ -228,9 +228,9 @@ static void test9(void)
 
     btr_string_view_s view = BTR_StringView_fromCString(TEXT);
 
-    BTR_StringView_trim(&view);
+    view = BTR_StringView_trim(view);
     btr_string_view_s testView = BTR_StringView_fromCString("я не знаю что значит этот текст");
-    assert(!BTR_StringView_compare(&view, &testView));
+    assert(!BTR_StringView_compare(view, testView));
 }
 
 int main(void) {

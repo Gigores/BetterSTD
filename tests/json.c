@@ -11,7 +11,7 @@ int main(void)
     btr_json_value_s v2 = BTR_jsonDeserialize("\"Сергей\"");
     assert(v2.type == BTR_JSON_STRING);
     btr_string_view_s expected = BTR_StringView_fromCString("Сергей");
-    assert(!BTR_StringView_compare(&v2.string, &expected));
+    assert(!BTR_StringView_compare(v2.string, expected));
     BTR_JsonValue_free(&v2);
 
     btr_json_value_s v3 = BTR_jsonDeserialize("true");
@@ -41,19 +41,19 @@ int main(void)
     assert(v7.type == BTR_JSON_ARRAY);
     {
         btr_string_view_s expected = BTR_StringView_fromCString("1");
-        assert(!BTR_StringView_compare(&((btr_json_value_s *)BTR_unwrap(BTR_BLList_get(&v7.array, 0)))->string, &expected));
+        assert(!BTR_StringView_compare(((btr_json_value_s *)BTR_unwrap(BTR_BLList_get(&v7.array, 0)))->string, expected));
     } {
         btr_string_view_s expected = BTR_StringView_fromCString("2");
-        assert(!BTR_StringView_compare(&((btr_json_value_s *)BTR_unwrap(BTR_BLList_get(&v7.array, 1)))->string, &expected));
+        assert(!BTR_StringView_compare(((btr_json_value_s *)BTR_unwrap(BTR_BLList_get(&v7.array, 1)))->string, expected));
     } {
         btr_string_view_s expected = BTR_StringView_fromCString("3");
-        assert(!BTR_StringView_compare(&((btr_json_value_s *)BTR_unwrap(BTR_BLList_get(&v7.array, 2)))->string, &expected));
+        assert(!BTR_StringView_compare(((btr_json_value_s *)BTR_unwrap(BTR_BLList_get(&v7.array, 2)))->string, expected));
     } {
         btr_string_view_s expected = BTR_StringView_fromCString("4");
-        assert(!BTR_StringView_compare(&((btr_json_value_s *)BTR_unwrap(BTR_BLList_get(&v7.array, 3)))->string, &expected));
+        assert(!BTR_StringView_compare(((btr_json_value_s *)BTR_unwrap(BTR_BLList_get(&v7.array, 3)))->string, expected));
     } {
         btr_string_view_s expected = BTR_StringView_fromCString("5");
-        assert(!BTR_StringView_compare(&((btr_json_value_s *)BTR_unwrap(BTR_BLList_get(&v7.array, 4)))->string, &expected));
+        assert(!BTR_StringView_compare(((btr_json_value_s *)BTR_unwrap(BTR_BLList_get(&v7.array, 4)))->string, expected));
     }
     BTR_JsonValue_free(&v7);
 
@@ -65,7 +65,7 @@ int main(void)
         btr_json_value_s *name = BTR_unwrap(BTR_BHTable_get(&v8.object, "name"));
         assert(name->type == BTR_JSON_STRING);
         btr_string_view_s expected_name = BTR_StringView_fromCString("John");
-        assert(!BTR_StringView_compare(&name->string, &expected_name));
+        assert(!BTR_StringView_compare(name->string, expected_name));
     } {
         btr_json_value_s *age = BTR_unwrap(BTR_BHTable_get(&v8.object, "age"));
         assert(age->type == BTR_JSON_NUMBER);
@@ -80,12 +80,12 @@ int main(void)
             btr_json_value_s *m = BTR_unwrap(BTR_BLList_get(&relatives->array, 0));
             assert(m->type == BTR_JSON_STRING);
             btr_string_view_s expected_m = BTR_StringView_fromCString("Marie");
-            assert(!BTR_StringView_compare(&m->string, &expected_m));
+            assert(!BTR_StringView_compare(m->string, expected_m));
         } {
             btr_json_value_s *a = BTR_unwrap(BTR_BLList_get(&relatives->array, 1));
             assert(a->type == BTR_JSON_STRING);
             btr_string_view_s expected_a = BTR_StringView_fromCString("Alex");
-            assert(!BTR_StringView_compare(&a->string, &expected_a));
+            assert(!BTR_StringView_compare(a->string, expected_a));
         }
     }
     BTR_JsonValue_free(&v8);

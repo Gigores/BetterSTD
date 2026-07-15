@@ -50,7 +50,7 @@ btr_string_s BTR_String_clone(btr_string_s *string, btr_allocator_s *allocator)
 btr_string_s BTR_String_fromStringView(btr_string_view_s string, btr_allocator_s *allocator)
 {
     btr_allocator_s *theAllocator = getAllocator(allocator);
-    btr_oalist_s data = BTR_OAList_make(BTR_StringView_len(&string), sizeof(char), theAllocator);
+    btr_oalist_s data = BTR_OAList_make(BTR_StringView_len(string), sizeof(char), theAllocator);
     memcpy(data.data, string.data, string.length);
     data.count += string.length;
     return (btr_string_s) {
@@ -178,12 +178,12 @@ void BTR_String_cropRight(btr_string_s *this, size_t count)
 const char *BTR_String_charAt(btr_string_s *this, int index)
 {
     btr_string_view_s view = BTR_String_getView(this);
-    return BTR_StringView_charAt(&view, index);
+    return BTR_StringView_charAt(view, index);
 }
 size_t BTR_String_len(btr_string_s *this)
 {
     btr_string_view_s view = BTR_String_getView(this);
-    return BTR_StringView_len(&view);
+    return BTR_StringView_len(view);
 }
 bool BTR_String_isEmpty(btr_string_s *this)
 {
@@ -241,12 +241,12 @@ int BTR_String_compare(btr_string_s *a, btr_string_s *b)
 {
     btr_string_view_s sva = BTR_String_getView(a);
     btr_string_view_s svb = BTR_String_getView(b);
-    return BTR_StringView_compare(&sva, &svb);
+    return BTR_StringView_compare(sva, svb);
 }
 int BTR_String_compareView(btr_string_s *a, btr_string_view_s b)
 {
     btr_string_view_s sva = BTR_String_getView(a);
-    return BTR_StringView_compare(&sva, &b);
+    return BTR_StringView_compare(sva, b);
 }
 void BTR_String_free(btr_string_s *this) {
     BTR_OAList_free(&this->data);

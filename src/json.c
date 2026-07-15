@@ -52,12 +52,12 @@ typedef struct {
 static char *tokenizer_next(token_state_t *state)
 {
     state->curCharIndex++;
-    state->curChar = (char *) BTR_StringView_charAt(&state->text, state->curCharIndex);
+    state->curChar = (char *) BTR_StringView_charAt(state->text, state->curCharIndex);
     return state->curChar;
 }
 static bool tokenizer_canAdvance(token_state_t *state)
 {
-    return BTR_StringView_charAt(&state->text, state->curCharIndex) != NULL;
+    return BTR_StringView_charAt(state->text, state->curCharIndex) != NULL;
 }
 
 static void tokenizer_pushToken(token_state_t *state, token_type_t type, btr_string_view_s view)
@@ -73,7 +73,7 @@ static void tokenizer_pushToken(token_state_t *state, token_type_t type, btr_str
 
 static btr_string_view_s tokenizer_getCurCharView(token_state_t *state)
 {
-    return BTR_StringView_substring(&state->text, state->curCharIndex, 1);
+    return BTR_StringView_substring(state->text, state->curCharIndex, 1);
 }
 static void tokenizer_handleString(token_state_t *state)
 {
@@ -88,7 +88,7 @@ static void tokenizer_handleString(token_state_t *state)
     tokenizer_pushToken(
         state,
         TOKEN_STRING,
-        BTR_StringView_substring(&state->text, start + 1, len)
+        BTR_StringView_substring(state->text, start + 1, len)
     );
     tokenizer_next(state);
 }
@@ -104,7 +104,7 @@ static void tokenizer_handleNumber(token_state_t *state)
     tokenizer_pushToken(
         state,
         TOKEN_NUMBER,
-        BTR_StringView_substring(&state->text, start, len)
+        BTR_StringView_substring(state->text, start, len)
     );
 }
 static void tokenizer_handleKeyword(token_state_t *state)
@@ -119,20 +119,20 @@ static void tokenizer_handleKeyword(token_state_t *state)
         len++;
         tokenizer_next(state);
     }
-    btr_string_view_s sv = BTR_StringView_substring(&state->text, start, len);
-    if (!BTR_StringView_compare(&sv, &trueSv))
+    btr_string_view_s sv = BTR_StringView_substring(state->text, start, len);
+    if (!BTR_StringView_compare(sv, trueSv))
         tokenizer_pushToken(
             state,
             TOKEN_TRUE,
             sv
         );
-    else if (!BTR_StringView_compare(&sv, &falseSv))
+    else if (!BTR_StringView_compare(sv, falseSv))
         tokenizer_pushToken(
             state,
             TOKEN_FALSE,
             sv
         );
-    else if (!BTR_StringView_compare(&sv, &nullSv))
+    else if (!BTR_StringView_compare(sv, nullSv))
         tokenizer_pushToken(
             state,
             TOKEN_NULL,
@@ -226,7 +226,7 @@ static btr_json_value_s parse(parse_state_t *state)
     if (firstToken->type == TOKEN_NUMBER)
         return (btr_json_value_s) {
             .type = BTR_JSON_NUMBER,
-            .number = BTR_StringView_parseDouble(&firstToken->content),
+            .number = BTR_StringView_parseDouble(firstToken->content),
             .allocator = state->allocator,
         };
     if (firstToken->type == TOKEN_STRING)
