@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env -S uv run
 
 from typing import Final, List, Tuple, Optional
 from enum import Enum

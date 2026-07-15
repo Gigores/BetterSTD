@@ -1,0 +1,19 @@
+version = 1
+revision = 3
+requires-python = ">=3.10"
+
+[[package]]
+name = "btrstd"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "metapy" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "metapy", git = "https://codeberg.org/Priklen/MetaPy.git" }]
+
+[[package]]
+name = "metapy"
+version = "1.0.0"
+source = { git = "https://codeberg.org/Priklen/MetaPy.git#6e044d913bfd05ed8e9320b1c251cc1e05fa2bba" }
