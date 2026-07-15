@@ -108,23 +108,26 @@ void *BTR_OAList_toArray(btr_oalist_s *, btr_allocator_s *allocator);
 
 typedef btr_oalist_s oalist_s;
 
-#define OAList_makeFrom BTR_OAList_makeFrom
-#define OAList_make     BTR_OAList_make
-#define OAList_clone    BTR_OAList_clone
-#define OAList_append   BTR_OAList_append
-#define OAList_prepend  BTR_OAList_prepend
-#define OAList_insert   BTR_OAList_insert
-#define OAList_pop      BTR_OAList_pop
-#define OAList_get      BTR_OAList_get
-#define OAList_first    BTR_OAList_first
-#define OAList_last     BTR_OAList_last
-#define OAList_indexOf  BTR_OAList_indexOf
-#define OAList_len      BTR_OAList_len
-#define OAList_isEmpty  BTR_OAList_isEmpty
-#define OAList_reverse  BTR_OAList_reverse
-#define OAList_free     BTR_OAList_free
-#define OAList_clear    BTR_OAList_clear
-#define OAList_toArray  BTR_OAList_toArray
+#define OAList_makeFrom     BTR_OAList_makeFrom
+#define OAList_make         BTR_OAList_make
+#define OAList_clone        BTR_OAList_clone
+#define OAList_append       BTR_OAList_append
+#define OAList_prepend      BTR_OAList_prepend
+#define OAList_insert       BTR_OAList_insert
+#define OAList_pop          BTR_OAList_pop
+#define OAList_get          BTR_OAList_get
+#define OAList_first        BTR_OAList_first
+#define OAList_last         BTR_OAList_last
+#define OAList_indexOf      BTR_OAList_indexOf
+#define OAList_len          BTR_OAList_len
+#define OAList_isEmpty      BTR_OAList_isEmpty
+#define OAList_reverse      BTR_OAList_reverse
+#define OAList_reserve      BTR_OAList_reserve
+#define OAList_reserveNew   BTR_OAList_reserveNew
+#define OAList_cropCapacity BTR_OAList_cropCapacity
+#define OAList_free         BTR_OAList_free
+#define OAList_clear        BTR_OAList_clear
+#define OAList_toArray      BTR_OAList_toArray
 
 #define OALIST_FOREACH   BTR_OALIST_FOREACH
 #define OALIST_ENUMERATE BTR_OALIST_ENUMERATE

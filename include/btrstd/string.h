@@ -155,3 +155,63 @@ char *BTR_String_toCString(btr_string_s *, btr_allocator_s *allocator);
     btr_string_s *: BTR_String_replaceString,           \
     btr_string_view_s: BTR_String_replaceStringView     \
 )(str, T, to)
+
+#ifdef BTR_NO_PREFIX
+
+typedef btr_string_s string_s;
+
+#define String BTR_String
+
+#define String_fromCString    BTR_String_fromCString
+#define String_clone          BTR_String_clone
+#define String_fromStringView BTR_String_fromStringView
+#define String_new            BTR_String_new
+
+#define String_appendCString     BTR_String_appendCString
+#define String_appendChar        BTR_String_appendChar
+#define String_appendString      BTR_String_appendString
+#define String_appendStringView  BTR_String_appendStringView
+#define String_prependCString    BTR_String_prependCString
+#define String_prependChar       BTR_String_prependChar
+#define String_prependString     BTR_String_prependString
+#define String_prependStringView BTR_String_prependStringView
+#define String_insertCString     BTR_String_insertCString
+#define String_insertChar        BTR_String_insertChar
+#define String_insertString      BTR_String_insertString
+#define String_insertStringView  BTR_String_insertStringView
+
+#define String_replaceCString    BTR_String_replaceCString
+#define String_replaceString     BTR_String_replaceString
+#define String_replaceStringView BTR_String_replaceStringView
+
+#define String_cropLeft    BTR_String_cropLeft
+#define String_cropRight   BTR_String_cropRight
+#define String_charAt      BTR_String_charAt
+#define String_len         BTR_String_len
+#define String_isEmpty     BTR_String_isEmpty
+#define String_pop         BTR_String_pop
+#define String_remove      BTR_String_remove
+#define String_removeBytes BTR_String_removeBytes
+#define String_clear       BTR_String_clear
+
+#define String_reserve      BTR_String_reserve
+#define String_reserveNew   BTR_String_reserveNew
+#define String_cropCapacity BTR_String_cropCapacity
+
+#define String_toUpper BTR_String_toUpper
+#define String_toLower BTR_String_toLower
+
+#define String_getView       BTR_String_getView
+#define String_compare       BTR_String_compare
+#define String_compareView   BTR_String_compareView
+#define String_free          BTR_String_free
+#define String_freeToCString BTR_String_freeToCString
+#define String_toCString     BTR_String_toCString
+
+#define String_from    BTR_String_from
+#define String_append  BTR_String_append
+#define String_prepend BTR_String_prepend
+#define String_insert  BTR_String_insert
+#define String_replace BTR_String_replace
+
+#endif  // BTR_NO_PREFIX

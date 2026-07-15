@@ -128,24 +128,27 @@ void **BTR_BAList_toArray(btr_balist_s *, btr_allocator_s *allocator);
 
 typedef btr_balist_s balist_s;
 
-#define BAList_make      BTR_BAList_make
-#define BAList_makeFrom  BTR_BAList_makeFrom
-#define BAList_clone     BTR_BAList_clone
-#define BAList_append    BTR_BAList_append
-#define BAList_prepend   BTR_BAList_prepend
-#define BAList_insert    BTR_BAList_insert
-#define BAList_set       BTR_BAList_set
-#define BAList_pop       BTR_BAList_pop
-#define BAList_get       BTR_BAList_get
-#define BAList_first     BTR_BAList_first
-#define BAList_last      BTR_BAList_last
-#define BAList_indexOf   BTR_BAList_indexOf
-#define BAList_len       BTR_BAList_len
-#define BAList_isEmpty   BTR_BAList_isEmpty
-#define BAList_reverse   BTR_BAList_reverse
-#define BAList_free      BTR_BAList_free
-#define BAList_clear     BTR_BAList_clear
-#define BAList_toArray   BTR_BAList_toArray
+#define BAList_make         BTR_BAList_make
+#define BAList_makeFrom     BTR_BAList_makeFrom
+#define BAList_clone        BTR_BAList_clone
+#define BAList_append       BTR_BAList_append
+#define BAList_prepend      BTR_BAList_prepend
+#define BAList_insert       BTR_BAList_insert
+#define BAList_set          BTR_BAList_set
+#define BAList_pop          BTR_BAList_pop
+#define BAList_get          BTR_BAList_get
+#define BAList_first        BTR_BAList_first
+#define BAList_last         BTR_BAList_last
+#define BAList_indexOf      BTR_BAList_indexOf
+#define BAList_len          BTR_BAList_len
+#define BAList_isEmpty      BTR_BAList_isEmpty
+#define BAList_reverse      BTR_BAList_reverse
+#define BAList_reserve      BTR_BAList_reserve
+#define BAList_reserveNew   BTR_BAList_reserveNew
+#define BAList_cropCapacity BTR_BAList_cropCapacity
+#define BAList_free         BTR_BAList_free
+#define BAList_clear        BTR_BAList_clear
+#define BAList_toArray      BTR_BAList_toArray
 
 #define BALIST_FOREACH   BTR_BALIST_FOREACH
 #define BALIST_ENUMERATE BTR_BALIST_ENUMERATE
