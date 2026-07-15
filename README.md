@@ -66,10 +66,10 @@ The resulting `libbtrstd.a` static library will be placed inside the `build/` di
 
 - [x] [Error handling system](./include/btrstd/error.h)
 - [x] [Logging system](./include/btrstd/logger.h)
+- [x] [String](./include/btrstd/string.h) (Supports UTF-8)
 - [x] [String view](./include/btrstd/string_view.h) (Supports UTF-8)
 - [x] [Auto pointers](./include/btrstd/smart_pointers.h)
 - [x] [DataTime](./include/btrstd/datetime.h)
-- [ ] String (Supports UTF-8)
 - [ ] Iterators
 - [ ] Slices
 - [ ] File System

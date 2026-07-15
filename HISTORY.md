@@ -1,10 +1,12 @@
-# Update 2.0.0 (Only plans)
+# Update 2.0.0
 
-### Breaking features
+### Breaking changes
 - All `BTR_StringView_*` functions now accept `btr_string_view_s` and return a new view instead of modifying.
 - `btr_string_view_s` refactor and optimization:
   - Field `start` removed.
   - Field `capacity` removed.
+### Additions
+- Added missing `#define`s for `#ifdef BTR_NO_PREFIX`.
 ### Fixes
 - Fix truncation for `BTR_StringView_charAt`.
 
