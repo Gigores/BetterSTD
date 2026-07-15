@@ -9,4 +9,4 @@
 #include "btrstd/allocator.h"
 #include "btrstd/string.h"
 
-#define BTR_VERSION "1.2.0"
+#define BTR_VERSION "2.0.0"
