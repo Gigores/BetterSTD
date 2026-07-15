@@ -1,4 +1,4 @@
-#! /usr/bin/env -S uv run
+#! /usr/bin/env -S uv run --script
 
 from typing import Final, List, Tuple, Optional
 from enum import Enum
@@ -6,6 +6,7 @@ import subprocess
 import argparse
 import platform
 import shutil
+import macros
 import time
 import os
 
