@@ -48,7 +48,7 @@ For documentation read header files.
 
 Requirements:
 - **Compiler**: GNU C Compiler
-- **Build system**: Python 3.8 or newer
+- **Build system**: UV
 - **Operating system**: Linux or Windows
 
 To build this library you can use the following command:
@@ -57,7 +57,7 @@ To build this library you can use the following command:
 # On Linux
 ./buildSystem build
 # On Windows
-python buildSystem build
+uv run python buildSystem build
 ```
 
 The resulting `libbtrstd.a` static library will be placed inside the `build/` directory.
