@@ -21,12 +21,12 @@ const char *BTR_LogLevel_toString(btr_log_level_e);
 const char *BTR_LogLevel_getColor(btr_log_level_e);
 
 typedef struct BTR_Logger {
-    btr_log_level_e minLogLevel;
-    FILE *file;
-    bool logTime;
-    bool logFile;
-    bool logFunc;
-    bool logLine;
+    btr_log_level_e minLogLevel;  // Messages below this level are ignored
+    FILE *file;                   // Output file for messages
+    bool logTime;                 // Print the current time
+    bool logFile;                 // Printe the source file name
+    bool logFunc;                 // Print the function name
+    bool logLine;                 // Print the line number
 } btr_logger_s;
 
 void BTR_setLogger(btr_logger_s);
