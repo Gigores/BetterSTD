@@ -61,8 +61,8 @@ static void doLogLevel(btr_logger_s *logger, btr_log_level_e logLevel)
 static void doLogFile(btr_logger_s *logger, const char *file, int line, const char *func)
 {
     printf(COL_INTER"["COL_RESET"%s", file);
-    if (logger->logFunc) printf(COL_INTER"@"COL_RESET"%s", func);
-    if (logger->logLine) printf(COL_INTER":"COL_RESET"%d", line);
+    if (logger->logFunc && func) printf(COL_INTER"@"COL_RESET"%s", func);
+    if (logger->logLine && line) printf(COL_INTER":"COL_RESET"%d", line);
     printf(COL_INTER"] ");
     if (!logger->file) return;
     fprintf(logger->file, "[%s", file);
