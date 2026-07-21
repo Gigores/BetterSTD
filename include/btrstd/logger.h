@@ -12,7 +12,7 @@
     X(FATAL, "\e[38;5;196m")
 
 typedef enum BTR_LogLevel {
-#define X(LEVEL, COLOR) LOG_##LEVEL,
+#define X(LEVEL, COLOR) BTR_LOG_##LEVEL,
     BTR_LOG_LEVELS
 #undef X
 } btr_log_level_e;
@@ -36,29 +36,29 @@ btr_logger_s *BTR_getLogger(void);
     BTR_logImpl(__FILE__, __LINE__, __FUNCTION__, logLevel, formatString __VA_OPT__(,) __VA_ARGS__)
 
 // int
-#define BTR_debugInt(variable) BTR_log(LOG_DEBUG, #variable " = %d", variable)
+#define BTR_debugInt(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %d", variable)
 // unsigned int
-#define BTR_debugUInt(variable) BTR_log(LOG_DEBUG, #variable " = %u", variable)
+#define BTR_debugUInt(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %u", variable)
 // long
-#define BTR_debugLong(variable) BTR_log(LOG_DEBUG, #variable " = %ld", variable)
+#define BTR_debugLong(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %ld", variable)
 // unsigned long
-#define BTR_debugULong(variable) BTR_log(LOG_DEBUG, #variable " = %lu", variable)
+#define BTR_debugULong(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %lu", variable)
 // long long
-#define BTR_debugLongLong(variable) BTR_log(LOG_DEBUG, #variable " = %lld", variable)
+#define BTR_debugLongLong(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %lld", variable)
 // unsigned long long
-#define BTR_debugULongLong(variable) BTR_log(LOG_DEBUG, #variable " = %llu", variable)
+#define BTR_debugULongLong(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %llu", variable)
 // char
-#define BTR_debugChar(variable) BTR_log(LOG_DEBUG, #variable " = %c", variable)
+#define BTR_debugChar(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %c", variable)
 // char * | const char *
-#define BTR_debugString(variable) BTR_log(LOG_DEBUG, #variable " = %s", variable)
+#define BTR_debugString(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %s", variable)
 // void * | ...
-#define BTR_debugPointer(variable) BTR_log(LOG_DEBUG, #variable " = %p", variable)
+#define BTR_debugPointer(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %p", variable)
 // float | double
-#define BTR_debugFloat(variable) BTR_log(LOG_DEBUG, #variable " = %f", variable)
+#define BTR_debugFloat(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %f", variable)
 // size_t
-#define BTR_debugSize(variable) BTR_log(LOG_DEBUG, #variable " = %zu", variable)
+#define BTR_debugSize(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %zu", variable)
 // bool
-#define BTR_debugBool(variable) BTR_log(LOG_DEBUG, #variable " = %s", variable ? "true" : "false")
+#define BTR_debugBool(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %s", variable ? "true" : "false")
 
 void BTR_logImpl(
     const char *file,
@@ -82,6 +82,12 @@ void BTR_vlogImpl(
 
 #define LogLevel BTR_LogLevel
 #define Logger BTR_Logger
+
+#define LOG_DEBUG BTR_LOG_DEBUG
+#define LOG_INFO BTR_LOG_INFO
+#define LOG_WARN BTR_LOG_WARN
+#define LOG_ERROR BTR_LOG_ERROR
+#define LOG_FATAL BTR_LOG_FATAL
 
 #define LOG_LEVELS BTR_LOG_LEVELS
 typedef btr_log_level_e log_level_e;

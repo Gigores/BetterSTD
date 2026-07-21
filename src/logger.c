@@ -9,7 +9,7 @@
 #define COL_INTER "\e[38;5;246m"
 
 static btr_logger_s BTR_g_logger = {
-    .minLogLevel = LOG_DEBUG,
+    .minLogLevel = BTR_LOG_DEBUG,
     .file = NULL,
     .logFile = true,
     .logTime = true,
@@ -29,7 +29,7 @@ btr_logger_s *BTR_getLogger(void)
 const char *BTR_LogLevel_toString(btr_log_level_e level)
 {
     switch (level) {
-#define X(LEVEL, COLOR) case (LOG_##LEVEL): return #LEVEL;
+#define X(LEVEL, COLOR) case (BTR_LOG_##LEVEL): return #LEVEL;
         BTR_LOG_LEVELS
 #undef X
         default: BTR_panic("invalid log level %d", level);
@@ -38,7 +38,7 @@ const char *BTR_LogLevel_toString(btr_log_level_e level)
 const char *BTR_LogLevel_getColor(btr_log_level_e level)
 {
     switch (level) {
-#define X(LEVEL, COLOR) case (LOG_##LEVEL): return COLOR;
+#define X(LEVEL, COLOR) case (BTR_LOG_##LEVEL): return COLOR;
         BTR_LOG_LEVELS
 #undef X
         default: BTR_panic("invalid log level %d", level);

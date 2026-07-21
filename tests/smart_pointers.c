@@ -9,7 +9,7 @@ int main(void)
     BTR_setLogger((btr_logger_s) {
         .file = file,
     });
-    BTR_log(LOG_INFO, "We are logging!");
+    BTR_log(BTR_LOG_INFO, "We are logging!");
 
     BTR_autoHeap(int) BUFFER = BTR_unwrap(BTR_allocate(sizeof(int) * 1024));
 

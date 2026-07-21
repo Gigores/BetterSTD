@@ -19,7 +19,7 @@ void BTR_panicImpl(
 ) {
     va_list args;
     va_start(args, format);
-    BTR_vlogImpl(file, line, func, LOG_FATAL, format, args);
+    BTR_vlogImpl(file, line, func, BTR_LOG_FATAL, format, args);
     va_end(args);
     fflush(NULL);
     abort();
@@ -35,7 +35,7 @@ void BTR_panicImplIf(
     if (!condition) return;
     va_list args;
     va_start(args, format);
-    BTR_vlogImpl(file, line, func, LOG_FATAL, format, args);
+    BTR_vlogImpl(file, line, func, BTR_LOG_FATAL, format, args);
     va_end(args);
     fflush(NULL);
     abort();
