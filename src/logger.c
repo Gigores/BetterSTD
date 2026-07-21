@@ -66,8 +66,8 @@ static void doLogFile(btr_logger_s *logger, const char *file, int line, const ch
     printf(COL_INTER"] ");
     if (!logger->file) return;
     fprintf(logger->file, "[%s", file);
-    if (logger->logFunc) fprintf(logger->file, "@%s", func);
-    if (logger->logLine) fprintf(logger->file, ":%d", line);
+    if (logger->logFunc && func) fprintf(logger->file, "@%s", func);
+    if (logger->logLine && func) fprintf(logger->file, ":%d", line);
     fprintf(logger->file, "] ");
 }
 void BTR_vlogImpl(
