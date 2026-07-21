@@ -33,7 +33,7 @@ void BTR_setLogger(btr_logger_s);
 btr_logger_s *BTR_getLogger(void);
 
 #define BTR_log(logLevel, formatString, ...) \
-    BTR_logImpl(__FILE__, __LINE__, __FUNCTION__, logLevel, formatString __VA_OPT__(,) __VA_ARGS__)
+    BTR_logImpl(__FILE__, __LINE__, __func__, logLevel, formatString __VA_OPT__(,) __VA_ARGS__)
 
 // int
 #define BTR_debugInt(variable) BTR_log(BTR_LOG_DEBUG, #variable " = %d", variable)
