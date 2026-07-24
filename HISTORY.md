@@ -1,3 +1,12 @@
+# Update 2.1.0 (WIP)
+
+### Additions
+- [ ] `btr_string_s` hashing function.
+- [ ] `btr_string_s` printing function.
+### Fixes
+- [ ] `BTR_String_append` (also prepend) fix for char.
+- [x] `BTR_StringView_findView` off-by-one error fix.
+
 # Update 2.0.0
 
 ### Breaking changes

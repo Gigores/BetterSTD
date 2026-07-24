@@ -140,7 +140,7 @@ btr_string_view_s BTR_StringView_findView(btr_string_view_s string, btr_string_v
     size_t substringSize = BTR_StringView_byteCount(substring);
     BTR_panicIf(substringSize > BTR_StringView_byteCount(string), "Substring too long");
     size_t maxCount = BTR_StringView_byteCount(string) - substringSize;
-    for (size_t count = 0; count < maxCount; count++)
+    for (size_t count = 0; count <= maxCount; count++)
     {
         if (!memcmp(
             string.data + count,
