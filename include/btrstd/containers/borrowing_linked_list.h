@@ -95,7 +95,7 @@ void **BTR_BLList_toArray(btr_bllist_s *, btr_allocator_s *allocator);
 // Example usage:
 // ```c
 // btr_bllist_t list = {...};  // a list of strings
-// BTR_BLLIST_FOREACH(list, item)
+// BTR_BLLIST_FOREACH(&list, item)
 //     printf("%s\n", (char *)item);
 // ```
 #define BTR_BLLIST_FOREACH(LIST, i)           \
@@ -108,7 +108,7 @@ void **BTR_BLList_toArray(btr_bllist_s *, btr_allocator_s *allocator);
 // Example usage:
 // ```c
 // btr_bllist_t list = {...};  // a list of strings
-// BTR_BLLIST_ENUMERATE(list, item, index)
+// BTR_BLLIST_ENUMERATE(&list, item, index)
 //     printf("%zu: %s\n", index, (char *)item);
 // ```
 #define BTR_BLLIST_ENUMERATE(LIST, i, n)      \
