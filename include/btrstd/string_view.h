@@ -132,6 +132,10 @@ typedef btr_string_view_s string_view_s;
 #define StringView_fromCString       BTR_StringView_fromCString
 #define StringView_cropLeft          BTR_StringView_cropLeft
 #define StringView_cropRight         BTR_StringView_cropRight
+#define StringView_trimLeftTo        BTR_StringView_trimLeftTo
+#define StringView_trimLeftPast      BTR_StringView_trimLeftPast
+#define StringView_trimRightTo       BTR_StringView_trimRightTo
+#define StringView_trimRightPast     BTR_StringView_trimRightPast
 #define StringView_revertLeft        BTR_StringView_revertLeft
 #define StringView_revertRight       BTR_StringView_revertRight
 #define StringView_byteCount         BTR_StringView_byteCount
