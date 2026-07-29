@@ -3,6 +3,9 @@
 ### Additions
 - [ ] `btr_string_s` hashing function.
 - [ ] `btr_string_s` printing function.
+- [ ] `BTR_String_freeToBuffer` function.
+- [ ] `BTR_String_copyToBuffer` function.
+- [x] `BTR_BHTable_put` now returns replaced item.
 ### Fixes
 - [ ] `BTR_String_append` (also prepend) fix for char.
 - [x] `BTR_StringView_findView` off-by-one error fix.

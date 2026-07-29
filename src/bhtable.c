@@ -100,13 +100,15 @@ btr_bhtable_s BTR_BHTable_make(
         .allocator = theAllocator,
     };
 }
-void BTR_BHTable_put(btr_bhtable_s *this, const void *key, const void *value)
+btr_container_ptr_r BTR_BHTable_put(btr_bhtable_s *this, const void *key, const void *value)
 {
     btr_table_entry_s **first = &this->data[getBucketIndex(this, key)];
     for (btr_table_entry_s *current = *first; current; current = current->next)
-        if (this->compare(current->key, key)) {
-            current->key = (void *)key;
-            return;
+        if (this->compare(current->key, key))
+        {
+            void *old = current->value;
+            current->value = (void *)value;
+            BTR_OK(btr_container_ptr_r, old);
         }
     btr_table_entry_s *pair = BTR_expect(
         BTR_Allocator_allocate(this->allocator, sizeof(btr_table_entry_s)),
@@ -119,6 +121,7 @@ void BTR_BHTable_put(btr_bhtable_s *this, const void *key, const void *value)
     this->count++;
     if (calculateLoadFactor(this) > 1.5f)
         rehashUp(this);
+    BTR_ERR(btr_container_ptr_r, BTR_CONTAINER_ERR_NOT_FOUND);
 }
 btr_container_ptr_r BTR_BHTable_get(const btr_bhtable_s *this, const void *key)
 {

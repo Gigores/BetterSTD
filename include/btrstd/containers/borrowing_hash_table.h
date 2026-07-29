@@ -43,7 +43,8 @@ btr_bhtable_s BTR_BHTable_make(
     btr_allocator_s *allocator
 );
 // Sets a key to a value in the borrowing hash table.
-void BTR_BHTable_put(btr_bhtable_s *, const void *key, const void *value);
+// Returns an old value if it was replaced.
+btr_container_ptr_r BTR_BHTable_put(btr_bhtable_s *, const void *key, const void *value);
 // Returns a value of the key in the borrowing hash table.
 btr_container_ptr_r BTR_BHTable_get(const btr_bhtable_s *, const void *key);
 // Returns a value of the key and removes it from the borrowing hash table.
