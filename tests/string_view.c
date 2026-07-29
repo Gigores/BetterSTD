@@ -233,6 +233,80 @@ static void test9(void)
     assert(!BTR_StringView_compare(view, testView));
 }
 
+// test `trimLeftTo`, `trimLeftPast`, `trimRightTo`, `trimRightPast`
+static void test10(void)
+{
+    printf("> test10\n");
+
+    const char *TEXT = "image.png";
+
+    btr_string_view_s view = BTR_StringView_fromCString(TEXT);
+
+    btr_string_view_s leftTo = BTR_StringView_trimLeftTo(view, ".");
+    btr_string_view_s testLeftTo = BTR_StringView_fromCString(".png");
+    assert(!BTR_StringView_compare(leftTo, testLeftTo));
+
+    btr_string_view_s leftPast = BTR_StringView_trimLeftPast(view, ".");
+    btr_string_view_s testLeftPast = BTR_StringView_fromCString("png");
+    assert(!BTR_StringView_compare(leftPast, testLeftPast));
+
+    btr_string_view_s rightTo = BTR_StringView_trimRightTo(view, ".");
+    btr_string_view_s testRightTo = BTR_StringView_fromCString("image.");
+    assert(!BTR_StringView_compare(rightTo, testRightTo));
+
+    btr_string_view_s rightPast = BTR_StringView_trimRightPast(view, ".");
+    btr_string_view_s testRightPast = BTR_StringView_fromCString("image");
+    assert(!BTR_StringView_compare(rightPast, testRightPast));
+}
+
+// test trim[Left/Right][To/Past] with non-existent character (should be no-op)
+static void test11(void)
+{
+    printf("> test11\n");
+
+    const char *TEXT = "hello world";
+
+    btr_string_view_s view = BTR_StringView_fromCString(TEXT);
+
+    btr_string_view_s leftTo = BTR_StringView_trimLeftTo(view, ".");
+    assert(!BTR_StringView_compare(leftTo, view));
+
+    btr_string_view_s leftPast = BTR_StringView_trimLeftPast(view, ".");
+    assert(!BTR_StringView_compare(leftPast, view));
+
+    btr_string_view_s rightTo = BTR_StringView_trimRightTo(view, ".");
+    assert(!BTR_StringView_compare(rightTo, view));
+
+    btr_string_view_s rightPast = BTR_StringView_trimRightPast(view, ".");
+    assert(!BTR_StringView_compare(rightPast, view));
+}
+
+// test trim[Left/Right][To/Past] with multi-byte UTF-8 character
+static void test12(void)
+{
+    printf("> test12\n");
+
+    const char *TEXT = "AЖ你😀BŁ文🚀";
+
+    btr_string_view_s view = BTR_StringView_fromCString(TEXT);
+
+    btr_string_view_s leftTo = BTR_StringView_trimLeftTo(view, "😀");
+    btr_string_view_s testLeftTo = BTR_StringView_fromCString("😀BŁ文🚀");
+    assert(!BTR_StringView_compare(leftTo, testLeftTo));
+
+    btr_string_view_s leftPast = BTR_StringView_trimLeftPast(view, "😀");
+    btr_string_view_s testLeftPast = BTR_StringView_fromCString("BŁ文🚀");
+    assert(!BTR_StringView_compare(leftPast, testLeftPast));
+
+    btr_string_view_s rightTo = BTR_StringView_trimRightTo(view, "Ł");
+    btr_string_view_s testRightTo = BTR_StringView_fromCString("AЖ你😀BŁ");
+    assert(!BTR_StringView_compare(rightTo, testRightTo));
+
+    btr_string_view_s rightPast = BTR_StringView_trimRightPast(view, "Ł");
+    btr_string_view_s testRightPast = BTR_StringView_fromCString("AЖ你😀B");
+    assert(!BTR_StringView_compare(rightPast, testRightPast));
+}
+
 int main(void) {
     test1();
     test3();
@@ -240,5 +314,8 @@ int main(void) {
     test7();
     test8();
     test9();
+    test10();
+    test11();
+    test12();
     printf("SUCCESS\n");
 }

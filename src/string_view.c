@@ -39,6 +39,71 @@ btr_string_view_s BTR_StringView_cropRight(btr_string_view_s string, unsigned in
     }
     return string;
 }
+btr_string_view_s BTR_StringView_trimLeftTo(btr_string_view_s string, const char *character)
+{
+    size_t charLen = strlen(character);
+    if (string.length < charLen) return string;
+    size_t maxCount = string.length - charLen;
+    for (size_t count = 0; count <= maxCount; count++)
+    {
+        if (!memcmp(string.data + count, character, charLen))
+            return (btr_string_view_s) {
+                .data = string.data + count,
+                .length = string.length - count,
+            };
+    }
+    return string;
+}
+btr_string_view_s BTR_StringView_trimLeftPast(btr_string_view_s string, const char *character)
+{
+    size_t charLen = strlen(character);
+    if (string.length < charLen) return string;
+    size_t maxCount = string.length - charLen;
+    for (size_t count = 0; count <= maxCount; count++)
+    {
+        if (!memcmp(string.data + count, character, charLen))
+            return (btr_string_view_s) {
+                .data = string.data + count + charLen,
+                .length = string.length - count - charLen,
+            };
+    }
+    return string;
+}
+btr_string_view_s BTR_StringView_trimRightTo(btr_string_view_s string, const char *character)
+{
+    size_t charLen = strlen(character);
+    if (string.length < charLen) return string;
+    for (size_t count = string.length - charLen; count > 0; count--)
+    {
+        if (!memcmp(string.data + count, character, charLen))
+            return (btr_string_view_s) {
+                .data = string.data,
+                .length = count + charLen,
+            };
+    }
+    if (!memcmp(string.data, character, charLen))
+        return (btr_string_view_s) {
+            .data = string.data,
+            .length = charLen,
+        };
+    return string;
+}
+btr_string_view_s BTR_StringView_trimRightPast(btr_string_view_s string, const char *character)
+{
+    size_t charLen = strlen(character);
+    if (string.length < charLen) return string;
+    for (size_t count = string.length - charLen; count > 0; count--)
+    {
+        if (!memcmp(string.data + count, character, charLen))
+            return (btr_string_view_s) {
+                .data = string.data,
+                .length = count,
+            };
+    }
+    if (!memcmp(string.data, character, charLen))
+        return (btr_string_view_s) {0};
+    return string;
+}
 btr_string_view_s BTR_StringView_revertLeft(btr_string_view_s string, unsigned int charCount)
 {
     for (unsigned int i = 0; i < charCount; i++)

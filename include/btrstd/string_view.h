@@ -33,6 +33,22 @@ btr_string_view_s BTR_StringView_cropLeft(btr_string_view_s, unsigned int charCo
 // Crops the given count of characters from the right of the string view.
 // "გვიპყრობდა" -> crop 3 -> "გვიპყრო"
 btr_string_view_s BTR_StringView_cropRight(btr_string_view_s, unsigned int charCount);
+// Crops the given string view from left until it encounters a specific character.
+// "image.png" -> ".png"
+// No-op if the view doesn't include the given character.
+btr_string_view_s BTR_StringView_trimLeftTo(btr_string_view_s, const char *character);
+// Crops the given string view from left until it crops past a specific character.
+// "image.png" -> "png"
+// No-op if the view doesn't include the given character.
+btr_string_view_s BTR_StringView_trimLeftPast(btr_string_view_s, const char *character);
+// Crops the given string view from right until it encounters a specific character.
+// "image.png" -> "image."
+// No-op if the view doesn't include the given character.
+btr_string_view_s BTR_StringView_trimRightTo(btr_string_view_s, const char *character);
+// Crops the given string view from right until it crops past a specific character.
+// "image.png" -> "image"
+// No-op if the view doesn't include the given character.
+btr_string_view_s BTR_StringView_trimRightPast(btr_string_view_s, const char *character);
 // Reverts the given count of characters from the left of the string view, that were
 // previously cropped.
 // "გვიპყრობდა" -> crop 3 -> "პყრობდა" -> revert 2 "ვიპყრობდა"
@@ -135,7 +151,11 @@ typedef btr_string_view_s string_view_s;
 #define StringView_substring         BTR_StringView_substring
 
 #define StringView_trimLeft          BTR_StringView_trimLeft
+#define StringView_trimLeftTo        BTR_StringView_trimLeftTo
+#define StringView_trimLeftPast      BTR_StringView_trimLeftPast
 #define StringView_trimRight         BTR_StringView_trimRight
+#define StringView_trimRightTo       BTR_StringView_trimRightTo
+#define StringView_trimRightPast     BTR_StringView_trimRightPast
 #define StringView_trim              BTR_StringView_trim
 
 #define StringView_compare           BTR_StringView_compare
